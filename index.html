@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>UNILAG Admission Guide — Ciceroo</title>
+<style>
+  :root{
+    --bg:#0a0e1a;
+    --surface:#111827;
+    --surface2:#1a2235;
+    --border:#1e2d45;
+    --accent:#3b82f6;
+    --accent2:#6366f1;
+    --gold:#f59e0b;
+    --green:#10b981;
+    --red:#ef4444;
+    --text:#e2e8f0;
+    --muted:#94a3b8;
+    --card:#151e2e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
+
+  /* HERO */
+  #hero{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    min-height:100vh;padding:2rem;text-align:center;
+    background:radial-gradient(ellipse at top,#0d1b40 0%,#0a0e1a 60%);
+    position:relative;overflow:hidden;
+  }
+  #hero::before{
+    content:'';position:absolute;inset:0;
+    background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231e2d45' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity:0.5;
+  }
+  .hero-logo{
+    width:90px;height:90px;border-radius:50%;
+    border:3px solid var(--gold);
+    background:linear-gradient(135deg,#1e3a6e,#0d1b40);
+    display:flex;align-items:center;justify-content:center;
+    font-size:2.5rem;margin-bottom:1.5rem;
+    box-shadow:0 0 40px rgba(245,158,11,.3);
+    animation:pulse 3s infinite;
+  }
+  @keyframes pulse{0%,100%{box-shadow:0 0 40px rgba(245,158,11,.3)}50%{box-shadow:0 0 60px rgba(245,158,11,.5)}}
+  .hero-badge{
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    color:#fff;font-size:.75rem;font-weight:700;letter-spacing:.15em;
+    text-transform:uppercase;padding:.35rem 1rem;border-radius:999px;
+    margin-bottom:1.25rem;
+  }
+  .hero-title{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.1;margin-bottom:1rem}
+  .hero-title span{
+    background:linear-gradient(90deg,#60a5fa,#818cf8,#c084fc);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  }
+  .hero-sub{font-size:1.1rem;color:var(--muted);max-width:520px;line-height:1.7;margin-bottom:2.5rem}
+  .hero-cta{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;border:none;padding:1rem 2.5rem;border-radius:999px;
+    font-size:1.1rem;font-weight:700;cursor:pointer;
+    transition:transform .2s,box-shadow .2s;
+    box-shadow:0 8px 30px rgba(59,130,246,.4);
+  }
+  .hero-cta:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(59,130,246,.5)}
+  .hero-stats{display:flex;gap:2rem;margin-top:3rem;flex-wrap:wrap;justify-content:center}
+  .stat{text-align:center}
+  .stat-num{font-size:1.75rem;font-weight:800;color:var(--gold)}
+  .stat-label{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+
+  /* CHAT */
+  #chat-wrapper{display:none;flex-direction:column;min-height:100vh;max-width:780px;margin:0 auto}
+  .chat-header{
+    position:sticky;top:0;z-index:100;
+    background:rgba(10,14,26,.9);backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+    padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;
+  }
+  .chat-avatar{
+    width:42px;height:42px;border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:flex;align-items:center;justify-content:center;font-size:1.2rem;
+    flex-shrink:0;
+  }
+  .chat-header-info .name{font-weight:700;font-size:1rem}
+  .chat-header-info .status{font-size:.8rem;color:var(--green);display:flex;align-items:center;gap:.4rem}
+  .status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+
+  #messages{flex:1;padding:1.5rem;display:flex;flex-direction:column;gap:1rem;overflow-y:auto}
+
+  .msg{display:flex;gap:.75rem;animation:fadeUp .3s ease}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .msg.user{flex-direction:row-reverse}
+  .msg-avatar{
+    width:34px;height:34px;border-radius:50%;flex-shrink:0;margin-top:2px;
+    display:flex;align-items:center;justify-content:center;font-size:.95rem;
+  }
+  .msg.bot .msg-avatar{background:linear-gradient(135deg,var(--accent),var(--accent2))}
+  .msg.user .msg-avatar{background:linear-gradient(135deg,#374151,#4b5563)}
+  .msg-bubble{
+    max-width:75%;padding:.85rem 1.15rem;border-radius:18px;line-height:1.6;
+    font-size:.95rem;
+  }
+  .msg.bot .msg-bubble{
+    background:var(--surface2);border:1px solid var(--border);
+    border-bottom-left-radius:4px;
+  }
+  .msg.user .msg-bubble{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;border-bottom-right-radius:4px;
+  }
+  .msg-bubble p+p{margin-top:.5rem}
+  .msg-bubble strong{color:#93c5fd}
+  .msg.user .msg-bubble strong{color:#fff}
+
+  /* QUICK REPLIES */
+  .quick-replies{display:flex;flex-wrap:wrap;gap:.5rem;padding:.5rem 1.5rem 0}
+  .qr{
+    background:var(--surface2);border:1px solid var(--border);
+    color:var(--text);padding:.5rem 1rem;border-radius:999px;
+    font-size:.875rem;cursor:pointer;transition:all .2s;
+  }
+  .qr:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  /* INPUT */
+  .chat-input-area{
+    padding:1rem 1.5rem 1.5rem;
+    border-top:1px solid var(--border);
+    background:rgba(10,14,26,.9);backdrop-filter:blur(20px);
+  }
+  .search-wrap{position:relative;margin-bottom:.75rem}
+  .search-wrap input{
+    width:100%;background:var(--surface2);border:1px solid var(--border);
+    color:var(--text);padding:.75rem 1rem;border-radius:12px;
+    font-size:.9rem;outline:none;
+  }
+  .search-wrap input:focus{border-color:var(--accent)}
+  .search-dropdown{
+    position:absolute;bottom:calc(100% + 4px);left:0;right:0;
+    background:var(--card);border:1px solid var(--border);border-radius:12px;
+    max-height:200px;overflow-y:auto;z-index:200;display:none;
+  }
+  .search-dropdown.open{display:block}
+  .sd-item{padding:.65rem 1rem;cursor:pointer;font-size:.9rem;border-bottom:1px solid var(--border)}
+  .sd-item:last-child{border-bottom:none}
+  .sd-item:hover{background:var(--surface2)}
+  .sd-item em{color:var(--muted);font-style:normal;font-size:.8rem}
+
+  .input-row{display:flex;gap:.5rem}
+  .msg-input{
+    flex:1;background:var(--surface2);border:1px solid var(--border);
+    color:var(--text);padding:.75rem 1rem;border-radius:12px;
+    font-size:.95rem;outline:none;resize:none;
+  }
+  .msg-input:focus{border-color:var(--accent)}
+  .send-btn{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    border:none;color:#fff;width:46px;height:46px;border-radius:12px;
+    cursor:pointer;font-size:1.1rem;flex-shrink:0;transition:opacity .2s;
+  }
+  .send-btn:hover{opacity:.85}
+
+  /* RESULT CARD */
+  .result-card{
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+    overflow:hidden;margin-top:.5rem;
+  }
+  .result-header{
+    padding:1rem 1.25rem;font-weight:700;font-size:1rem;
+    display:flex;align-items:center;gap:.5rem;
+  }
+  .result-header.green{background:rgba(16,185,129,.15);color:var(--green);border-bottom:1px solid rgba(16,185,129,.2)}
+  .result-header.red{background:rgba(239,68,68,.15);color:var(--red);border-bottom:1px solid rgba(239,68,68,.2)}
+  .result-header.yellow{background:rgba(245,158,11,.15);color:var(--gold);border-bottom:1px solid rgba(245,158,11,.2)}
+  .result-body{padding:1rem 1.25rem}
+  .info-row{display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;border-bottom:1px solid var(--border);font-size:.875rem}
+  .info-row:last-child{border-bottom:none}
+  .info-row .label{color:var(--muted)}
+  .info-row .val{font-weight:600}
+  .pill{padding:.2rem .65rem;border-radius:999px;font-size:.8rem;font-weight:700}
+  .pill.green{background:rgba(16,185,129,.15);color:var(--green)}
+  .pill.red{background:rgba(239,68,68,.15);color:var(--red)}
+  .pill.yellow{background:rgba(245,158,11,.15);color:var(--gold)}
+  .subject-list{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem}
+  .subj-tag{background:var(--surface2);border:1px solid var(--border);padding:.25rem .65rem;border-radius:8px;font-size:.8rem}
+
+  /* TYPING */
+  .typing-indicator{display:flex;gap:4px;align-items:center;padding:.75rem 1rem}
+  .typing-indicator span{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:bounce .8s infinite}
+  .typing-indicator span:nth-child(2){animation-delay:.15s}
+  .typing-indicator span:nth-child(3){animation-delay:.3s}
+  @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+
+  /* PROGRESS */
+  .progress-bar{height:3px;background:var(--border);border-radius:999px;margin-bottom:1rem}
+  .progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s}
+
+  /* RESPONSIVE */
+  @media(max-width:480px){
+    .msg-bubble{max-width:88%}
+    .hero-title{font-size:1.8rem}
+    .hero-stats{gap:1.25rem}
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO SECTION -->
+<section id="hero">
+  <div class="hero-logo">🎓</div>
+  <div class="hero-badge">UNILAG · 2025/2026</div>
+  <h1 class="hero-title">Your Smart<br/><span>Admission Guide</span></h1>
+  <p class="hero-sub">Get instant, personalised advice on your UNILAG admission chances — UTME scores, O/Level requirements, cut-off marks & more. No guessing, just facts.</p>
+  <button class="hero-cta" onclick="startChat()">Check My Admission ✦</button>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">12</div><div class="stat-label">Faculties</div></div>
+    <div class="stat"><div class="stat-num">80+</div><div class="stat-label">Programmes</div></div>
+    <div class="stat"><div class="stat-num">2025/26</div><div class="stat-label">Session</div></div>
+  </div>
+</section>
+
+<!-- CHAT INTERFACE -->
+<div id="chat-wrapper">
+  <div class="chat-header">
+    <div class="chat-avatar">🎓</div>
+    <div class="chat-header-info">
+      <div class="name">UNILAG Admission Guide</div>
+      <div class="status"><span class="status-dot"></span>Online — ready to help</div>
+    </div>
+  </div>
+  <div id="progress-wrap" style="padding:.75rem 1.5rem 0"><div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div></div>
+  <div id="messages"></div>
+  <div id="quick-area"></div>
+  <div class="chat-input-area">
+    <div class="search-wrap" id="search-wrap" style="display:none">
+      <input id="search-input" type="text" placeholder="Search programme..." autocomplete="off" oninput="filterDropdown(this.value)" onfocus="filterDropdown(this.value)"/>
+      <div class="search-dropdown" id="search-dd"></div>
+    </div>
+    <div class="input-row">
+      <input class="msg-input" id="msg-input" type="text" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+      <button class="send-btn" onclick="sendMsg()">➤</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   DATA
+   ============================================================ */
+
+const PROGRAMMES = {
+  // ARTS
+  "Creative Arts":{faculty:"Arts",utmeSubjects:["English Language","any one of Fine Arts/Literature-in-English/Music","one Arts subject","any Science or Social Sciences"],olevel:"5 O/Level credits: English Language, Literature-in-English, Mathematics + 2 more (one must be Arts)",utme2025:69.5},
+  "English Language":{faculty:"Arts",utmeSubjects:["English Language","Literature-in-English","any two of CRS/IRS, French, History, Government, any Nigerian Language"],olevel:"5 O/Level credits: English Language, Mathematics, Literature-in-English + 2 more",utme2025:68.175},
+  "French":{faculty:"Arts",utmeSubjects:["English Language","any three Arts or Social Sciences"],olevel:"5 O/Level credits: English Language, Mathematics + 3 Arts or Social Sciences",utme2025:60.225},
+  "Russian":{faculty:"Arts",utmeSubjects:["English Language","any three Arts or Social Sciences"],olevel:"5 O/Level credits: English Language, Mathematics + 3 Arts or Social Sciences",utme2025:58.775},
+  "German":{faculty:"Arts",utmeSubjects:["English Language","any three Arts or Social Sciences"],olevel:"5 O/Level credits: English Language, Mathematics + 3 Arts or Social Sciences",utme2025:60.95},
+  "History & Strategic Studies":{faculty:"Arts",utmeSubjects:["English Language","History and/or Government","any one or two Arts or Social Sciences"],olevel:"5 O/Level credits: English Language, Mathematics, History/Government + 2 more",utme2025:70.725},
+  "Linguistics/Igbo":{faculty:"Arts",utmeSubjects:["English Language","any three Arts, Science or Social Sciences"],olevel:"5 O/Level credits: English Language, Mathematics + 3 (Arts/Science/Social Sciences)",utme2025:null},
+  "Linguistics/Yoruba":{faculty:"Arts",utmeSubjects:["English Language","any three Arts, Science or Social Sciences"],olevel:"5 O/Level credits: English Language, Mathematics + 3 (Arts/Science/Social Sciences)",utme2025:null},
+  "Linguistics":{faculty:"Arts",utmeSubjects:["any three subjects from Arts, Sciences or Social Sciences"],olevel:"5 O/Level credits: English Language, Mathematics + 3 (Arts/Science/Social Sciences)",utme2025:72.55},
+  "Chinese":{faculty:"Arts",utmeSubjects:["English Language","any three Arts, Science or Social Sciences"],olevel:"5 O/Level credits: English Language, Mathematics + 3 (Arts/Science/Social Sciences)",utme2025:68.95},
+  "Philosophy":{faculty:"Arts",utmeSubjects:["English Language","one Arts subject","any two Arts, Social Sciences or Science"],olevel:"5 O/Level credits: English Language, Mathematics, one Art + 2 more (Arts/Social Sciences/Science)",utme2025:66.075},
+  "Christian Religious Studies":{faculty:"Arts",utmeSubjects:["English Language","CRS","any two of Literature-in-English, History, Government, French, Yoruba, Igbo, Hausa, Visual Arts, Economics, Commerce"],olevel:"5 O/Level credits: English Language, Mathematics, CRS + 2 more",utme2025:54.625},
+  "Islamic Studies":{faculty:"Arts",utmeSubjects:["English Language","Islamic Studies","any two of Literature-in-English, History, Government, French, Yoruba, Igbo, Visual Arts, Economics, Commerce"],olevel:"5 O/Level credits: English Language, Mathematics, Islamic Studies + 2 more",utme2025:54.675},
+  // COLLEGE OF MEDICINE / BASIC MED / CLINICAL / DENTAL
+  "Anatomy":{faculty:"Clinical Sciences",utmeSubjects:["English Language","Biology","Chemistry","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Biology, Chemistry, Physics",utme2025:72.4},
+  "Pharmacology":{faculty:"Basic Medical Sciences",utmeSubjects:["English Language","Biology","Chemistry","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Biology, Chemistry, Physics",utme2025:73.125},
+  "Physiology":{faculty:"Basic Medical Sciences",utmeSubjects:["English Language","Biology","Chemistry","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Biology, Chemistry, Physics",utme2025:72.875},
+  "Medical Laboratory Science":{faculty:"Basic Medical Sciences",utmeSubjects:["English Language","Biology","Chemistry","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Biology, Chemistry, Physics",utme2025:74.375},
+  "Medicine & Surgery":{faculty:"Clinical Sciences",utmeSubjects:["English Language","Biology","Chemistry","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Biology, Chemistry, Physics",utme2025:85.025},
+  "Nursing":{faculty:"Clinical Sciences",utmeSubjects:["English Language","Biology","Chemistry","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Biology, Chemistry, Physics",utme2025:79.8},
+  "Physiotherapy":{faculty:"Clinical Sciences",utmeSubjects:["English Language","Biology","Chemistry","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Biology, Chemistry, Physics",utme2025:74.725},
+  "Radiography":{faculty:"Clinical Sciences",utmeSubjects:["English Language","Biology","Chemistry","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Biology, Chemistry, Physics",utme2025:77.375},
+  "Dentistry":{faculty:"Dental Sciences",utmeSubjects:["English Language","Biology","Chemistry","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Biology, Chemistry, Physics",utme2025:76.65},
+  // EDUCATION (subset)
+  "Biology Education":{faculty:"Education",utmeSubjects:["English Language","Biology","any two of Chemistry, Mathematics, Physics, Integrated Science"],olevel:"5 O/Level credits: English Language, Biology, Chemistry, Mathematics + one of Physics/Agric Science/Health Science",utme2025:53.5},
+  "Chemistry Education":{faculty:"Education",utmeSubjects:["English Language","Chemistry","any two of Physics, Biology, Agricultural Science, Integrated Science"],olevel:"5 O/Level credits: English Language, Mathematics, Chemistry + 2 of Physics/Biology/Agric",utme2025:53.875},
+  "Mathematics Education":{faculty:"Education",utmeSubjects:["English Language","Mathematics","Physics","any one of Chemistry, Biology, Computer Studies, Data Processing"],olevel:"5 O/Level credits: English Language, Mathematics, Physics + 2 more",utme2025:51.075},
+  "Physics Education":{faculty:"Education",utmeSubjects:["English Language","Physics","Mathematics/Chemistry","one of Biology, Agricultural Science"],olevel:"5 O/Level credits: English Language, Mathematics, Physics, Chemistry + one more",utme2025:63},
+  "Integrated Science Education":{faculty:"Education",utmeSubjects:["English Language","Biology","any two of Chemistry, Physics, Mathematics, Agricultural Science"],olevel:"5 O/Level credits: English Language, Mathematics, Chemistry, Biology + one more",utme2025:56.1},
+  "Technology Education":{faculty:"Education",utmeSubjects:["English Language","Mathematics","Physics/Technical Drawing","any one Science/Technical subject"],olevel:"5 O/Level credits: English Language, Mathematics, Physics/Technical Drawing + 2 Technical or Science",utme2025:55.125},
+  "Education Home Economics":{faculty:"Education",utmeSubjects:["English Language","Chemistry","Biology/Agricultural Science","one other subject from Maths/Physics/Food & Nutrition/Home Mgt/Clothing & Textile etc"],olevel:"5 O/Level credits: English Language, Mathematics, Chemistry, Biology/Agric Science + one more",utme2025:58.125},
+  "Adult & Continuing Education":{faculty:"Education",utmeSubjects:["English Language","any three of Literature-in-English, History/Government, French, Geography, Mathematics, any Nigerian Language, CRS/IRS, Economics, Commerce, Civic Education, Social Studies, Financial Accounting, Biology/Agricultural Science, Food & Nutrition"],olevel:"5 O/Level credits: English Language, Mathematics + 3 more (Humanities)",utme2025:53.525},
+  "Educational Administration":{faculty:"Education",utmeSubjects:["English Language","any three of Literature-in-English, History, Government, Geography, any Nigerian Language, CRS/IRS, Economics"],olevel:"5 O/Level credits: English Language, Mathematics, Economics + 2 more",utme2025:58},
+  "Human Kinetics & Health Education":{faculty:"Education",utmeSubjects:["English Language","Biology","any two Science subjects"],olevel:"5 O/Level credits: English Language, Mathematics, Biology/Health Science/Physical Education + 1 Science + any other",utme2025:53.35},
+  "Educational Foundations (Guidance & Counselling)":{faculty:"Education",utmeSubjects:["English Language","any three of Literature-in-English, History, French, Geography, Yoruba/Igbo, CRS/IRS, Economics, Government, Civic Education"],olevel:"5 O/Level credits: English Language, Mathematics + 3 more",utme2025:60.025},
+  "Special Needs Education":{faculty:"Education",utmeSubjects:["English Language","any three of Mathematics, Literature-in-English, Geography, Economics, History, Government, Yoruba, Igbo, CRS/IRS, French, Civic Education"],olevel:"5 O/Level credits: English Language, Mathematics + 3 more",utme2025:58.2},
+  "CRS Education":{faculty:"Education",utmeSubjects:["English Language","CRS","any two of Literature-in-English, History/Government, French, any Nigerian Language, Geography, Mathematics, Economics/Commerce"],olevel:"5 O/Level credits: English Language, Mathematics, CRS + 2 more",utme2025:56.275},
+  "English Education":{faculty:"Education",utmeSubjects:["English Language","any three subjects from Arts or Social Sciences"],olevel:"5 O/Level credits: English Language, Mathematics, Literature-in-English + 2 more",utme2025:68.05},
+  "French Education":{faculty:"Education",utmeSubjects:["English Language","any three subjects from Arts or Social Sciences"],olevel:"5 O/Level credits: English Language, Mathematics + 3 Arts/Social Sciences",utme2025:59.3},
+  "Geography Education":{faculty:"Education",utmeSubjects:["English language","any three of Literature-in-English, History/Government, French/Arabic, Geography, Mathematics, any Nigerian Language, CRS/IRS, Economics/Commerce"],olevel:"5 O/Level credits: English Language, Mathematics, Geography + 2 more (Science/Social Sciences)",utme2025:null},
+  "History Education":{faculty:"Education",utmeSubjects:["English language","any three subjects from Arts or Social Sciences"],olevel:"5 O/Level credits: English Language, Mathematics, History/Government + 2 more",utme2025:53.9},
+  "Igbo Education":{faculty:"Education",utmeSubjects:["English Language","any three subjects from Arts or Social Sciences"],olevel:"5 O/Level credits: English Language, Mathematics + 3 more",utme2025:null},
+  "Islamic Studies Education":{faculty:"Education",utmeSubjects:["English Language","Islamic Religious Studies (IRS)","any two of Literature-in-English, History/Government, French/Arabic, Geography, Mathematics, Yoruba/Igbo, CRS, Economics/Commerce"],olevel:"5 O/Level credits: English Language, Mathematics, IRS + 2 more",utme2025:56.125},
+  "Yoruba Education":{faculty:"Education",utmeSubjects:["English Language","any three subjects from Arts or Social Sciences"],olevel:"5 O/Level credits: English Language, Mathematics + 3 Arts/Social Sciences",utme2025:62.025},
+  "Early Childhood Education":{faculty:"Education",utmeSubjects:["English Language","any three subjects"],olevel:"5 O/Level credits: English Language, Mathematics + 3 more",utme2025:60.25},
+  "Business Education":{faculty:"Education",utmeSubjects:["English Language","Mathematics","Economics","any one of Arts or Social Sciences subject"],olevel:"5 O/Level credits: English Language, Mathematics, Economics + 2 more",utme2025:59.65},
+  "Education Economics":{faculty:"Education",utmeSubjects:["English Language","Mathematics","Economics","any one of Geography, History/Government, Literature-in-English"],olevel:"5 O/Level credits: English Language, Mathematics, Economics + 2 more",utme2025:56.175},
+  // ENGINEERING
+  "Biomedical Engineering":{faculty:"Engineering",utmeSubjects:["English Language","Chemistry","Mathematics","Physics"],olevel:"6 O/Level credits: English Language, Mathematics, Further Mathematics, Biology, Physics, Chemistry",utme2025:73.3,note:"Requires Further Mathematics at O/Level"},
+  "Chemical Engineering":{faculty:"Engineering",utmeSubjects:["English Language","Chemistry","Mathematics","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Further Mathematics, Physics, Chemistry",utme2025:72.8,note:"Requires Further Mathematics"},
+  "Civil & Environmental Engineering":{faculty:"Engineering",utmeSubjects:["English Language","Chemistry","Mathematics","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Further Mathematics, Physics, Chemistry",utme2025:75.625,note:"Requires Further Mathematics"},
+  "Computer Engineering":{faculty:"Engineering",utmeSubjects:["English Language","Chemistry","Mathematics","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Further Mathematics, Physics, Chemistry",utme2025:82.875,note:"Requires Further Mathematics"},
+  "Electrical/Electronics Engineering":{faculty:"Engineering",utmeSubjects:["English Language","Chemistry","Mathematics","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Further Mathematics, Physics, Chemistry",utme2025:79.5,note:"Requires Further Mathematics"},
+  "Mechanical Engineering":{faculty:"Engineering",utmeSubjects:["English Language","Chemistry","Mathematics","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Further Mathematics, Physics, Chemistry",utme2025:78.525,note:"Requires Further Mathematics"},
+  "Metallurgical & Materials Engineering":{faculty:"Engineering",utmeSubjects:["English Language","Chemistry","Mathematics","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Further Mathematics, Physics, Chemistry",utme2025:59.8,note:"Requires Further Mathematics"},
+  "Petroleum & Gas Engineering":{faculty:"Engineering",utmeSubjects:["English Language","Chemistry","Mathematics","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Further Mathematics, Physics, Chemistry",utme2025:70.725,note:"Requires Further Mathematics"},
+  "Surveying & Geoinformatics Engineering":{faculty:"Engineering",utmeSubjects:["English Language","Chemistry","Mathematics","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Further Mathematics, Physics, Chemistry",utme2025:58.125,note:"Requires Further Mathematics"},
+  "Systems Engineering":{faculty:"Engineering",utmeSubjects:["English Language","Chemistry","Mathematics","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Further Mathematics, Physics, Chemistry",utme2025:78.225,note:"Requires Further Mathematics"},
+  // ENVIRONMENTAL SCIENCES
+  "Architecture":{faculty:"Environmental Sciences",utmeSubjects:["English Language","Mathematics","Physics","any one of Chemistry, Geography, Economics, Biology, Fine Arts"],olevel:"5 O/Level credits: English Language, Mathematics, Physics, Fine Arts or Technical Drawing + one more",utme2025:75.575},
+  "Building":{faculty:"Environmental Sciences",utmeSubjects:["English Language","Mathematics","Physics","Chemistry"],olevel:"5 O/Level credits: English Language, Mathematics, Physics, Chemistry + one of Building Construction/Technical Drawing/Economics",utme2025:57.825},
+  "Estate Management":{faculty:"Environmental Sciences",utmeSubjects:["English Language","Mathematics","Economics","any one of Chemistry, Physics, Biology, Geography, Financial Accounting"],olevel:"5 O/Level credits: English Language, Mathematics, Economics, Chemistry/Physics + one more",utme2025:57.325},
+  "Quantity Surveying":{faculty:"Environmental Sciences",utmeSubjects:["English Language","Mathematics","Physics","any one of Chemistry, Economics or Geography"],olevel:"5 O/Level credits: English Language, Mathematics, Physics + 2 of Geography/Chemistry/Technical Drawing/Economics",utme2025:64.3},
+  "Urban & Regional Planning":{faculty:"Environmental Sciences",utmeSubjects:["English Language","Mathematics","Geography/Economics","any one of Chemistry, Physics, Biology, Fine Arts/Technical Drawing"],olevel:"5 O/Level credits: English Language, Mathematics, Geography + 2 more",utme2025:53.5},
+  // LAW
+  "Law":{faculty:"Law",utmeSubjects:["English Language","any three Arts or Social Sciences subjects (NO Music, Fine Arts, Principles of Accounting)"],olevel:"5 O/Level credits: English Language, Mathematics, Literature-in-English + 2 Arts or Social Sciences",utme2025:78.225,note:"Does not accept Music, Fine Arts, Principles of Accounting in UTME"},
+  // MANAGEMENT SCIENCES
+  "Accounting":{faculty:"Management Sciences",utmeSubjects:["English Language","Mathematics","Economics","plus one of Financial Accounting, Further Mathematics, Geography, Government, Literature-in-English, Biology"],olevel:"5 O/Level credits: English Language, Mathematics, Economics + 2 more",utme2025:75.7},
+  "Taxation":{faculty:"Management Sciences",utmeSubjects:["English Language","Economics","Mathematics","any one of Commerce, Government, Business Management, Geography, Literature-in-English, Civic Education"],olevel:"5 O/Level credits: English Language, Mathematics, Economics, Financial Accounting + one more",utme2025:66.4},
+  "Actuarial Science":{faculty:"Management Sciences",utmeSubjects:["English Language","Mathematics","Economics","any one of Geography, Government, Biology, Chemistry, Physics, Commerce"],olevel:"5 O/Level credits: English Language, Mathematics, Economics + 2 more",utme2025:64.925},
+  "Insurance":{faculty:"Management Sciences",utmeSubjects:["English Language","Mathematics","Economics","any one of Financial Accounting, Geography, Government, Biology, Chemistry, Physics, Commerce"],olevel:"5 O/Level credits: English Language, Mathematics, Economics + 2 more",utme2025:65.85},
+  "Business Administration":{faculty:"Management Sciences",utmeSubjects:["English Language","Mathematics","Economics","any one subject from Science, Social Science or Arts"],olevel:"5 O/Level credits: English Language, Mathematics, Economics + 2 more",utme2025:69.3},
+  "Banking & Finance":{faculty:"Management Sciences",utmeSubjects:["English Language","Mathematics","Economics","any one subject from Science, Social Science or Arts"],olevel:"5 O/Level credits: English Language, Mathematics, Economics + 2 more",utme2025:70.35},
+  "Employment Relations & HRM":{faculty:"Management Sciences",utmeSubjects:["English Language","Mathematics","Economics","any one subject from Science, Social Science or Arts"],olevel:"5 O/Level credits: English Language, Mathematics, Economics + 2 more",utme2025:60.775},
+  "Procurement Management":{faculty:"Management Sciences",utmeSubjects:["English Language","Mathematics","Economics","any one from Business Studies, Government, Chemistry, Physics"],olevel:"5 O/Level credits: English Language, Mathematics + 3 of Economics/Physics/Chemistry/Financial Accounting/Government/Civic Education/Geography",utme2025:67.175},
+  // PHARMACY
+  "Pharmacy":{faculty:"Pharmacy",utmeSubjects:["English Language","Physics","Chemistry","Biology"],olevel:"5 O/Level credits: English Language, Mathematics, Physics, Chemistry, Biology",utme2025:76.4},
+  "Doctor of Pharmacy":{faculty:"Pharmacy",utmeSubjects:["English Language","Biology","Chemistry","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Biology, Chemistry, Physics",utme2025:null},
+  // SCIENCE
+  "Biochemistry":{faculty:"Science",utmeSubjects:["English Language","Biology","Chemistry","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Biology, Chemistry, Physics",utme2025:69.4},
+  "Biostatistics":{faculty:"Science",utmeSubjects:["English Language","Mathematics","Physics","any one of Chemistry, Biology, Economics, Geography"],olevel:"5 O/Level credits: English Language, Mathematics, Further Mathematics, Physics + one more",utme2025:52.125},
+  "Botany":{faculty:"Science",utmeSubjects:["English Language","Biology","Chemistry","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Biology, Chemistry, Physics",utme2025:51.45},
+  "Cell Biology & Genetics":{faculty:"Science",utmeSubjects:["English Language","Biology","Chemistry","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Biology, Chemistry, Physics",utme2025:68.975},
+  "Chemistry":{faculty:"Science",utmeSubjects:["English Language","Chemistry","Physics","any one of Biology or Mathematics"],olevel:"5 O/Level credits: English Language, Mathematics, Biology, Chemistry, Physics",utme2025:59.5},
+  "Computer Science":{faculty:"Science",utmeSubjects:["English Language","Mathematics","Physics","any one of Chemistry or Biology"],olevel:"5 O/Level credits: English Language, Mathematics, Further Mathematics, Physics + Chemistry or Biology",utme2025:83.425,note:"Requires Further Mathematics at O/Level"},
+  "Data Science":{faculty:"Science",utmeSubjects:["English Language","Mathematics","Physics","any one of Chemistry, Biology, Economics, Geography"],olevel:"5 O/Level credits: English Language, Mathematics, Physics + any of Further Mathematics/Chemistry/Biology/Economics/Geography",utme2025:76.925},
+  "Environmental Standards":{faculty:"Science",utmeSubjects:["English Language","Mathematics","any two from Physics, Chemistry and Biology"],olevel:"5 O/Level credits: English Language, Mathematics + 3 of Biology/Chemistry/Physics/Geography/Economics/Government",utme2025:65.775},
+  "Fisheries & Aquaculture":{faculty:"Science",utmeSubjects:["English Language","Biology","Chemistry","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Biology, Chemistry, Physics",utme2025:52.475},
+  "Geology":{faculty:"Science",utmeSubjects:["English Language","Mathematics","Physics","Chemistry"],olevel:"5 O/Level credits: English Language, Mathematics, Physics, Chemistry, Biology",utme2025:63.55},
+  "Geophysics":{faculty:"Science",utmeSubjects:["English Language","Mathematics","Physics","Chemistry"],olevel:"5 O/Level credits: English Language, Mathematics, Physics, Chemistry, Biology",utme2025:65.225},
+  "Industrial Mathematics":{faculty:"Science",utmeSubjects:["English Language","Mathematics","Physics","any one of Chemistry, Economics, Biology, Geography"],olevel:"5 O/Level credits: English Language, Mathematics, Further Mathematics, Physics + one of Economics/Chemistry/Geography",utme2025:67.875,note:"Requires Further Mathematics"},
+  "Marine Biology":{faculty:"Science",utmeSubjects:["English Language","Biology","Chemistry","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Biology, Chemistry, Physics",utme2025:55.45},
+  "Mathematics":{faculty:"Science",utmeSubjects:["English Language","Mathematics","Physics","any one of Chemistry, Economics, Biology, Geography"],olevel:"5 O/Level credits: English Language, Mathematics, Further Mathematics, Physics + one more",utme2025:63.675,note:"Requires Further Mathematics"},
+  "Microbiology":{faculty:"Science",utmeSubjects:["English Language","Biology","Chemistry","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Biology, Chemistry, Physics",utme2025:68.075},
+  "Physics":{faculty:"Science",utmeSubjects:["English Language","Physics","Mathematics","Chemistry"],olevel:"5 O/Level credits: English Language, Mathematics, Physics, Chemistry, Further Mathematics",utme2025:60.25,note:"Requires Further Mathematics"},
+  "Statistics":{faculty:"Science",utmeSubjects:["English Language","Mathematics","Physics","any one of Chemistry, Economics, Biology, Geography"],olevel:"5 O/Level credits: English Language, Mathematics, Further Mathematics, Physics + one more",utme2025:65.925,note:"Requires Further Mathematics"},
+  "Zoology":{faculty:"Science",utmeSubjects:["English Language","Biology","Chemistry","Physics"],olevel:"5 O/Level credits: English Language, Mathematics, Biology, Chemistry, Physics",utme2025:57.25},
+  // SOCIAL SCIENCES
+  "Economics":{faculty:"Social Sciences",utmeSubjects:["English Language","Mathematics","Economics","any other subject"],olevel:"5 O/Level credits: English Language, Mathematics, Economics + 2 more",utme2025:73.475},
+  "Economics & Development Studies":{faculty:"Social Sciences",utmeSubjects:["English Language","Economics","Mathematics","any other subject"],olevel:"5 O/Level credits: English Language, Mathematics, Economics + 2 more",utme2025:65.725},
+  "Geography":{faculty:"Social Sciences",utmeSubjects:["English Language","Geography","any two of Biology, Chemistry, Physics, Economics, Government, Mathematics"],olevel:"5 O/Level credits: English Language, Mathematics, Geography + 2 from Science or Social Sciences",utme2025:57.475},
+  "Meteorology & Climate Science":{faculty:"Social Sciences",utmeSubjects:["English Language","Mathematics","Physics","any one of Geography, Chemistry, Biology, Agricultural Science"],olevel:"5 O/Level credits: English Language, Mathematics, Physics + 2 more",utme2025:55.95},
+  "Mass Communication":{faculty:"Social Sciences",utmeSubjects:["English Language","Literature-in-English","any two subjects from Arts or Social Sciences"],olevel:"5 O/Level credits: English Language, Mathematics, Literature-in-English + 2 more",utme2025:74.074},
+  "Library & Information Science":{faculty:"Social Sciences",utmeSubjects:["English Language","Literature-in-English","any two subjects from Arts or Social Sciences"],olevel:"5 O/Level credits: English Language, Mathematics + 3 of Arts/Science/Social Sciences",utme2025:66.625},
+  "Political Science":{faculty:"Social Sciences",utmeSubjects:["English Language","Government","Economics/Geography","any one of History, Literature-in-English, CRS/IRS"],olevel:"5 O/Level credits: English Language, Mathematics, Government, Economics/Geography + one more",utme2025:68.15},
+  "Psychology":{faculty:"Social Sciences",utmeSubjects:["English Language","any three of Mathematics, Biology, Physics, Chemistry, Economics, Government, Literature-in-English"],olevel:"5 O/Level credits: English Language, Mathematics, Biology + 2 more (no Commerce, CRS/IRS, Financial Accounting)",utme2025:69.7,note:"UNILAG does not accept Commerce, CRS/IRS or Financial Accounting"},
+  "Public Administration":{faculty:"Social Sciences",utmeSubjects:["English Language","Government/Civic Education/History","Economics","any other Social Sciences or Arts subject"],olevel:"5 O/Level credits: English Language, Mathematics, Government/Civic Education/History, Economics + one more",utme2025:74.2},
+  "Social Work":{faculty:"Social Sciences",utmeSubjects:["English Language","two Social Sciences subjects","one Arts subject"],olevel:"5 O/Level credits: English Language, Mathematics + 2 of Economics/Government/History/Civic Education/Geography + one of Literature-in-English/CRK-IRK/Nigerian Language/Biology",utme2025:67.35},
+  "Sociology":{faculty:"Social Sciences",utmeSubjects:["English Language","two Social Sciences subjects","one Arts subject"],olevel:"5 O/Level credits: English Language, Mathematics + 2 of Economics/Government/History/Civic Education/Geography + one of Literature-in-English/CRK-IRK/Nigerian Language",utme2025:68.275},
+  "Social Standards":{faculty:"Social Sciences",utmeSubjects:["English Language","any three of Economics, Government, Civic Education, Mathematics, Biology"],olevel:"5 O/Level credits: English Language, Mathematics + 3 of Economics/Physics/Chemistry/Financial Accounting/Government/Civic Education/Geography",utme2025:60.95},
+};
+
+// 2025/2026 catchment cuts per state
+const CATCHMENT_2025 = {
+  "Creative Arts":{Ekiti:59.375,Lagos:61.675,Ogun:66.225,Ondo:57.725,Osun:65.175,Oyo:65.75},
+  "English Language":{Ekiti:57.475,Lagos:59.2,Ogun:65.05,Ondo:62.025,Osun:55.675,Oyo:63.3},
+  "French":{Lagos:59.65},
+  "Russian":{},
+  "German":{Ogun:53.625,Osun:51.675,Oyo:52},
+  "History & Strategic Studies":{Ekiti:58.75,Lagos:60.175,Ogun:67.675,Ondo:65.725,Osun:61.625,Oyo:65.1},
+  "Linguistics":{Ekiti:67.425,Lagos:70.9,Ogun:71.375,Ondo:68.725,Osun:66.75,Oyo:68.325},
+  "Chinese":{Ekiti:64.9,Ogun:68.775,Oyo:65.65},
+  "Philosophy":{Ekiti:58.225,Lagos:54.6,Ogun:60.6,Ondo:57.3,Osun:57.725,Oyo:55.5},
+  "Anatomy":{Ekiti:71.5,Lagos:70.35,Ogun:70.125,Ondo:71.65,Osun:66.475,Oyo:64.75},
+  "Pharmacology":{Ekiti:69.025,Lagos:69.65,Ogun:71.925,Ondo:67.075,Osun:66.3,Oyo:71.6},
+  "Physiology":{Ekiti:66.45,Lagos:63.8,Ogun:70.225,Ondo:57.3,Osun:70.925,Oyo:67.95},
+  "Medical Laboratory Science":{Ekiti:70.925,Lagos:72,Ogun:73,Ondo:70.6,Osun:72.7,Oyo:72.825},
+  "Medicine & Surgery":{Ekiti:79.975,Lagos:79.75,Ogun:83.8,Ondo:81.325,Osun:81.775,Oyo:81.575},
+  "Nursing":{Ekiti:73.2,Lagos:73.7,Ogun:77.5,Ondo:77.1,Osun:77.85,Oyo:77.65},
+  "Physiotherapy":{Ekiti:66.25,Lagos:72.975,Ogun:74.2,Ondo:73.6,Osun:72.25,Oyo:73.175},
+  "Radiography":{Ekiti:74.9,Lagos:73.975,Ogun:76.9,Ondo:70.35,Osun:75.625,Oyo:76.7},
+  "Dentistry":{Ekiti:70.875,Lagos:65.825,Ogun:75.325,Ondo:72.775,Osun:69.175,Oyo:64.975},
+  "Adult & Continuing Education":{},
+  "Education Economics":{},
+  "Business Education":{Lagos:55.425,Ogun:56.425,Osun:56.6,Oyo:52.575},
+  "CRS Education":{},
+  "English Education":{Ekiti:62.625,Lagos:63.025,Ogun:64.2,Ondo:58.825,Osun:63.875,Oyo:65.45},
+  "Early Childhood Education":{Lagos:54.775,Ogun:60,Osun:52.6},
+  "Yoruba Education":{},
+  "French Education":{},
+  "History Education":{},
+  "Geography Education":{},
+  "Islamic Studies Education":{},
+  "Educational Administration":{Lagos:50.8,Ogun:52.55,Oyo:53.125},
+  "Educational Foundations (Guidance & Counselling)":{Ekiti:59.65,Lagos:54.05,Ogun:55.625,Osun:52.525,Oyo:57.575},
+  "Human Kinetics & Health Education":{},
+  "Biology Education":{},
+  "Chemistry Education":{},
+  "Education Home Economics":{},
+  "Integrated Science Education":{},
+  "Mathematics Education":{},
+  "Physics Education":{},
+  "Technology Education":{},
+  "Special Needs Education":{},
+  "Biomedical Engineering":{Lagos:66.125,Ogun:68.45,Ondo:69.55,Oyo:68.275},
+  "Chemical Engineering":{Ekiti:68.25,Lagos:62.35,Ogun:64.9,Osun:57.65,Oyo:59.325},
+  "Civil & Environmental Engineering":{Ekiti:65.525,Lagos:74.5,Ogun:72.075,Ondo:65.575,Osun:72.375,Oyo:71.05},
+  "Computer Engineering":{Ekiti:71.8,Lagos:78.3,Ogun:80.75,Ondo:77,Osun:81.475,Oyo:79},
+  "Electrical/Electronics Engineering":{Ekiti:63.35,Lagos:69.775,Ogun:77.1,Ondo:68.525,Osun:72.1,Oyo:72.125},
+  "Mechanical Engineering":{Ekiti:71.6,Lagos:73.825,Ogun:75.85,Ondo:66.3,Osun:72.5,Oyo:72.575},
+  "Metallurgical & Materials Engineering":{Ekiti:58.975,Ogun:57.95},
+  "Petroleum & Gas Engineering":{Ekiti:64.125,Lagos:65.2,Ogun:67.75,Osun:65.225,Oyo:65.6},
+  "Surveying & Geoinformatics Engineering":{},
+  "Systems Engineering":{Ekiti:65.475,Lagos:73.475,Ogun:75.875,Ondo:58.35,Osun:70.6,Oyo:73.95},
+  "Architecture":{Ekiti:60.725,Lagos:72.025,Ogun:72.15,Ondo:70.35,Osun:72.175,Oyo:72.825},
+  "Building":{Ekiti:56.225,Lagos:52.375,Ogun:52.95,Ondo:56.6,Osun:57.125},
+  "Estate Management":{Ekiti:53.05,Ogun:51.15,Osun:51.2},
+  "Quantity Surveying":{Ekiti:56.3,Lagos:56.75,Ogun:54.825,Ondo:59.625},
+  "Urban & Regional Planning":{},
+  "Law":{Ekiti:73.625,Lagos:75.9,Ogun:76.55,Ondo:75.75,Osun:76.35,Oyo:74.525},
+  "Accounting":{Ekiti:69.475,Lagos:71.4,Ogun:73.825,Ondo:68.8,Osun:72.325,Oyo:71},
+  "Taxation":{Ekiti:57.025,Lagos:62.65,Ogun:63.725,Ondo:61.45,Osun:62.25,Oyo:59.025},
+  "Actuarial Science":{Ekiti:59.725,Ogun:63.15,Ondo:64.05,Osun:60.375,Oyo:59},
+  "Insurance":{Lagos:57.75,Ogun:64.375,Ondo:53.05,Osun:53.05,Oyo:55.1},
+  "Business Administration":{Ekiti:52.725,Lagos:60.2,Ogun:68.15,Ondo:66.075,Osun:64.05,Oyo:67.025},
+  "Banking & Finance":{Ekiti:59.225,Lagos:64,Ogun:67.625,Ondo:61.725,Osun:55.875,Oyo:57.375},
+  "Employment Relations & HRM":{Ekiti:55.65,Lagos:59.6,Ogun:54.5,Ondo:60.025,Osun:58.15,Oyo:53.925},
+  "Procurement Management":{Ekiti:58.7,Lagos:58.625,Ogun:65.675,Ondo:64.75,Osun:60.95,Oyo:64.35},
+  "Pharmacy":{Ekiti:69.175,Lagos:69.5,Ogun:73.3,Ondo:69.55,Osun:73.725,Oyo:71.275},
+  "Biochemistry":{Ekiti:64.775,Lagos:66.275,Ogun:66.275,Ondo:65,Osun:64.375,Oyo:67.15},
+  "Biostatistics":{},
+  "Botany":{},
+  "Cell Biology & Genetics":{Ekiti:63.325,Lagos:63.85,Ogun:66.55,Ondo:65.75,Osun:56.125,Oyo:64.225},
+  "Chemistry":{Lagos:59.3,Ogun:54.325,Osun:54.15},
+  "Computer Science":{Ekiti:80.125,Lagos:79.6,Ogun:82.025,Ondo:77.5,Osun:79.2,Oyo:78.1},
+  "Data Science":{Ekiti:72.65,Lagos:74.025,Ogun:75.775,Ondo:73.9,Osun:74.3,Oyo:72.675},
+  "Environmental Standards":{Lagos:63.575,Oyo:62.625},
+  "Fisheries & Aquaculture":{},
+  "Geology":{Ekiti:60.125,Lagos:58.375,Ogun:58.45,Ondo:54.575,Osun:61.375,Oyo:60.825},
+  "Geophysics":{Ekiti:55.7,Lagos:57.925,Ogun:53.675,Ondo:54.75,Osun:52.675,Oyo:60.55},
+  "Marine Biology":{Osun:54.725},
+  "Industrial Mathematics":{Ekiti:61.8,Lagos:52.5,Ogun:62.425,Ondo:64.125},
+  "Mathematics":{Lagos:58.625,Ogun:52.5,Ondo:60.9,Osun:61.825},
+  "Microbiology":{Ekiti:61.2,Lagos:65.95,Ogun:64.9,Ondo:62,Osun:57.175,Oyo:54.95},
+  "Physics":{Ekiti:52.225,Lagos:54.925,Ogun:55.125,Ondo:55.35},
+  "Statistics":{Lagos:64.1,Ogun:60.9,Ondo:63.775,Oyo:60.925},
+  "Zoology":{},
+  "Economics":{Ekiti:54.925,Lagos:66.575,Ogun:71.575,Ondo:63.625,Osun:65.45,Oyo:66.125},
+  "Economics & Development Studies":{Lagos:59.8,Ogun:62.425,Ondo:58.175,Oyo:61.8},
+  "Geography":{},
+  "Meteorology & Climate Science":{},
+  "Mass Communication":{Ekiti:69.625,Lagos:71.8,Ogun:72.6,Ondo:70.65,Osun:70.825,Oyo:70.45},
+  "Library & Information Science":{Lagos:62.95,Ogun:63.3,Ondo:61.225,Osun:60.85,Oyo:66.55},
+  "Political Science":{Ekiti:58.325,Lagos:62.75,Ogun:64.275,Ondo:58.75,Osun:52.075,Oyo:60.9},
+  "Psychology":{Ekiti:61.975,Lagos:65.95,Ogun:68.675,Ondo:63.05,Osun:55.75,Oyo:67.825},
+  "Public Administration":{Ekiti:63.025,Lagos:68.475,Ogun:73.475,Ondo:69.625,Osun:70.25,Oyo:72.05},
+  "Social Work":{Ekiti:59.725,Lagos:55.15,Ogun:66.025,Ondo:60.575,Osun:63,Oyo:52.125},
+  "Sociology":{Lagos:64.175,Ogun:66.875,Ondo:63.8,Osun:57,Oyo:65.95},
+  "Social Standards":{},
+};
+
+const STATES = ["Ekiti","Lagos","Ogun","Ondo","Osun","Oyo","Other (Southwest)","Outside Southwest"];
+const PROG_NAMES = Object.keys(PROGRAMMES).sort();
+
+/* ============================================================
+   CHAT ENGINE
+   ============================================================ */
+
+const STEPS = [
+  "welcome","programme","entry_mode","utme_score","state","result"
+];
+
+let state = {
+  step:0,
+  programme:null,
+  entryMode:null,
+  utmeScore:null,
+  stateName:null,
+};
+
+function setProgress(pct){document.getElementById("prog").style.width=pct+"%"}
+
+function startChat(){
+  document.getElementById("hero").style.display="none";
+  const cw = document.getElementById("chat-wrapper");
+  cw.style.display="flex";
+  setTimeout(()=>botMsg("Hey there! 👋 Welcome to the <strong>UNILAG Admission Guide</strong> — powered by official 2025/2026 data.<br/><br/>I'll check your eligibility, O/Level requirements, UTME subjects, and cut-off marks in seconds. Let's go! 🚀"),300);
+  setTimeout(()=>askProgramme(),1500);
+}
+
+function askProgramme(){
+  state.step=1;
+  setProgress(20);
+  setTimeout(()=>{
+    botMsg("What <strong>programme</strong> are you interested in? Use the search box below to find your course 👇");
+    showSearch(true);
+    showInput(false);
+  },400);
+}
+
+function showSearch(show){
+  document.getElementById("search-wrap").style.display=show?"block":"none";
+  if(show){
+    document.getElementById("search-input").value="";
+    document.getElementById("search-dd").innerHTML="";
+    document.getElementById("search-dd").classList.remove("open");
+    document.getElementById("search-input").focus();
+  }
+}
+function showInput(show){
+  document.getElementById("msg-input").disabled=!show;
+  document.getElementById("send-btn") && (document.getElementById("send-btn").style.display=show?"":"none");
+  if(show) document.getElementById("msg-input").focus();
+}
+
+function filterDropdown(q){
+  const dd=document.getElementById("search-dd");
+  const matches=PROG_NAMES.filter(p=>p.toLowerCase().includes(q.toLowerCase())).slice(0,12);
+  dd.innerHTML=matches.map(p=>`<div class="sd-item" onclick="selectProgramme('${p.replace(/'/g,"\\'")}')"><strong>${p}</strong> <em>— ${PROGRAMMES[p].faculty}</em></div>`).join("");
+  dd.classList.toggle("open",matches.length>0&&q.length>0);
+}
+
+function selectProgramme(prog){
+  state.programme=prog;
+  showSearch(false);
+  document.getElementById("search-dd").classList.remove("open");
+  userMsg(prog);
+  setTimeout(()=>askEntryMode(),600);
+}
+
+function askEntryMode(){
+  state.step=2;
+  setProgress(40);
+  botMsg(`Great choice — <strong>${state.programme}</strong> (Faculty of ${PROGRAMMES[state.programme].faculty}). 🎯<br/><br/>How are you applying?`);
+  showQuickReplies(["UTME (JAMB)","Direct Entry (DE)"]);
+}
+
+function askUTMEScore(){
+  state.step=3;
+  setProgress(60);
+  clearQuickReplies();
+  botMsg("What's your <strong>UTME (JAMB) score</strong>? Type the number below.");
+  showInput(true);
+  document.getElementById("msg-input").placeholder="e.g. 275";
+}
+
+function askState(){
+  state.step=4;
+  setProgress(80);
+  showInput(false);
+  botMsg("What's your <strong>state of origin</strong>? (This determines your catchment area cut-off)");
+  showQuickReplies(STATES);
+}
+
+function computeResult(){
+  state.step=5;
+  setProgress(100);
+  clearQuickReplies();
+  showInput(false);
+
+  const p=PROGRAMMES[state.programme];
+  const catchment=CATCHMENT_2025[state.programme]||{};
+  const meritCut=p.utme2025;
+  const score=state.utmeScore;
+  const stateName=state.stateName;
+  const catchCut=catchment[stateName];
+
+  // Determine eligibility
+  let eligible="unknown";
+  let cutUsed=null;
+  let cutLabel="";
+
+  if(score!==null && meritCut!==null){
+    if(score>=meritCut){
+      eligible="merit";cutUsed=meritCut;cutLabel="Merit";
+    } else if(catchCut!==undefined && score>=catchCut){
+      eligible="catchment";cutUsed=catchCut;cutLabel=`Catchment (${stateName})`;
+    } else if(catchCut===undefined && (stateName==="Outside Southwest"||stateName==="Other (Southwest)")){
+      eligible=score>=meritCut?"merit":"below";cutUsed=meritCut;cutLabel="Merit (no catchment for your state)";
+    } else {
+      eligible="below";
+    }
+  }
+
+  let cardClass="yellow",icon="⚠️",headerText="Let me show you the full picture";
+  if(eligible==="merit"){cardClass="green";icon="✅";headerText="You likely qualify — Great news!"}
+  if(eligible==="catchment"){cardClass="green";icon="✅";headerText="You may qualify via Catchment!"}
+  if(eligible==="below"){cardClass="red";icon="❌";headerText="Below cut-off — Here's what you need"}
+
+  const scoreDisplay=score!==null?score:"—";
+  const meritDisplay=meritCut!==null?meritCut:"N/A";
+  const catchDisplay=catchCut!==undefined?catchCut:(meritCut?"See Merit cut":"N/A");
+
+  const card=`
+<div class="result-card">
+  <div class="result-header ${cardClass}">${icon} ${headerText}</div>
+  <div class="result-body">
+    <div class="info-row"><span class="label">Programme</span><span class="val">${state.programme}</span></div>
+    <div class="info-row"><span class="label">Faculty</span><span class="val">${p.faculty}</span></div>
+    <div class="info-row"><span class="label">Entry Mode</span><span class="val">${state.entryMode}</span></div>
+    ${score!==null?`<div class="info-row"><span class="label">Your UTME Score</span><span class="val">${scoreDisplay}</span></div>`:""}
+    <div class="info-row"><span class="label">Merit Cut-Off (2025/26)</span><span class="val ${meritCut&&score>=meritCut?"":""}"><span class="pill ${score!==null&&meritCut!==null&&score>=meritCut?"green":"red"}">${meritDisplay}</span></span></div>
+    ${catchCut!==undefined?`<div class="info-row"><span class="label">Catchment Cut-Off (${stateName})</span><span class="val"><span class="pill ${score!==null&&score>=catchCut?"green":"red"}">${catchDisplay}</span></span></div>`:""}
+    ${p.note?`<div class="info-row"><span class="label">Special Note</span><span class="val" style="color:var(--gold)">${p.note}</span></div>`:""}
+  </div>
+</div>`;
+
+  const subjectsCard=`
+<div class="result-card" style="margin-top:.5rem">
+  <div class="result-header yellow">📚 Requirements Checklist</div>
+  <div class="result-body">
+    <div style="margin-bottom:.75rem">
+      <div class="label" style="font-size:.8rem;margin-bottom:.4rem">UTME SUBJECTS NEEDED</div>
+      <div class="subject-list">
+        ${p.utmeSubjects.map(s=>`<span class="subj-tag">📌 ${s}</span>`).join("")}
+      </div>
+    </div>
+    <div>
+      <div class="label" style="font-size:.8rem;margin-bottom:.4rem">O/LEVEL (WAEC/NECO)</div>
+      <div style="font-size:.875rem;line-height:1.6">${p.olevel}</div>
+    </div>
+  </div>
+</div>`;
+
+  setTimeout(()=>{
+    if(state.entryMode==="UTME (JAMB)"){
+      botMsgHTML(card+subjectsCard);
+      setTimeout(()=>{
+        let advice="";
+        if(eligible==="merit") advice="🎉 Your score clears the <strong>merit cut-off</strong>! Make sure your O/Level and UTME subjects match the requirements above, then check your JAMB CAPS portal.";
+        else if(eligible==="catchment") advice=`🎊 Your score is below the national merit cut but <strong>clears the catchment cut-off</strong> for <strong>${stateName}</strong>. Ensure you listed UNILAG as your institution in JAMB and you truly belong to that catchment state.`;
+        else if(eligible==="below") advice=`📉 Your score of <strong>${score}</strong> is below both the merit cut-off (<strong>${meritDisplay}</strong>)${catchCut!==undefined?` and the catchment cut-off (<strong>${catchDisplay}</strong>)`:""}. You may consider boosting your score or exploring programmes with lower cut-offs. Want me to check another course?`;
+        else advice="📋 I couldn't fully determine your eligibility — please verify your score and state, then try again.";
+        botMsg(advice);
+        setTimeout(()=>showRestartOption(),800);
+      },900);
+    } else {
+      // Direct Entry
+      botMsg(`📋 For <strong>Direct Entry</strong> into <strong>${state.programme}</strong>, you need valid JUPEB/A-Level passes or equivalent qualifications.<br/><br/><strong>⚠️ Note:</strong> All DE candidates must still satisfy all O/Level requirements.`);
+      botMsgHTML(subjectsCard);
+      setTimeout(()=>showRestartOption(),600);
+    }
+  },500);
+}
+
+function showRestartOption(){
+  showQuickReplies(["Check another programme","See all faculties"]);
+}
+
+/* ============================================================
+   QUICK REPLIES & INPUT HANDLING
+   ============================================================ */
+
+function showQuickReplies(arr){
+  const area=document.getElementById("quick-area");
+  area.innerHTML=`<div class="quick-replies">${arr.map(r=>`<button class="qr" onclick="handleQR('${r.replace(/'/g,"\\'")}')">  ${r}</button>`).join("")}</div>`;
+}
+function clearQuickReplies(){document.getElementById("quick-area").innerHTML=""}
+
+function handleQR(val){
+  clearQuickReplies();
+  userMsg(val);
+  if(val==="UTME (JAMB)"||val==="Direct Entry (DE)"){
+    state.entryMode=val;
+    if(val==="UTME (JAMB)") askUTMEScore();
+    else{
+      // DE flow — skip score
+      state.utmeScore=null;
+      askState();
+    }
+  } else if(STATES.includes(val)){
+    state.stateName=val;
+    computeResult();
+  } else if(val==="Check another programme"){
+    resetChat();
+  } else if(val==="See all faculties"){
+    showFacultySummary();
+  }
+}
+
+function sendMsg(){
+  const inp=document.getElementById("msg-input");
+  const val=inp.value.trim();
+  if(!val)return;
+  inp.value="";
+
+  if(state.step===3){
+    const num=parseFloat(val);
+    if(isNaN(num)||num<0||num>400){botMsg("Please enter a valid UTME score between 0 and 400.");return;}
+    state.utmeScore=num;
+    userMsg(val);
+    showInput(false);
+    askState();
+  }
+}
+
+function userMsg(text){
+  appendMsg("user","👤",text);
+}
+function botMsg(html){
+  showTyping();
+  setTimeout(()=>{
+    removeTyping();
+    appendMsg("bot","🎓",html);
+  },600);
+}
+function botMsgHTML(html){
+  removeTyping();
+  const msgs=document.getElementById("messages");
+  const wrap=document.createElement("div");
+  wrap.className="msg bot";
+  wrap.style.animation="fadeUp .3s ease";
+  wrap.innerHTML=`<div class="msg-avatar">🎓</div><div style="flex:1">${html}</div>`;
+  msgs.appendChild(wrap);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+function appendMsg(type,avatar,html){
+  const msgs=document.getElementById("messages");
+  const div=document.createElement("div");
+  div.className=`msg ${type}`;
+  div.innerHTML=`<div class="msg-avatar">${avatar}</div><div class="msg-bubble"><p>${html}</p></div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+function showTyping(){
+  const msgs=document.getElementById("messages");
+  const t=document.createElement("div");
+  t.className="msg bot";t.id="typing";
+  t.innerHTML=`<div class="msg-avatar">🎓</div><div class="msg-bubble typing-indicator"><span></span><span></span><span></span></div>`;
+  msgs.appendChild(t);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+function removeTyping(){const t=document.getElementById("typing");if(t)t.remove();}
+
+function resetChat(){
+  state={step:0,programme:null,entryMode:null,utmeScore:null,stateName:null};
+  clearQuickReplies();
+  showSearch(false);
+  showInput(false);
+  setProgress(0);
+  botMsg("Sure! Let's start fresh 🔄");
+  setTimeout(()=>askProgramme(),700);
+}
+
+function showFacultySummary(){
+  const facs=[...new Set(Object.values(PROGRAMMES).map(p=>p.faculty))].sort();
+  const html=`<div class="result-card">
+  <div class="result-header yellow">🏛️ UNILAG Faculties (2025/2026)</div>
+  <div class="result-body">
+    ${facs.map(f=>{
+      const progs=Object.keys(PROGRAMMES).filter(k=>PROGRAMMES[k].faculty===f);
+      return `<div class="info-row" style="flex-direction:column;align-items:flex-start;gap:.35rem">
+        <span style="font-weight:700;color:var(--accent)">${f}</span>
+        <div class="subject-list">${progs.map(p=>`<span class="subj-tag">${p}</span>`).join("")}</div>
+      </div>`;
+    }).join("")}
+  </div></div>`;
+  botMsgHTML(html);
+  setTimeout(()=>showRestartOption(),600);
+}
+
+// Close dropdown when clicking outside
+document.addEventListener("click",function(e){
+  if(!e.target.closest("#search-wrap"))
+    document.getElementById("search-dd").classList.remove("open");
+});
+</script>
+</body>
+</html>
