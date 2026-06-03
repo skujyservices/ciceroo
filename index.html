@@ -1680,11 +1680,56 @@ function renderUTMECheck() {
       ✅ Your UTME subjects are compatible with <strong>${prog.name}</strong>.
     </div>`;
   } else {
+    const alts = findUTMECompatibleProgrammes(state.utmeSubjects);
+    let altsHtml = "";
+    if (alts.sortedFaculties.length > 0) {
+      altsHtml = `<div style="margin-top:0.75rem">
+        <div style="font-size:0.8rem;font-weight:600;color:var(--text2);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.05em">
+          ${alts.total} programmes that accept your UTME subjects
+        </div>`;
+      for (const fac of alts.sortedFaculties) {
+        altsHtml += `<div style="margin-bottom:0.5rem">
+          <div style="font-size:0.72rem;color:var(--text3);font-weight:600;margin-bottom:0.25rem">${fac}</div>`;
+        for (const p of alts.grouped[fac]) {
+          const c = FAC_COLORS[p.faculty] || {bg:"rgba(100,116,139,0.2)",text:"#cbd5e1"};
+          altsHtml += `<div class="alt-item" onclick="switchToProgramme('${p.name.replace(/'/g,"\\'")}');render();" style="padding:0.5rem 0.75rem;margin-bottom:0.25rem;cursor:pointer">
+            <div style="font-size:0.85rem;font-weight:600;color:var(--text)">${p.name}</div>
+            <span style="font-size:0.75rem;background:${c.bg};color:${c.text};padding:0.15rem 0.5rem;border-radius:4px">Switch →</span>
+          </div>`;
+        }
+        altsHtml += `</div>`;
+      }
+      altsHtml += `</div>`;
+    } else {
+      altsHtml = `<div style="margin-top:0.5rem;font-size:0.8rem;color:var(--text3)">No programmes found for this subject combination. Try a different combination.</div>`;
+    }
+
     return `<div class="alert-box warn" style="font-size:0.85rem">
-      ⚠️ UTME subject mismatch for <strong>${prog.name}</strong>. Missing: ${result.missing.join("; ")}.<br>
-      <span style="color:var(--text2)">You can still continue — alternatives below will only show programmes your subjects qualify for.</span>
-    </div>`;
+      ⚠️ <strong>${prog.name}</strong> requires different UTME subjects. Missing: ${result.missing.join("; ")}.
+    </div>${altsHtml}`;
   }
+}
+
+function findUTMECompatibleProgrammes(subjects) {
+  const filled = subjects.filter(s => s);
+  if (filled.length < 2) return {grouped: {}, sortedFaculties: [], total: 0};
+
+  const grouped = {};
+  let total = 0;
+  for (const p of PROGRAMMES) {
+    if (state.programme && p.name === state.programme.name) continue;
+    if (!p.utmeReqs) continue;
+    const res = checkUTMESubjects(subjects, p.utmeReqs);
+    if (!res.valid) continue;
+    if (!grouped[p.faculty]) grouped[p.faculty] = [];
+    grouped[p.faculty].push(p);
+    total++;
+  }
+
+  const sortedFaculties = Object.keys(grouped).sort((a, b) =>
+    grouped[b].length - grouped[a].length
+  );
+  return {grouped, sortedFaculties, total};
 }
 
 // ============================================================
