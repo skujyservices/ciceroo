@@ -696,20 +696,36 @@ const req = {
   ],
 };
 
+// UTME subject requirement templates (machine-readable)
+req.utmeMedical    = [{subjects:["English Language"],count:1},{subjects:["Biology"],count:1},{subjects:["Chemistry"],count:1},{subjects:["Physics"],count:1}];
+req.utmeEngineering = [{subjects:["English Language"],count:1},{subjects:["Mathematics"],count:1},{subjects:["Physics"],count:1},{subjects:["Chemistry"],count:1}];
+req.utmeCSPhysics  = [{subjects:["English Language"],count:1},{subjects:["Mathematics"],count:1},{subjects:["Physics"],count:1},{subjects:["Chemistry","Biology"],count:1}];
+req.utmeMathSci    = [{subjects:["English Language"],count:1},{subjects:["Mathematics"],count:1},{subjects:["Physics"],count:1},{subjects:["Chemistry","Economics","Biology","Geography"],count:1}];
+req.utmePhysChem   = [{subjects:["English Language"],count:1},{subjects:["Physics"],count:1},{subjects:["Chemistry"],count:1},{subjects:["Biology"],count:1}];
+req.utmeManagement = [{subjects:["English Language"],count:1},{subjects:["Mathematics"],count:1},{subjects:["Economics"],count:1},{subjects:["__ANY__"],count:1}];
+req.utmeLaw        = [{subjects:["English Language"],count:1},{subjects:["Literature-in-English","History","Government","Christian Religious Studies","Islamic Religious Studies","French","Yoruba","Igbo","Hausa","Economics","Geography","Sociology"],count:3}];
+req.utmeArts       = [{subjects:["English Language"],count:1},{subjects:["Literature-in-English","History","Government","Christian Religious Studies","Islamic Religious Studies","French","Yoruba","Igbo","Hausa","Economics","Geography","Fine Arts","Visual Arts","Music","Sociology","Arabic"],count:3}];
+req.utmeSocial     = [{subjects:["English Language"],count:1},{subjects:["__ANY__"],count:3}];
+req.utmeEnvPhysics = [{subjects:["English Language"],count:1},{subjects:["Mathematics"],count:1},{subjects:["Physics"],count:1},{subjects:["__ANY__"],count:1}];
+req.utmeEnvEcon    = [{subjects:["English Language"],count:1},{subjects:["Mathematics"],count:1},{subjects:["Economics","Geography","Physics"],count:1},{subjects:["__ANY__"],count:1}];
+req.utmeBioAny     = [{subjects:["English Language"],count:1},{subjects:["Biology"],count:1},{subjects:["__ANY__"],count:2}];
+req.utmeChem2Any   = [{subjects:["English Language"],count:1},{subjects:["Chemistry"],count:1},{subjects:["Biology","__ANY__"],count:1},{subjects:["__ANY__"],count:1}];
+req.utmeOpen       = [{subjects:["English Language"],count:1},{subjects:["__ANY__"],count:3}];
+
 const PROGRAMMES = [
   // COLLEGE OF MEDICINE
-  {name:"Medicine & Surgery", faculty:"College of Medicine", merit:85.025, catchment:{Ekiti:79.975,Lagos:79.75,Ogun:83.8,Ondo:81.325,Osun:81.775,Oyo:81.575}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy},
-  {name:"Nursing", faculty:"College of Medicine", merit:79.8, catchment:{Ekiti:73.2,Lagos:73.7,Ogun:77.5,Ondo:77.1,Osun:77.85,Oyo:77.65}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy},
-  {name:"Physiotherapy", faculty:"College of Medicine", merit:74.725, catchment:{Ekiti:66.25,Lagos:72.975,Ogun:74.2,Ondo:73.6,Osun:72.25,Oyo:73.175}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy},
-  {name:"Radiography", faculty:"College of Medicine", merit:77.375, catchment:{Ekiti:74.9,Lagos:73.975,Ogun:76.9,Ondo:70.35,Osun:75.625,Oyo:76.7}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy},
-  {name:"Anatomy", faculty:"College of Medicine", merit:72.4, catchment:{Ekiti:71.5,Lagos:70.35,Ogun:70.125,Ondo:71.65,Osun:66.475,Oyo:64.75}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy},
-  {name:"Pharmacology", faculty:"College of Medicine", merit:73.125, catchment:{Ekiti:69.025,Lagos:69.65,Ogun:71.925,Ondo:67.075,Osun:66.3,Oyo:71.6}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy},
-  {name:"Physiology", faculty:"College of Medicine", merit:72.875, catchment:{Ekiti:66.45,Lagos:63.8,Ogun:70.225,Ondo:57.3,Osun:70.925,Oyo:67.95}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy},
-  {name:"Medical Laboratory Science", faculty:"College of Medicine", merit:74.375, catchment:{Ekiti:70.925,Lagos:72,Ogun:73,Ondo:70.6,Osun:72.7,Oyo:72.825}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy},
-  {name:"Dentistry", faculty:"College of Medicine", merit:76.65, catchment:{Ekiti:70.875,Lagos:65.825,Ogun:75.325,Ondo:72.775,Osun:69.175,Oyo:64.975}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy},
+  {name:"Medicine & Surgery", faculty:"College of Medicine", merit:85.025, catchment:{Ekiti:79.975,Lagos:79.75,Ogun:83.8,Ondo:81.325,Osun:81.775,Oyo:81.575}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy, utmeReqs:req.utmeMedical},
+  {name:"Nursing", faculty:"College of Medicine", merit:79.8, catchment:{Ekiti:73.2,Lagos:73.7,Ogun:77.5,Ondo:77.1,Osun:77.85,Oyo:77.65}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy, utmeReqs:req.utmeMedical},
+  {name:"Physiotherapy", faculty:"College of Medicine", merit:74.725, catchment:{Ekiti:66.25,Lagos:72.975,Ogun:74.2,Ondo:73.6,Osun:72.25,Oyo:73.175}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy, utmeReqs:req.utmeMedical},
+  {name:"Radiography", faculty:"College of Medicine", merit:77.375, catchment:{Ekiti:74.9,Lagos:73.975,Ogun:76.9,Ondo:70.35,Osun:75.625,Oyo:76.7}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy, utmeReqs:req.utmeMedical},
+  {name:"Anatomy", faculty:"College of Medicine", merit:72.4, catchment:{Ekiti:71.5,Lagos:70.35,Ogun:70.125,Ondo:71.65,Osun:66.475,Oyo:64.75}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy, utmeReqs:req.utmeMedical},
+  {name:"Pharmacology", faculty:"College of Medicine", merit:73.125, catchment:{Ekiti:69.025,Lagos:69.65,Ogun:71.925,Ondo:67.075,Osun:66.3,Oyo:71.6}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy, utmeReqs:req.utmeMedical},
+  {name:"Physiology", faculty:"College of Medicine", merit:72.875, catchment:{Ekiti:66.45,Lagos:63.8,Ogun:70.225,Ondo:57.3,Osun:70.925,Oyo:67.95}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy, utmeReqs:req.utmeMedical},
+  {name:"Medical Laboratory Science", faculty:"College of Medicine", merit:74.375, catchment:{Ekiti:70.925,Lagos:72,Ogun:73,Ondo:70.6,Osun:72.7,Oyo:72.825}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy, utmeReqs:req.utmeMedical},
+  {name:"Dentistry", faculty:"College of Medicine", merit:76.65, catchment:{Ekiti:70.875,Lagos:65.825,Ogun:75.325,Ondo:72.775,Osun:69.175,Oyo:64.975}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy, utmeReqs:req.utmeMedical},
 
   // PHARMACY
-  {name:"Pharmacy", faculty:"Faculty of Pharmacy", merit:76.4, catchment:{Ekiti:69.175,Lagos:69.5,Ogun:73.3,Ondo:69.55,Osun:73.725,Oyo:71.275}, utme:["English Language","Physics","Chemistry","Biology"],
+  {name:"Pharmacy", faculty:"Faculty of Pharmacy", merit:76.4, catchment:{Ekiti:69.175,Lagos:69.5,Ogun:73.3,Ondo:69.55,Osun:73.725,Oyo:71.275}, utme:["English Language","Physics","Chemistry","Biology"], utmeReqs:req.utmePhysChem,
    requirements:[
     {label:"English Language",subjects:["English Language"],count:1},
     {label:"Mathematics",subjects:["Mathematics"],count:1},
@@ -719,13 +735,13 @@ const PROGRAMMES = [
    ]},
 
   // ENGINEERING
-  {name:"Computer Engineering", faculty:"Faculty of Engineering", merit:82.875, catchment:{Ekiti:71.8,Lagos:78.3,Ogun:80.75,Ondo:77,Osun:81.475,Oyo:79}, utme:["English Language","Chemistry","Mathematics","Physics"], requirements:req.engineering},
-  {name:"Electrical/Electronics Engineering", faculty:"Faculty of Engineering", merit:79.5, catchment:{Ekiti:63.35,Lagos:69.775,Ogun:77.1,Ondo:68.525,Osun:72.1,Oyo:72.125}, utme:["English Language","Chemistry","Mathematics","Physics"], requirements:req.engineering},
-  {name:"Mechanical Engineering", faculty:"Faculty of Engineering", merit:78.525, catchment:{Ekiti:71.6,Lagos:73.825,Ogun:75.85,Ondo:66.3,Osun:72.5,Oyo:72.575}, utme:["English Language","Chemistry","Mathematics","Physics"], requirements:req.engineering},
-  {name:"Systems Engineering", faculty:"Faculty of Engineering", merit:78.225, catchment:{Ekiti:65.475,Lagos:73.475,Ogun:75.875,Ondo:58.35,Osun:70.6,Oyo:73.95}, utme:["English Language","Chemistry","Mathematics","Physics"], requirements:req.engineering},
-  {name:"Civil Engineering", faculty:"Faculty of Engineering", merit:75.625, catchment:{Ekiti:65.525,Lagos:74.5,Ogun:72.075,Ondo:65.575,Osun:72.375,Oyo:71.05}, utme:["English Language","Chemistry","Mathematics","Physics"], requirements:req.engineering},
-  {name:"Chemical Engineering", faculty:"Faculty of Engineering", merit:72.8, catchment:{Ekiti:68.25,Lagos:62.35,Ogun:64.9,Osun:57.65,Oyo:59.325}, utme:["English Language","Chemistry","Mathematics","Physics"], requirements:req.engineering},
-  {name:"Biomedical Engineering", faculty:"Faculty of Engineering", merit:73.3, catchment:{Lagos:66.125,Ogun:68.45,Ondo:69.55,Oyo:68.275}, utme:["English Language","Chemistry","Mathematics","Physics"],
+  {name:"Computer Engineering", faculty:"Faculty of Engineering", merit:82.875, catchment:{Ekiti:71.8,Lagos:78.3,Ogun:80.75,Ondo:77,Osun:81.475,Oyo:79}, utme:["English Language","Chemistry","Mathematics","Physics"], requirements:req.engineering, utmeReqs:req.utmeEngineering},
+  {name:"Electrical/Electronics Engineering", faculty:"Faculty of Engineering", merit:79.5, catchment:{Ekiti:63.35,Lagos:69.775,Ogun:77.1,Ondo:68.525,Osun:72.1,Oyo:72.125}, utme:["English Language","Chemistry","Mathematics","Physics"], requirements:req.engineering, utmeReqs:req.utmeEngineering},
+  {name:"Mechanical Engineering", faculty:"Faculty of Engineering", merit:78.525, catchment:{Ekiti:71.6,Lagos:73.825,Ogun:75.85,Ondo:66.3,Osun:72.5,Oyo:72.575}, utme:["English Language","Chemistry","Mathematics","Physics"], requirements:req.engineering, utmeReqs:req.utmeEngineering},
+  {name:"Systems Engineering", faculty:"Faculty of Engineering", merit:78.225, catchment:{Ekiti:65.475,Lagos:73.475,Ogun:75.875,Ondo:58.35,Osun:70.6,Oyo:73.95}, utme:["English Language","Chemistry","Mathematics","Physics"], requirements:req.engineering, utmeReqs:req.utmeEngineering},
+  {name:"Civil Engineering", faculty:"Faculty of Engineering", merit:75.625, catchment:{Ekiti:65.525,Lagos:74.5,Ogun:72.075,Ondo:65.575,Osun:72.375,Oyo:71.05}, utme:["English Language","Chemistry","Mathematics","Physics"], requirements:req.engineering, utmeReqs:req.utmeEngineering},
+  {name:"Chemical Engineering", faculty:"Faculty of Engineering", merit:72.8, catchment:{Ekiti:68.25,Lagos:62.35,Ogun:64.9,Osun:57.65,Oyo:59.325}, utme:["English Language","Chemistry","Mathematics","Physics"], requirements:req.engineering, utmeReqs:req.utmeEngineering},
+  {name:"Biomedical Engineering", faculty:"Faculty of Engineering", merit:73.3, catchment:{Lagos:66.125,Ogun:68.45,Ondo:69.55,Oyo:68.275}, utme:["English Language","Chemistry","Mathematics","Physics"], utmeReqs:req.utmeEngineering,
    requirements:[
     {label:"English Language",subjects:["English Language"],count:1},
     {label:"Mathematics",subjects:["Mathematics"],count:1},
@@ -733,12 +749,12 @@ const PROGRAMMES = [
     {label:"Biology",subjects:["Biology"],count:1},
     {label:"Chemistry or Physics",subjects:["Chemistry","Physics"],count:1},
    ]},
-  {name:"Petroleum & Gas Engineering", faculty:"Faculty of Engineering", merit:70.725, catchment:{Ekiti:64.125,Lagos:65.2,Ogun:67.75,Osun:65.225,Oyo:65.6}, utme:["English Language","Chemistry","Mathematics","Physics"], requirements:req.engineering},
-  {name:"Metallurgical & Materials Engineering", faculty:"Faculty of Engineering", merit:59.8, catchment:{Ekiti:58.975,Ogun:57.95}, utme:["English Language","Chemistry","Mathematics","Physics"], requirements:req.engineering},
-  {name:"Surveying & Geoinformatics Engineering", faculty:"Faculty of Engineering", merit:58.125, catchment:{}, utme:["English Language","Chemistry","Mathematics","Physics"], requirements:req.engineering},
+  {name:"Petroleum & Gas Engineering", faculty:"Faculty of Engineering", merit:70.725, catchment:{Ekiti:64.125,Lagos:65.2,Ogun:67.75,Osun:65.225,Oyo:65.6}, utme:["English Language","Chemistry","Mathematics","Physics"], requirements:req.engineering, utmeReqs:req.utmeEngineering},
+  {name:"Metallurgical & Materials Engineering", faculty:"Faculty of Engineering", merit:59.8, catchment:{Ekiti:58.975,Ogun:57.95}, utme:["English Language","Chemistry","Mathematics","Physics"], requirements:req.engineering, utmeReqs:req.utmeEngineering},
+  {name:"Surveying & Geoinformatics Engineering", faculty:"Faculty of Engineering", merit:58.125, catchment:{}, utme:["English Language","Chemistry","Mathematics","Physics"], requirements:req.engineering, utmeReqs:req.utmeEngineering},
 
   // SCIENCE
-  {name:"Computer Science", faculty:"Faculty of Science", merit:83.425, catchment:{Ekiti:80.125,Lagos:79.6,Ogun:82.025,Ondo:77.5,Osun:79.2,Oyo:78.1}, utme:["English Language","Mathematics","Physics","Chemistry or Biology"],
+  {name:"Computer Science", faculty:"Faculty of Science", merit:83.425, catchment:{Ekiti:80.125,Lagos:79.6,Ogun:82.025,Ondo:77.5,Osun:79.2,Oyo:78.1}, utme:["English Language","Mathematics","Physics","Chemistry or Biology"], utmeReqs:req.utmeCSPhysics,
    requirements:[
     {label:"English Language",subjects:["English Language"],count:1},
     {label:"Mathematics",subjects:["Mathematics"],count:1},
@@ -746,17 +762,17 @@ const PROGRAMMES = [
     {label:"Physics",subjects:["Physics"],count:1},
     {label:"Chemistry or Biology",subjects:["Chemistry","Biology"],count:1},
    ]},
-  {name:"Data Science", faculty:"Faculty of Science", merit:76.925, catchment:{Ekiti:72.65,Lagos:74.025,Ogun:75.775,Ondo:73.9,Osun:74.3,Oyo:72.675}, utme:["English Language","Mathematics","Physics","one of Chemistry/Biology/Economics/Geography"],
+  {name:"Data Science", faculty:"Faculty of Science", merit:76.925, catchment:{Ekiti:72.65,Lagos:74.025,Ogun:75.775,Ondo:73.9,Osun:74.3,Oyo:72.675}, utme:["English Language","Mathematics","Physics","one of Chemistry/Biology/Economics/Geography"], utmeReqs:req.utmeCSPhysics,
    requirements:[
     {label:"English Language",subjects:["English Language"],count:1},
     {label:"Mathematics",subjects:["Mathematics"],count:1},
     {label:"Physics",subjects:["Physics"],count:1},
     {label:"Science/Social electives (best 2)",subjects:["Further Mathematics","Chemistry","Biology","Economics","Geography"],count:2},
    ]},
-  {name:"Biochemistry", faculty:"Faculty of Science", merit:69.4, catchment:{Ekiti:64.775,Lagos:66.275,Ogun:66.275,Ondo:65,Osun:64.375,Oyo:67.15}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy},
-  {name:"Cell Biology & Genetics", faculty:"Faculty of Science", merit:68.975, catchment:{Ekiti:63.325,Lagos:63.85,Ogun:66.55,Ondo:65.75,Osun:56.125,Oyo:64.225}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy},
-  {name:"Microbiology", faculty:"Faculty of Science", merit:68.075, catchment:{Ekiti:61.2,Lagos:65.95,Ogun:64.9,Ondo:62,Osun:57.175,Oyo:54.95}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy},
-  {name:"Mathematics", faculty:"Faculty of Science", merit:63.675, catchment:{Lagos:58.625,Ogun:52.5,Ondo:60.9,Osun:61.825}, utme:["English Language","Mathematics","Physics","one of Chemistry/Economics/Biology/Geography"],
+  {name:"Biochemistry", faculty:"Faculty of Science", merit:69.4, catchment:{Ekiti:64.775,Lagos:66.275,Ogun:66.275,Ondo:65,Osun:64.375,Oyo:67.15}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy, utmeReqs:req.utmeMedical},
+  {name:"Cell Biology & Genetics", faculty:"Faculty of Science", merit:68.975, catchment:{Ekiti:63.325,Lagos:63.85,Ogun:66.55,Ondo:65.75,Osun:56.125,Oyo:64.225}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy, utmeReqs:req.utmeMedical},
+  {name:"Microbiology", faculty:"Faculty of Science", merit:68.075, catchment:{Ekiti:61.2,Lagos:65.95,Ogun:64.9,Ondo:62,Osun:57.175,Oyo:54.95}, utme:["English Language","Biology","Chemistry","Physics"], requirements:req.engMathBioChemPhy, utmeReqs:req.utmeMedical},
+  {name:"Mathematics", faculty:"Faculty of Science", merit:63.675, catchment:{Lagos:58.625,Ogun:52.5,Ondo:60.9,Osun:61.825}, utme:["English Language","Mathematics","Physics","one of Chemistry/Economics/Biology/Geography"], utmeReqs:req.utmeMathSci,
    requirements:[
     {label:"English Language",subjects:["English Language"],count:1},
     {label:"Mathematics",subjects:["Mathematics"],count:1},
@@ -764,7 +780,7 @@ const PROGRAMMES = [
     {label:"Physics",subjects:["Physics"],count:1},
     {label:"Science/Social elective",subjects:["Chemistry","Economics","Biology","Geography"],count:1},
    ]},
-  {name:"Statistics", faculty:"Faculty of Science", merit:65.925, catchment:{Lagos:64.1,Ogun:60.9,Ondo:63.775,Oyo:60.925}, utme:["English Language","Mathematics","Physics","one of Chemistry/Economics/Biology/Geography"],
+  {name:"Statistics", faculty:"Faculty of Science", merit:65.925, catchment:{Lagos:64.1,Ogun:60.9,Ondo:63.775,Oyo:60.925}, utme:["English Language","Mathematics","Physics","one of Chemistry/Economics/Biology/Geography"], utmeReqs:req.utmeMathSci,
    requirements:[
     {label:"English Language",subjects:["English Language"],count:1},
     {label:"Mathematics",subjects:["Mathematics"],count:1},
