@@ -28,7 +28,6 @@
     --gold: #d69e2e;
     --shadow: 0 2px 16px rgba(0,0,0,0.08);
     --shadow2: 0 4px 24px rgba(0,0,0,0.12);
-    /* legacy aliases kept for JS-generated inline styles */
     --blue: #0d9e8a;
     --blue2: #0a7d6e;
     --purple: #6b46c1;
@@ -38,52 +37,37 @@
   html { font-size: 16px; }
 
   body {
-    background: var(--bg);
-    color: var(--text);
+    background: var(--bg); color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
+    min-height: 100vh; overflow-x: hidden;
   }
 
   /* HEADER */
   .header {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 1.1rem 2rem;
-    border-bottom: 1px solid var(--border);
-    background: #ffffff;
-    position: sticky; top: 0; z-index: 100;
+    padding: 1.1rem 2rem; border-bottom: 1px solid var(--border);
+    background: #ffffff; position: sticky; top: 0; z-index: 100;
     box-shadow: 0 1px 8px rgba(0,0,0,0.06);
   }
   .brand { display: flex; align-items: center; gap: 0.75rem; }
   .brand-logo {
     width: 40px; height: 40px;
     background: linear-gradient(135deg, var(--teal), var(--teal2));
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
     font-size: 1.2rem; font-weight: 900; color: white;
   }
   .brand-text { display: flex; flex-direction: column; }
   .brand-name { font-size: 1.15rem; font-weight: 800; color: var(--dark); letter-spacing: -0.02em; }
   .brand-sub { font-size: 0.68rem; color: var(--text3); letter-spacing: 0.05em; text-transform: uppercase; }
   .unilag-badge {
-    background: var(--teal-light);
-    border: 1.5px solid rgba(13,158,138,0.25);
-    padding: 0.35rem 0.9rem;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    color: var(--teal);
-    font-weight: 700;
-    letter-spacing: 0.03em;
+    background: var(--teal-light); border: 1.5px solid rgba(13,158,138,0.25);
+    padding: 0.35rem 0.9rem; border-radius: 999px; font-size: 0.75rem;
+    color: var(--teal); font-weight: 700; letter-spacing: 0.03em;
   }
 
   /* PROGRESS */
-  .progress-wrap {
-    padding: 1.75rem 2rem 0.5rem;
-    max-width: 760px; margin: 0 auto;
-  }
-  .progress-steps {
-    display: flex; align-items: center; gap: 0; position: relative;
-  }
+  .progress-wrap { padding: 1.75rem 2rem 0.5rem; max-width: 760px; margin: 0 auto; }
+  .progress-steps { display: flex; align-items: center; gap: 0; position: relative; }
   .step-node {
     display: flex; flex-direction: column; align-items: center; gap: 0.35rem;
     flex: 1; position: relative; cursor: default;
@@ -91,52 +75,25 @@
   .step-circle {
     width: 32px; height: 32px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 0.75rem; font-weight: 700;
-    transition: all 0.3s ease;
-    position: relative; z-index: 2;
-    border: 2px solid var(--border2);
-    background: #ffffff;
-    color: var(--text3);
+    font-size: 0.75rem; font-weight: 700; transition: all 0.3s ease;
+    position: relative; z-index: 2; border: 2px solid var(--border2);
+    background: #ffffff; color: var(--text3);
   }
-  .step-node.active .step-circle {
-    background: var(--teal);
-    border-color: var(--teal);
-    color: white;
-    box-shadow: 0 0 0 4px rgba(13,158,138,0.18);
-  }
-  .step-node.done .step-circle {
-    background: var(--teal);
-    border-color: var(--teal);
-    color: white;
-  }
-  .step-label {
-    font-size: 0.65rem; color: var(--text3);
-    text-align: center; white-space: nowrap;
-    transition: color 0.3s;
-    font-weight: 500;
-  }
+  .step-node.active .step-circle { background: var(--teal); border-color: var(--teal); color: white; box-shadow: 0 0 0 4px rgba(13,158,138,0.18); }
+  .step-node.done .step-circle { background: var(--teal); border-color: var(--teal); color: white; }
+  .step-label { font-size: 0.65rem; color: var(--text3); text-align: center; white-space: nowrap; transition: color 0.3s; font-weight: 500; }
   .step-node.active .step-label { color: var(--teal); font-weight: 700; }
   .step-node.done .step-label { color: var(--teal2); }
-  .step-line {
-    flex: 1; height: 2px; background: var(--border);
-    margin-bottom: 1.2rem; transition: background 0.3s;
-    position: relative; z-index: 1;
-  }
+  .step-line { flex: 1; height: 2px; background: var(--border); margin-bottom: 1.2rem; transition: background 0.3s; position: relative; z-index: 1; }
   .step-line.done { background: var(--teal); }
 
-  /* MAIN CONTENT */
-  .main {
-    max-width: 760px; margin: 2rem auto;
-    padding: 0 1rem 4rem;
-  }
+  /* MAIN */
+  .main { max-width: 760px; margin: 2rem auto; padding: 0 1rem 4rem; }
 
   /* CARDS */
   .step-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    overflow: hidden; box-shadow: var(--shadow);
     animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
   @keyframes slideIn {
@@ -144,365 +101,191 @@
     to { opacity: 1; transform: translateX(0); }
   }
   .card-header {
-    padding: 1.5rem 1.75rem 1.25rem;
-    border-bottom: 1px solid var(--border);
+    padding: 1.5rem 1.75rem 1.25rem; border-bottom: 1px solid var(--border);
     background: linear-gradient(135deg, var(--teal) 0%, var(--teal2) 100%);
   }
-  .card-step-label {
-    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
-    text-transform: uppercase; color: rgba(255,255,255,0.75); margin-bottom: 0.35rem;
-  }
+  .card-step-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.75); margin-bottom: 0.35rem; }
   .card-title { font-size: 1.45rem; font-weight: 800; color: #ffffff; margin-bottom: 0.2rem; }
   .card-subtitle { font-size: 0.875rem; color: rgba(255,255,255,0.8); }
   .card-body { padding: 1.5rem 1.75rem; background: #ffffff; }
 
   /* INPUTS */
   .input-group { margin-bottom: 1.25rem; }
-  .input-label {
-    display: block; font-size: 0.8rem; font-weight: 600; color: var(--text2);
-    margin-bottom: 0.45rem; letter-spacing: 0.02em;
-  }
+  .input-label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text2); margin-bottom: 0.45rem; letter-spacing: 0.02em; }
   .input-field {
-    width: 100%; padding: 0.75rem 1rem;
-    background: #ffffff; border: 1.5px solid var(--border);
-    border-radius: 10px; color: var(--text);
-    font-size: 0.95rem; transition: border-color 0.2s, box-shadow 0.2s;
-    outline: none;
+    width: 100%; padding: 0.75rem 1rem; background: #ffffff; border: 1.5px solid var(--border);
+    border-radius: 10px; color: var(--text); font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s; outline: none;
   }
-  .input-field:focus {
-    border-color: var(--teal);
-    box-shadow: 0 0 0 3px rgba(13,158,138,0.12);
-  }
+  .input-field:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(13,158,138,0.12); }
   .input-field::placeholder { color: var(--text3); }
   select.input-field { cursor: pointer; }
 
-  /* SEARCH */
-  .search-wrap { position: relative; margin-bottom: 1rem; }
-  .search-icon {
-    position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
-    color: var(--text3); font-size: 1rem; pointer-events: none;
+  /* NAME STEP */
+  .name-hero { text-align: center; padding: 2.5rem 1.5rem 1.5rem; }
+  .name-hero-emoji { font-size: 3rem; margin-bottom: 0.75rem; }
+  .name-hero-prompt { font-size: 1.6rem; font-weight: 800; color: var(--dark); margin-bottom: 0.5rem; line-height: 1.25; }
+  .name-hero-sub { font-size: 0.9rem; color: var(--text3); line-height: 1.5; }
+  .name-input-large {
+    width: 100%; padding: 1rem 1.25rem; font-size: 1.2rem; font-weight: 600;
+    border: 2px solid var(--border); border-radius: 14px; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s; color: var(--text); background: #ffffff;
   }
+  .name-input-large:focus { border-color: var(--teal); box-shadow: 0 0 0 4px rgba(13,158,138,0.12); }
+  .name-input-large::placeholder { color: var(--text3); font-weight: 400; }
+
+  /* SEARCH / AUTOCOMPLETE */
+  .search-wrap { position: relative; }
+  .search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 1rem; pointer-events: none; }
   .search-input {
     width: 100%; padding: 0.85rem 1rem 0.85rem 2.75rem;
-    background: #ffffff; border: 1.5px solid var(--border);
-    border-radius: 12px; color: var(--text);
-    font-size: 1rem; transition: all 0.2s; outline: none;
+    background: #ffffff; border: 1.5px solid var(--border); border-radius: 12px;
+    color: var(--text); font-size: 1rem; transition: all 0.2s; outline: none;
   }
-  .search-input:focus {
-    border-color: var(--teal);
-    box-shadow: 0 0 0 3px rgba(13,158,138,0.12);
-  }
+  .search-input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(13,158,138,0.12); }
   .search-input::placeholder { color: var(--text3); }
 
-  /* PROGRAMME LIST */
-  .programme-list {
-    max-height: 360px; overflow-y: auto;
-    border: 1.5px solid var(--border); border-radius: 12px;
-    background: #ffffff;
+  .autocomplete-dropdown {
+    position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+    background: #ffffff; border: 1.5px solid var(--teal); border-radius: 12px;
+    box-shadow: var(--shadow2); z-index: 200; overflow: hidden; max-height: 340px; overflow-y: auto;
   }
-  .programme-list::-webkit-scrollbar { width: 5px; }
-  .programme-list::-webkit-scrollbar-track { background: transparent; }
-  .programme-list::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
-  .programme-item {
-    display: flex; align-items: center; gap: 0.85rem;
-    padding: 0.85rem 1.1rem; cursor: pointer;
-    border-bottom: 1px solid var(--border);
-    transition: background 0.15s, border-left 0.15s;
-    border-left: 3px solid transparent;
+  .autocomplete-dropdown::-webkit-scrollbar { width: 5px; }
+  .autocomplete-dropdown::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+  .ac-item {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.8rem 1rem; cursor: pointer; border-bottom: 1px solid var(--border); transition: background 0.15s;
   }
-  .programme-item:last-child { border-bottom: none; }
-  .programme-item:hover { background: var(--teal-light); border-left-color: var(--teal); }
-  .programme-item.selected { background: var(--teal-light); border-left-color: var(--teal); }
+  .ac-item:last-child { border-bottom: none; }
+  .ac-item:hover, .ac-item.focused { background: var(--teal-light); }
+  .ac-item-name { font-size: 0.9rem; font-weight: 600; color: var(--text); }
+
+  .selected-course-chip {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--teal-light); border: 1.5px solid rgba(13,158,138,0.3);
+    border-radius: 12px; padding: 0.85rem 1rem; margin-top: 0.75rem;
+  }
+  .selected-course-chip-info { display: flex; align-items: center; gap: 0.75rem; }
+  .selected-course-chip-name { font-size: 0.95rem; font-weight: 700; color: var(--text); }
+  .selected-course-chip-fac { font-size: 0.75rem; color: var(--teal); margin-top: 0.1rem; }
+  .chip-deselect {
+    background: none; border: none; color: var(--text3); font-size: 1.1rem;
+    cursor: pointer; padding: 0.25rem; border-radius: 6px; transition: color 0.2s; flex-shrink: 0;
+  }
+  .chip-deselect:hover { color: var(--red); }
+
+  /* FACULTY BADGE */
   .faculty-badge {
     font-size: 0.65rem; font-weight: 700; letter-spacing: 0.04em;
-    text-transform: uppercase; padding: 0.25rem 0.6rem;
-    border-radius: 999px; white-space: nowrap; flex-shrink: 0;
+    text-transform: uppercase; padding: 0.25rem 0.6rem; border-radius: 999px; white-space: nowrap; flex-shrink: 0;
   }
-  .programme-name { font-size: 0.9rem; font-weight: 600; color: var(--text); }
-  .programme-merit { font-size: 0.75rem; color: var(--text3); margin-left: auto; flex-shrink: 0; }
 
-  /* UTME SECTION */
+  /* UTME */
   .utme-score-display {
-    background: var(--bg3); border: 1.5px solid var(--border);
-    border-radius: 14px; padding: 1.5rem;
-    text-align: center; margin-bottom: 1.5rem;
+    background: var(--bg3); border: 1.5px solid var(--border); border-radius: 14px;
+    padding: 1.5rem; text-align: center; margin-bottom: 1.5rem;
   }
   .utme-big { font-size: 3.5rem; font-weight: 900; color: var(--teal); line-height: 1; }
   .utme-unit { font-size: 0.85rem; color: var(--text3); margin-top: 0.25rem; }
   .score-bar-wrap { margin-top: 1.25rem; }
-  .score-bar-label {
-    display: flex; justify-content: space-between;
-    font-size: 0.75rem; color: var(--text3); margin-bottom: 0.5rem;
-  }
-  .score-bar-track {
-    height: 8px; background: var(--border2); border-radius: 4px; overflow: hidden;
-  }
-  .score-bar-fill {
-    height: 100%; border-radius: 4px;
-    background: linear-gradient(90deg, var(--teal), var(--teal2));
-    transition: width 0.4s ease;
-  }
+  .score-bar-label { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text3); margin-bottom: 0.5rem; }
+  .score-bar-track { height: 8px; background: var(--border2); border-radius: 4px; overflow: hidden; }
+  .score-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--teal), var(--teal2)); transition: width 0.4s ease; }
 
   /* O-LEVEL */
-  .olevel-row {
-    display: grid; grid-template-columns: 1fr auto auto;
-    gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;
-  }
+  .olevel-row { display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem; }
   .olevel-row-inner { display: grid; grid-template-columns: 2fr 1fr; gap: 0.5rem; }
   .btn-icon {
     width: 36px; height: 36px; border-radius: 8px; border: 1.5px solid var(--border);
     background: #ffffff; color: var(--text2); cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem; transition: all 0.15s;
-    flex-shrink: 0;
+    font-size: 1.1rem; transition: all 0.15s; flex-shrink: 0;
   }
   .btn-icon:hover { background: var(--bg3); color: var(--text); }
   .btn-icon.danger:hover { background: rgba(229,62,62,0.08); border-color: var(--red); color: var(--red); }
-  .add-subject-btn {
-    display: flex; align-items: center; gap: 0.5rem;
-    background: transparent; border: 1.5px dashed var(--border2);
-    color: var(--text3); padding: 0.6rem 1rem; border-radius: 10px;
-    cursor: pointer; font-size: 0.85rem; transition: all 0.15s;
-    width: 100%; justify-content: center; margin-top: 0.5rem;
-  }
-  .add-subject-btn:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-light); }
 
   /* OLEVEL RESULT */
-  .olevel-result {
-    background: var(--bg3); border: 1.5px solid var(--border);
-    border-radius: 14px; padding: 1.25rem; margin-top: 1.25rem;
-  }
-  .olevel-result-title {
-    font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.06em; color: var(--text3); margin-bottom: 1rem;
-  }
+  .olevel-result { background: var(--bg3); border: 1.5px solid var(--border); border-radius: 14px; padding: 1.25rem; margin-top: 1.25rem; }
+  .olevel-result-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); margin-bottom: 1rem; }
   .subject-chip {
     display: flex; align-items: center; justify-content: space-between;
-    background: #ffffff; border: 1px solid var(--border);
-    border-radius: 8px; padding: 0.6rem 0.85rem; margin-bottom: 0.4rem;
+    background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 0.85rem; margin-bottom: 0.4rem;
   }
   .subject-chip-name { font-size: 0.85rem; font-weight: 600; color: var(--text); }
   .subject-chip-grade { font-size: 0.75rem; color: var(--text3); }
-  .subject-chip-pts {
-    font-size: 0.85rem; font-weight: 700; color: var(--gold);
-  }
-  .result-total {
-    display: flex; justify-content: space-between; align-items: center;
-    padding-top: 0.75rem; margin-top: 0.5rem; border-top: 1px solid var(--border);
-  }
+  .subject-chip-pts { font-size: 0.85rem; font-weight: 700; color: var(--gold); }
+  .result-total { display: flex; justify-content: space-between; align-items: center; padding-top: 0.75rem; margin-top: 0.5rem; border-top: 1px solid var(--border); }
   .result-total-label { font-size: 0.85rem; color: var(--text2); font-weight: 600; }
   .result-total-val { font-size: 1.1rem; font-weight: 800; color: var(--green); }
 
+  /* ALERT BOX */
   .alert-box {
-    background: rgba(229,62,62,0.06); border-left: 4px solid var(--red);
-    border-radius: 8px; padding: 0.85rem 1rem;
-    font-size: 0.85rem; color: #c53030; margin-top: 1rem;
+    background: rgba(229,62,62,0.06); border-left: 4px solid var(--red); border-radius: 8px;
+    padding: 0.85rem 1rem; font-size: 0.85rem; color: #c53030; margin-top: 1rem;
     display: flex; gap: 0.6rem; align-items: flex-start;
-    border-top: 1px solid rgba(229,62,62,0.15);
-    border-right: 1px solid rgba(229,62,62,0.15);
-    border-bottom: 1px solid rgba(229,62,62,0.15);
+    border-top: 1px solid rgba(229,62,62,0.15); border-right: 1px solid rgba(229,62,62,0.15); border-bottom: 1px solid rgba(229,62,62,0.15);
   }
-  .alert-box.warn {
-    background: rgba(224,123,57,0.06); border-left-color: var(--orange);
-    color: #9c4221;
-    border-top-color: rgba(224,123,57,0.15);
-    border-right-color: rgba(224,123,57,0.15);
-    border-bottom-color: rgba(224,123,57,0.15);
-  }
-  .alert-box.ok, .alert-box.success {
-    background: rgba(56,161,105,0.06); border-left-color: var(--green);
-    color: #276749;
-    border-top-color: rgba(56,161,105,0.15);
-    border-right-color: rgba(56,161,105,0.15);
-    border-bottom-color: rgba(56,161,105,0.15);
-  }
+  .alert-box.warn { background: rgba(224,123,57,0.06); border-left-color: var(--orange); color: #9c4221; border-top-color: rgba(224,123,57,0.15); border-right-color: rgba(224,123,57,0.15); border-bottom-color: rgba(224,123,57,0.15); }
+  .alert-box.ok, .alert-box.success { background: rgba(56,161,105,0.06); border-left-color: var(--green); color: #276749; border-top-color: rgba(56,161,105,0.15); border-right-color: rgba(56,161,105,0.15); border-bottom-color: rgba(56,161,105,0.15); }
 
-  /* POST UTME */
+  /* POST-UTME */
   .postutme-input-wrap { position: relative; }
-  .postutme-suffix {
-    position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
-    font-size: 0.85rem; color: var(--text3); pointer-events: none;
-  }
-  .checkbox-row {
-    display: flex; align-items: center; gap: 0.75rem;
-    margin-top: 1rem; cursor: pointer; user-select: none;
-  }
-  .checkbox-box {
-    width: 20px; height: 20px; border-radius: 6px;
-    border: 2px solid var(--border2); background: #ffffff;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.15s; flex-shrink: 0;
-  }
+  .postutme-suffix { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); font-size: 0.85rem; color: var(--text3); pointer-events: none; }
+  .checkbox-row { display: flex; align-items: center; gap: 0.75rem; margin-top: 1rem; cursor: pointer; user-select: none; }
+  .checkbox-box { width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--border2); background: #ffffff; display: flex; align-items: center; justify-content: center; transition: all 0.15s; flex-shrink: 0; }
   .checkbox-box.checked { background: var(--teal); border-color: var(--teal); }
   .checkbox-label { font-size: 0.875rem; color: var(--text2); }
-
-  /* STATE SELECT */
   .state-select-wrap { margin-bottom: 1.5rem; }
 
   /* INFO BOX */
   .info-box {
-    background: var(--teal-light); border-left: 4px solid var(--teal);
-    border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 1.25rem;
-    font-size: 0.82rem; color: var(--text2); line-height: 1.6;
-    border-top: 1px solid rgba(13,158,138,0.15);
-    border-right: 1px solid rgba(13,158,138,0.15);
-    border-bottom: 1px solid rgba(13,158,138,0.15);
+    background: var(--teal-light); border-left: 4px solid var(--teal); border-radius: 8px;
+    padding: 0.85rem 1rem; margin-bottom: 1.25rem; font-size: 0.82rem; color: var(--text2); line-height: 1.6;
+    border-top: 1px solid rgba(13,158,138,0.15); border-right: 1px solid rgba(13,158,138,0.15); border-bottom: 1px solid rgba(13,158,138,0.15);
   }
   .info-box strong { color: var(--teal2); }
 
-  /* RESULTS */
-  .results-header {
-    background: linear-gradient(135deg, var(--teal) 0%, var(--teal2) 100%);
-    border-bottom: none;
-    padding: 2rem 2rem 1.75rem;
-    text-align: center;
-  }
-  .results-programme {
-    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
-    text-transform: uppercase; color: rgba(255,255,255,0.8); margin-bottom: 0.4rem;
-  }
-  .results-name { font-size: 1.75rem; font-weight: 900; color: #ffffff; margin-bottom: 0.25rem; }
-  .results-faculty { font-size: 0.875rem; color: rgba(255,255,255,0.75); }
+  /* RESULTS HERO */
+  .results-hero { background: linear-gradient(135deg, var(--teal) 0%, var(--teal2) 100%); padding: 2.25rem 2rem 2rem; text-align: center; }
+  .results-hero-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.75); margin-bottom: 0.3rem; }
+  .results-hero-name { font-size: 1.8rem; font-weight: 900; color: #ffffff; line-height: 1.15; margin-bottom: 0.2rem; }
+  .results-hero-faculty { font-size: 0.875rem; color: rgba(255,255,255,0.75); margin-bottom: 1.25rem; }
+  .results-hero-verdict { font-size: 1.6rem; font-weight: 900; color: #ffffff; letter-spacing: -0.01em; }
 
-  .verdict-badge {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    padding: 0.55rem 1.5rem; border-radius: 999px;
-    font-size: 0.9rem; font-weight: 800; letter-spacing: 0.04em;
-    text-transform: uppercase; margin-top: 1.25rem;
-    color: white;
+  /* RESULT CARDS */
+  .result-card {
+    background: #ffffff; border: 1px solid var(--border); border-radius: 12px;
+    padding: 1.25rem 1.5rem; margin: 0 1.75rem 1.25rem;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.05);
   }
-  .verdict-eligible { background: var(--green); }
-  .verdict-borderline { background: var(--orange); }
-  .verdict-not { background: var(--red); }
-
-  .aggregate-display {
-    text-align: center; margin: 1.5rem 0;
-  }
-  .aggregate-num { font-size: 4rem; font-weight: 900; line-height: 1; color: var(--teal); }
-  .aggregate-denom { font-size: 1.5rem; color: var(--text3); font-weight: 400; }
-  .aggregate-label { font-size: 0.8rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.25rem; }
+  .result-card-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); margin-bottom: 0.85rem; }
+  .aggregate-row { display: flex; align-items: baseline; justify-content: center; gap: 0.35rem; margin-bottom: 0.2rem; }
+  .aggregate-num { font-size: 3.5rem; font-weight: 900; line-height: 1; }
+  .aggregate-denom { font-size: 1.3rem; color: var(--text3); font-weight: 400; }
+  .aggregate-label { font-size: 0.78rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; text-align: center; margin-bottom: 1rem; }
 
   /* BREAKDOWN BAR */
-  .breakdown-section { padding: 0 1.75rem 1.5rem; }
-  .breakdown-bar-wrap {
-    background: var(--bg3); border-radius: 10px; overflow: hidden;
-    height: 36px; display: flex; margin-bottom: 0.75rem;
-  }
-  .breakdown-seg {
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.7rem; font-weight: 700; color: white;
-    transition: width 0.6s ease; white-space: nowrap;
-    overflow: hidden;
-  }
+  .breakdown-bar-wrap { background: var(--bg3); border-radius: 10px; overflow: hidden; height: 36px; display: flex; margin-bottom: 0.75rem; }
+  .breakdown-seg { display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; color: white; transition: width 0.6s ease; white-space: nowrap; overflow: hidden; }
   .seg-utme { background: linear-gradient(135deg, #3182ce, #2b6cb0); }
   .seg-olevel { background: linear-gradient(135deg, #6b46c1, #553c9a); }
   .seg-postutme { background: linear-gradient(135deg, var(--gold), #b7791f); }
-
-  .breakdown-legend {
-    display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;
-  }
+  .breakdown-legend { display: flex; gap: 1rem; flex-wrap: wrap; }
   .legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--text2); }
   .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
 
-  /* CUTOFF TABLE */
-  .cutoff-section { padding: 0 1.75rem 1.5rem; }
-  .cutoff-title {
-    font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.06em; color: var(--text3); margin-bottom: 0.75rem;
-  }
+  /* CUTOFF */
   .cutoff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
-  .cutoff-item {
-    background: var(--bg3); border: 1px solid var(--border);
-    border-radius: 10px; padding: 0.85rem 1rem;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .cutoff-item.highlight {
-    border-color: var(--teal);
-    background: var(--teal-light);
-  }
+  .cutoff-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 0.85rem 1rem; display: flex; justify-content: space-between; align-items: center; }
+  .cutoff-item.highlight { border-color: var(--teal); background: var(--teal-light); }
   .cutoff-item-label { font-size: 0.8rem; color: var(--text2); }
   .cutoff-item-val { font-size: 0.95rem; font-weight: 700; }
   .cutoff-pass { color: var(--green); }
   .cutoff-fail { color: var(--red); }
   .cutoff-near { color: var(--gold); }
 
-  /* SUBJECTS RESULT */
-  .subjects-section { padding: 0 1.75rem 1.5rem; }
-
-  /* BUTTONS */
-  .btn-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 1.25rem 1.75rem;
-    border-top: 1px solid var(--border);
-    background: #ffffff;
-  }
-  .btn {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    padding: 0.75rem 2rem; border-radius: 999px;
-    font-size: 0.875rem; font-weight: 700; cursor: pointer;
-    border: none; transition: all 0.2s; text-decoration: none;
-    text-transform: uppercase; letter-spacing: 0.05em;
-  }
-  .btn-primary {
-    background: var(--teal);
-    color: white;
-    box-shadow: 0 2px 12px rgba(13,158,138,0.3);
-  }
-  .btn-primary:hover {
-    background: var(--teal2);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 20px rgba(13,158,138,0.4);
-  }
-  .btn-secondary {
-    background: #ffffff; border: 2px solid var(--teal);
-    color: var(--teal);
-  }
-  .btn-secondary:hover { background: var(--teal-light); }
-  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
-  .btn-ghost { background: transparent; color: var(--teal); border: none; padding: 0.75rem 0; }
-  .btn-ghost:hover { color: var(--teal2); }
-
-  /* RESET */
-  .btn-restart {
-    background: #ffffff; border: 2px solid var(--teal);
-    color: var(--teal);
-  }
-  .btn-restart:hover {
-    background: var(--teal-light);
-    transform: translateY(-1px);
-  }
-
-  /* DIVIDER */
-  .divider { height: 1px; background: var(--border); margin: 1.25rem 0; }
-
-  /* TAGS */
-  .tag {
-    display: inline-block; padding: 0.2rem 0.6rem;
-    border-radius: 6px; font-size: 0.7rem; font-weight: 600;
-  }
-
-  /* DISCLAIMER */
-  .disclaimer {
-    font-size: 0.75rem; color: var(--text3); text-align: center;
-    padding: 1rem 1.75rem; line-height: 1.6;
-    background: #ffffff;
-  }
-
-  /* SELECTED PROGRAMME CHIP */
-  .selected-prog-chip {
-    display: flex; align-items: center; gap: 0.75rem;
-    background: var(--teal-light); border: 1.5px solid rgba(13,158,138,0.25);
-    border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 1.5rem;
-  }
-  .selected-prog-chip-name { font-size: 0.9rem; font-weight: 700; color: var(--text); }
-  .selected-prog-chip-fac { font-size: 0.75rem; color: var(--teal); }
-
-  /* POST-UTME TARGET BOX */
-  .target-box {
-    border-radius: 14px; padding: 1.25rem 1.5rem; margin: 0 0 1.25rem;
-    display: flex; align-items: center; gap: 1.25rem;
-    border: 1.5px solid;
-  }
+  /* TARGET BOX */
+  .target-box { border-radius: 14px; padding: 1.25rem 1.5rem; display: flex; align-items: center; gap: 1.25rem; border: 1.5px solid; }
   .target-box.achievable { background: rgba(56,161,105,0.06); border-color: rgba(56,161,105,0.3); }
   .target-box.stretch { background: rgba(224,123,57,0.06); border-color: rgba(224,123,57,0.3); }
   .target-box.impossible { background: rgba(229,62,62,0.06); border-color: rgba(229,62,62,0.25); }
@@ -514,47 +297,106 @@
   .target-label { font-size: 0.78rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 0.2rem; }
   .target-desc { font-size: 0.85rem; color: var(--text2); line-height: 1.5; }
 
-  /* ALTERNATIVES PANEL */
-  .alt-panel { padding: 0 0 1.5rem; }
-  .alt-panel-title {
-    font-size: 1rem; font-weight: 700; color: var(--text);
-    margin: 1.5rem 0 0.25rem; padding: 0 0 0.75rem;
-    border-bottom: 1px solid var(--border);
+  /* INELIGIBILITY BANNER */
+  .ineligible-banner { background: #fff5f5; border-left: 4px solid var(--red); border-radius: 12px; padding: 1.25rem 1.5rem; margin: 0 1.75rem 1.25rem; }
+  .ineligible-banner-title { font-size: 1rem; font-weight: 800; color: var(--red); margin-bottom: 0.35rem; }
+  .ineligible-banner-sub { font-size: 0.85rem; color: #c53030; line-height: 1.5; }
+
+  /* SIDE-BY-SIDE COMPARISON */
+  .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .comparison-col-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-bottom: 0.6rem; }
+  .comparison-row { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; border-radius: 8px; margin-bottom: 0.3rem; font-size: 0.85rem; font-weight: 500; }
+  .comparison-row.match { background: #f0fff4; color: #276749; }
+  .comparison-row.miss { background: #fff5f5; color: #c53030; }
+  .comparison-row.neutral { background: var(--bg3); color: var(--text2); }
+
+  /* FACULTY ACCORDION */
+  .alt-section { padding: 0 1.75rem 1.5rem; }
+  .alt-section-title { font-size: 0.95rem; font-weight: 800; color: var(--text); padding: 1.5rem 0 0.75rem; border-bottom: 1px solid var(--border); margin-bottom: 1rem; }
+  .alt-section-sub { font-size: 0.8rem; color: var(--text3); margin-bottom: 1rem; margin-top: -0.5rem; }
+
+  .faculty-card {
+    background: #ffffff; border: 1px solid var(--border); border-left: 4px solid var(--teal);
+    border-radius: 12px; margin-bottom: 0.75rem; box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    cursor: pointer; transition: box-shadow 0.2s ease; overflow: hidden;
   }
-  .alt-panel-sub { font-size: 0.8rem; color: var(--text3); margin-bottom: 1rem; }
-  .alt-faculty-group { margin-bottom: 1.5rem; }
-  .alt-faculty-name {
-    font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
-    color: var(--text3); margin-bottom: 0.5rem; padding: 0.3rem 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .alt-item {
+  .faculty-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.1); }
+  .faculty-card-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.1rem; gap: 0.75rem; }
+  .faculty-card-left { display: flex; align-items: center; gap: 0.75rem; flex: 1; min-width: 0; }
+  .faculty-card-name { font-size: 0.92rem; font-weight: 700; color: var(--text); }
+  .faculty-card-count { font-size: 0.8rem; color: var(--text3); white-space: nowrap; }
+  .faculty-high-badge { font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.55rem; border-radius: 999px; background: rgba(56,161,105,0.15); color: var(--green); white-space: nowrap; flex-shrink: 0; }
+  .faculty-chevron { font-size: 1.2rem; color: var(--text3); transition: transform 0.2s ease; flex-shrink: 0; line-height: 1; }
+  .faculty-chevron.open { transform: rotate(90deg); }
+
+  .faculty-courses { border-top: 1px solid var(--border); padding: 0.75rem 0.85rem 0.85rem; display: none; background: #f7f9fc; }
+  .faculty-courses.open { display: block; }
+
+  .course-card {
+    background: #f7f9fc; border: 1px solid var(--border); border-radius: 8px;
+    padding: 0.75rem 0.9rem; margin-bottom: 0.5rem; cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
     display: flex; justify-content: space-between; align-items: center;
-    padding: 0.65rem 0.85rem; border-radius: 10px; margin-bottom: 0.4rem;
-    background: #ffffff; border: 1px solid var(--border);
-    cursor: pointer; transition: border-color .15s, background .15s, box-shadow .15s;
   }
-  .alt-item:hover { border-color: var(--teal); background: var(--teal-light); box-shadow: var(--shadow); }
-  .alt-item-name { font-size: 0.875rem; font-weight: 600; color: var(--text); }
-  .alt-item-pts { font-size: 0.78rem; color: var(--text3); margin-top: 0.15rem; }
-  .alt-item-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.2rem; }
-  .alt-cutoff { font-size: 0.75rem; font-weight: 700; color: var(--text2); }
-  .alt-switch-btn {
-    font-size: 0.72rem; font-weight: 600; color: var(--teal);
-    background: var(--teal-light); border: 1px solid rgba(13,158,138,0.25);
-    border-radius: 6px; padding: 0.2rem 0.55rem; cursor: pointer;
-    transition: background .15s;
+  .course-card:last-child { margin-bottom: 0; }
+  .course-card:hover { border-color: var(--teal); background: #ffffff; box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
+  .course-card-left { flex: 1; min-width: 0; }
+  .course-card-name { font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; }
+  .course-card-meta { font-size: 0.75rem; color: var(--text3); }
+  .course-card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.2rem; flex-shrink: 0; }
+
+  /* COURSE DETAIL PANEL */
+  .course-detail-panel {
+    background: #ffffff; border: 1px solid var(--border); border-top: 4px solid var(--teal);
+    border-radius: 12px; padding: 1.25rem; margin-top: 0.5rem; margin-bottom: 0.5rem;
+    animation: slideIn 0.2s ease;
   }
-  .alt-switch-btn:hover { background: rgba(13,158,138,0.2); }
+  .course-detail-title { font-size: 1rem; font-weight: 800; color: var(--text); margin-bottom: 0.15rem; }
+  .course-detail-faculty { font-size: 0.78rem; color: var(--text3); margin-bottom: 1rem; }
+  .detail-row { display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+  .detail-row:last-of-type { border-bottom: none; }
+  .detail-label { color: var(--text2); }
+  .detail-val { font-weight: 700; color: var(--text); }
+  .detail-val.ok { color: var(--green); }
+  .detail-val.fail { color: var(--red); }
+  .btn-switch {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: var(--teal); color: white; border: none; border-radius: 999px;
+    padding: 0.6rem 1.4rem; font-size: 0.82rem; font-weight: 700; cursor: pointer;
+    margin-top: 1rem; transition: background 0.2s ease;
+  }
+  .btn-switch:hover { background: var(--teal2); }
 
   /* CHANCE PILLS */
-  .chance-pill {
-    font-size: 0.7rem; font-weight: 700; border-radius: 999px;
-    padding: 0.2rem 0.6rem; display: inline-block; color: white;
-  }
+  .chance-pill { font-size: 0.7rem; font-weight: 700; border-radius: 999px; padding: 0.2rem 0.6rem; display: inline-block; color: white; white-space: nowrap; }
   .chance-high { background: var(--green); }
   .chance-med { background: var(--orange); }
   .chance-low { background: var(--text3); }
+
+  /* BUTTONS */
+  .btn-row { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1.75rem; border-top: 1px solid var(--border); background: #ffffff; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 2rem; border-radius: 999px;
+    font-size: 0.875rem; font-weight: 700; cursor: pointer; border: none; transition: all 0.2s;
+    text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .btn-primary { background: var(--teal); color: white; box-shadow: 0 2px 12px rgba(13,158,138,0.3); }
+  .btn-primary:hover { background: var(--teal2); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(13,158,138,0.4); }
+  .btn-secondary { background: #ffffff; border: 2px solid var(--teal); color: var(--teal); }
+  .btn-secondary:hover { background: var(--teal-light); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+  .btn-ghost { background: transparent; color: var(--teal); border: none; padding: 0.75rem 0; }
+  .btn-ghost:hover { color: var(--teal2); }
+  .btn-restart { background: #ffffff; border: 2px solid var(--teal); color: var(--teal); }
+  .btn-restart:hover { background: var(--teal-light); transform: translateY(-1px); }
+
+  /* MISC */
+  .divider { height: 1px; background: var(--border); margin: 1.25rem 0; }
+  .tag { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.7rem; font-weight: 600; }
+  .disclaimer { font-size: 0.75rem; color: var(--text3); text-align: center; padding: 1rem 1.75rem; line-height: 1.6; background: #ffffff; }
+  .selected-prog-chip { display: flex; align-items: center; gap: 0.75rem; background: var(--teal-light); border: 1.5px solid rgba(13,158,138,0.25); border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 1.5rem; }
+  .selected-prog-chip-name { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+  .selected-prog-chip-fac { font-size: 0.75rem; color: var(--teal); }
 
   /* SCROLLBAR */
   ::-webkit-scrollbar { width: 5px; }
@@ -570,12 +412,16 @@
     .btn-row { padding: 1rem 1.25rem; gap: 0.75rem; flex-wrap: wrap; }
     .step-label { display: none; }
     .cutoff-grid { grid-template-columns: 1fr; }
-    .results-name { font-size: 1.35rem; }
-    .aggregate-num { font-size: 3rem; }
-    .breakdown-section, .cutoff-section, .subjects-section { padding: 0 1.25rem 1.25rem; }
-    .olevel-row { grid-template-columns: 1fr auto auto; }
+    .comparison-grid { grid-template-columns: 1fr; }
+    .results-hero-name { font-size: 1.35rem; }
+    .aggregate-num { font-size: 2.75rem; }
+    .result-card { margin: 0 1rem 1rem; }
+    .ineligible-banner { margin: 0 1rem 1rem; }
+    .alt-section { padding: 0 1rem 1.5rem; }
+    .olevel-row { grid-template-columns: 1fr auto; }
     .utme-score-display { padding: 1rem; }
     .btn { padding: 0.7rem 1.25rem; font-size: 0.8rem; }
+    .name-hero-prompt { font-size: 1.25rem; }
   }
 </style>
 </head>
@@ -1444,58 +1290,13 @@ function findAlternativeProgrammes(studentResults) {
   return { grouped, sortedFaculties };
 }
 
-function renderAlternatives(studentResults) {
-  const { grouped, sortedFaculties } = findAlternativeProgrammes(studentResults);
-  const utme = parseFloat(state.utmeScore) || 0;
-
-  if (sortedFaculties.length === 0) {
-    return `<div class="alt-panel">
-      <div class="alt-panel-title">🔍 Alternative Programmes</div>
-      <div class="alert-box warn">No matching programmes found for your current O/Level combination. Try updating your subjects.</div>
-    </div>`;
-  }
-
-  const total = sortedFaculties.reduce((s, f) => s + grouped[f].length, 0);
-  let html = `<div class="alt-panel">
-    <div class="alt-panel-title">💡 ${total} Programmes You May Qualify For</div>
-    <div class="alt-panel-sub">Based on your O/Level subjects${utme > 0 ? ` and UTME score of ${utme}` : ""}${state.utmeSubjects.filter(s=>s).length >= 3 ? " and UTME subject combination" : ""}. Chance rating assumes ~75% Post-UTME score. Click a programme to switch your selection.</div>`;
-
-  for (const fac of sortedFaculties) {
-    const items = grouped[fac];
-    html += `<div class="alt-faculty-group">
-      <div class="alt-faculty-name">${fac}</div>`;
-
-    for (const { prog, olevelPts, estimatedAggregate, chance } of items) {
-      const chanceLabel = chance === "high" ? "High Chance" : chance === "med" ? "Moderate" : "Low Chance";
-      const meritStr = prog.merit > 0 ? `Merit: ${prog.merit}` : "No cut-off data";
-      html += `<div class="alt-item" onclick="switchToProgramme('${prog.name.replace(/'/g,"\\'")}')">
-        <div>
-          <div class="alt-item-name">${prog.name}</div>
-          <div class="alt-item-pts">O/Level: ${olevelPts.toFixed(1)}/20 pts &nbsp;·&nbsp; Est. Aggregate: ${estimatedAggregate.toFixed(1)}</div>
-        </div>
-        <div class="alt-item-right">
-          <span class="chance-pill chance-${chance}">${chanceLabel}</span>
-          <span class="alt-cutoff">${meritStr}</span>
-          <span class="alt-switch-btn">Switch →</span>
-        </div>
-      </div>`;
-    }
-    html += `</div>`;
-  }
-
-  html += `</div>`;
-  return html;
-}
-
 window.switchToProgramme = function(name) {
   const prog = PROGRAMMES.find(p => p.name === name);
   if (!prog) return;
   state.programme = prog;
-  // Recompute olevel for new programme
   const res = computeOlevelResult();
-  if (res && res.valid) {
-    state.olevelResult = res;
-  }
+  if (res && res.valid) state.olevelResult = res;
+  state.step = 3;
   render();
 };
 
@@ -1505,10 +1306,13 @@ window.switchToProgramme = function(name) {
 
 const state = {
   step: 1,
+  name: "",
   programme: null,
   utmeScore: "",
   utmeSubjects: ["", "", "", ""],
   olevel: [
+    {subject: "", grade: ""},
+    {subject: "", grade: ""},
     {subject: "", grade: ""},
     {subject: "", grade: ""},
     {subject: "", grade: ""},
@@ -1521,8 +1325,12 @@ const state = {
   olevelResult: null,
 };
 
-const STEP_LABELS = ["Programme","UTME","O/Level","Post-UTME","Results"];
-const TOTAL_STEPS = 5;
+const STEP_LABELS = ["Name","Course","UTME","O/Level","Post-UTME","Results"];
+const TOTAL_STEPS = 6;
+
+// Accordion state (module-level, not in state to avoid full re-render)
+let expandedFaculty = null;
+let expandedCourse = null;
 
 // ============================================================
 // RENDER HELPERS
@@ -1538,9 +1346,7 @@ function renderProgress() {
       <div class="step-circle">${icon}</div>
       <div class="step-label">${STEP_LABELS[i-1]}</div>
     </div>`;
-    if (i < TOTAL_STEPS) {
-      html += `<div class="step-line ${i < state.step ? 'done' : ''}"></div>`;
-    }
+    if (i < TOTAL_STEPS) html += `<div class="step-line ${i < state.step ? 'done' : ''}"></div>`;
   }
   wrap.innerHTML = html;
 }
@@ -1554,81 +1360,152 @@ function subjectOpts(selected = "") {
 }
 
 // ============================================================
-// STEP 1: Programme Selection
+// STEP 1: Name
 // ============================================================
 
 function renderStep1() {
-  const selectedName = state.programme ? state.programme.name : "";
   const html = `
   <div class="step-card">
-    <div class="card-header">
-      <div class="card-step-label">Step 1 of 5</div>
-      <div class="card-title">Choose Your Programme</div>
-      <div class="card-subtitle">Search across all UNILAG faculties for 2025/2026</div>
-    </div>
-    <div class="card-body">
-      <div class="search-wrap">
-        <span class="search-icon">🔍</span>
-        <input class="search-input" id="progSearch" placeholder="Search programmes, e.g. Medicine, Law, Computer Science..." autocomplete="off" value="">
+    <div class="card-body" style="padding:0">
+      <div class="name-hero">
+        <div class="name-hero-emoji">👋</div>
+        <div class="name-hero-prompt">What's your first name?</div>
+        <div class="name-hero-sub">I'll personalise your admission results just for you.</div>
       </div>
-      <div class="programme-list" id="progList">
-        ${renderProgList("")}
+      <div style="padding:0 1.75rem 1.5rem">
+        <input class="name-input-large" id="nameInput" type="text" placeholder="Enter your first name…" autocomplete="given-name" value="${state.name}" maxlength="50">
       </div>
     </div>
-    <div class="btn-row">
-      <span style="font-size:0.8rem;color:var(--text3)">${state.programme ? `Selected: <strong style="color:var(--text)">${state.programme.name}</strong>` : "No programme selected"}</span>
-      <button class="btn btn-primary" id="step1Next" ${state.programme ? "" : "disabled"}>Continue →</button>
+    <div class="btn-row" style="justify-content:flex-end">
+      <button class="btn btn-primary" id="step1Next" ${state.name.trim() ? "" : "disabled"}>Continue →</button>
     </div>
   </div>`;
   document.getElementById("mainContent").innerHTML = html;
 
-  document.getElementById("progSearch").addEventListener("input", function() {
-    document.getElementById("progList").innerHTML = renderProgList(this.value);
-    bindProgItems();
+  const inp = document.getElementById("nameInput");
+  const btn = document.getElementById("step1Next");
+  inp.addEventListener("input", function() {
+    state.name = this.value;
+    btn.disabled = !state.name.trim();
   });
-
-  document.getElementById("step1Next").addEventListener("click", () => {
-    if (state.programme) { state.step = 2; render(); }
+  inp.addEventListener("keydown", function(e) {
+    if (e.key === "Enter" && state.name.trim()) { state.step = 2; render(); }
   });
-
-  bindProgItems();
-}
-
-function renderProgList(query) {
-  const q = query.toLowerCase().trim();
-  const filtered = q ? PROGRAMMES.filter(p => p.name.toLowerCase().includes(q) || p.faculty.toLowerCase().includes(q)) : PROGRAMMES;
-  if (filtered.length === 0) return `<div style="padding:1.5rem;text-align:center;color:var(--text3);font-size:0.875rem">No programmes found</div>`;
-  return filtered.map(p => {
-    const sel = state.programme && state.programme.name === p.name ? "selected" : "";
-    const meritStr = p.merit > 0 ? `<span class="programme-merit">${p.merit}</span>` : `<span class="programme-merit" style="color:var(--text3)">—</span>`;
-    return `<div class="programme-item ${sel}" data-name="${p.name}">
-      ${facBadge(p.faculty)}
-      <span class="programme-name">${p.name}</span>
-      ${meritStr}
-    </div>`;
-  }).join("");
-}
-
-function bindProgItems() {
-  document.querySelectorAll(".programme-item").forEach(el => {
-    el.addEventListener("click", function() {
-      const name = this.dataset.name;
-      state.programme = PROGRAMMES.find(p => p.name === name);
-      document.querySelectorAll(".programme-item").forEach(e => e.classList.remove("selected"));
-      this.classList.add("selected");
-      const nextBtn = document.getElementById("step1Next");
-      if (nextBtn) nextBtn.disabled = false;
-      const label = document.querySelector("#mainContent .btn-row span");
-      if (label) label.innerHTML = `Selected: <strong style="color:var(--text)">${state.programme.name}</strong>`;
-    });
-  });
+  btn.addEventListener("click", () => { if (state.name.trim()) { state.step = 2; render(); } });
+  inp.focus();
 }
 
 // ============================================================
-// STEP 2: UTME Score
+// STEP 2: Course Search (autocomplete)
 // ============================================================
 
 function renderStep2() {
+  const name = state.name.trim() || "there";
+  const chipHtml = state.programme ? `
+    <div class="selected-course-chip" id="courseChip">
+      <div class="selected-course-chip-info">
+        ${facBadge(state.programme.faculty)}
+        <div>
+          <div class="selected-course-chip-name">${state.programme.name}</div>
+          <div class="selected-course-chip-fac">${state.programme.faculty}</div>
+        </div>
+      </div>
+      <button class="chip-deselect" id="chipDeselect" title="Deselect">✕</button>
+    </div>` : "";
+
+  const html = `
+  <div class="step-card">
+    <div class="card-header">
+      <div class="card-step-label">Step 2 of 6</div>
+      <div class="card-title" style="font-size:1.1rem;line-height:1.4">Welcome, ${name} 👋 I'm Ciceroo, Skujy Tutorials' UNILAG Admission Advisor for 2025/2026.</div>
+      <div class="card-subtitle">Which course are you hoping to study at UNILAG?</div>
+    </div>
+    <div class="card-body">
+      <div class="search-wrap" id="acWrap">
+        <span class="search-icon">🔍</span>
+        <input class="search-input" id="courseSearch" placeholder="Type to search courses, e.g. Medicine, Law…" autocomplete="off" value="">
+      </div>
+      <div id="acDropdown"></div>
+      ${chipHtml}
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" id="step2Back">← Back</button>
+      <button class="btn btn-primary" id="step2Next" ${state.programme ? "" : "disabled"}>Continue →</button>
+    </div>
+  </div>`;
+  document.getElementById("mainContent").innerHTML = html;
+
+  const searchEl = document.getElementById("courseSearch");
+  const dropEl = document.getElementById("acDropdown");
+  const nextBtn = document.getElementById("step2Next");
+
+  function showDropdown(query) {
+    const q = query.trim().toLowerCase();
+    if (q.length < 2) { dropEl.innerHTML = ""; return; }
+    const matches = PROGRAMMES.filter(p =>
+      p.name.toLowerCase().includes(q) || p.faculty.toLowerCase().includes(q)
+    ).slice(0, 8);
+    if (matches.length === 0) { dropEl.innerHTML = `<div class="autocomplete-dropdown"><div style="padding:1rem;text-align:center;color:var(--text3);font-size:0.875rem">No courses found</div></div>`; return; }
+    dropEl.innerHTML = `<div class="autocomplete-dropdown">${matches.map(p => `
+      <div class="ac-item" data-name="${p.name}">
+        ${facBadge(p.faculty)}
+        <span class="ac-item-name">${p.name}</span>
+      </div>`).join("")}</div>`;
+    dropEl.querySelectorAll(".ac-item").forEach(el => {
+      el.addEventListener("mousedown", function(e) {
+        e.preventDefault();
+        selectCourse(this.dataset.name);
+      });
+    });
+  }
+
+  function selectCourse(name) {
+    state.programme = PROGRAMMES.find(p => p.name === name);
+    dropEl.innerHTML = "";
+    searchEl.value = "";
+    nextBtn.disabled = false;
+    // Re-render chip
+    const existingChip = document.getElementById("courseChip");
+    const chipContainer = document.querySelector(".card-body");
+    const newChip = document.createElement("div");
+    newChip.innerHTML = `
+      <div class="selected-course-chip" id="courseChip">
+        <div class="selected-course-chip-info">
+          ${facBadge(state.programme.faculty)}
+          <div>
+            <div class="selected-course-chip-name">${state.programme.name}</div>
+            <div class="selected-course-chip-fac">${state.programme.faculty}</div>
+          </div>
+        </div>
+        <button class="chip-deselect" id="chipDeselect" title="Deselect">✕</button>
+      </div>`;
+    if (existingChip) existingChip.replaceWith(newChip.firstElementChild);
+    else chipContainer.appendChild(newChip.firstElementChild);
+    bindChipDeselect();
+  }
+
+  function bindChipDeselect() {
+    const d = document.getElementById("chipDeselect");
+    if (d) d.addEventListener("click", () => {
+      state.programme = null;
+      const chip = document.getElementById("courseChip");
+      if (chip) chip.remove();
+      nextBtn.disabled = true;
+    });
+  }
+
+  searchEl.addEventListener("input", function() { showDropdown(this.value); });
+  searchEl.addEventListener("blur", () => { setTimeout(() => { dropEl.innerHTML = ""; }, 150); });
+  document.getElementById("step2Back").addEventListener("click", () => { state.step = 1; render(); });
+  nextBtn.addEventListener("click", () => { if (state.programme) { state.step = 3; render(); } });
+  bindChipDeselect();
+}
+
+// ============================================================
+// STEP 3: UTME Score & Subjects
+// ============================================================
+
+function renderStep3() {
   const score = parseFloat(state.utmeScore) || 0;
   const contrib = Math.min(score / 8, 50).toFixed(2);
   const pct = Math.min((score / 400) * 100, 100);
@@ -1643,12 +1520,10 @@ function renderStep2() {
       </select>
     </div>`).join("");
 
-  const utmeCheck = renderUTMECheck();
-
   const html = `
   <div class="step-card">
     <div class="card-header">
-      <div class="card-step-label">Step 2 of 5</div>
+      <div class="card-step-label">Step 3 of 6</div>
       <div class="card-title">UTME Score & Subjects</div>
       <div class="card-subtitle">Enter your JAMB score and the 4 subjects you sat</div>
     </div>
@@ -1681,11 +1556,11 @@ function renderStep2() {
           ${subjectRows}
         </div>
       </div>
-      <div id="utmeCheckBox" style="margin-top:0.75rem">${utmeCheck}</div>
+      <div id="utmeCheckBox" style="margin-top:0.75rem">${renderUTMECheck()}</div>
     </div>
     <div class="btn-row">
-      <button class="btn btn-secondary" id="step2Back">← Back</button>
-      <button class="btn btn-primary" id="step2Next" ${score > 0 ? "" : "disabled"}>Continue →</button>
+      <button class="btn btn-secondary" id="step3Back">← Back</button>
+      <button class="btn btn-primary" id="step3Next" ${score > 0 ? "" : "disabled"}>Continue →</button>
     </div>
   </div>`;
   document.getElementById("mainContent").innerHTML = html;
@@ -1698,12 +1573,12 @@ function renderStep2() {
     document.getElementById("utmeContrib").textContent = `${c} / 50 points`;
     const p = Math.min((v / 400) * 100, 100);
     document.getElementById("utmeBar").style.width = p + "%";
-    document.getElementById("step2Next").disabled = v === 0;
+    document.getElementById("step3Next").disabled = v === 0;
   });
-  document.getElementById("step2Back").addEventListener("click", () => { state.step = 1; render(); });
-  document.getElementById("step2Next").addEventListener("click", () => {
+  document.getElementById("step3Back").addEventListener("click", () => { state.step = 2; render(); });
+  document.getElementById("step3Next").addEventListener("click", () => {
     const v = parseInt(document.getElementById("utmeInput").value) || 0;
-    if (v > 0) { state.utmeScore = v; state.step = 3; render(); }
+    if (v > 0) { state.utmeScore = v; state.step = 4; render(); }
   });
 }
 
@@ -1717,16 +1592,13 @@ function renderUTMECheck() {
   if (!prog || !prog.utmeReqs) return "";
   const filled = state.utmeSubjects.filter(s => s);
   if (filled.length === 0) return `<div class="info-box" style="font-size:0.82rem">Select your 4 UTME subjects above to check compatibility with <strong>${prog.name}</strong>.</div>`;
-
   const result = checkUTMESubjects(state.utmeSubjects, prog.utmeReqs);
   if (result.valid) {
-    return `<div class="alert-box ok" style="font-size:0.85rem">
-      ✅ Your UTME subjects are compatible with <strong>${prog.name}</strong>.
-    </div>`;
+    return `<div class="alert-box ok" style="font-size:0.85rem">✅ Your UTME subjects are compatible with <strong>${prog.name}</strong>.</div>`;
   } else {
     return `<div class="alert-box warn" style="font-size:0.85rem">
       ⚠️ <strong>${prog.name}</strong> requires different UTME subjects. Missing: ${result.missing.join("; ")}.<br>
-      <span style="color:var(--text2)">Continue entering your details — the results page will show all programmes that match your exact UTME and O/Level combination.</span>
+      <span style="color:var(--text2)">Continue entering your details — the results page will show all programmes that match your exact combination.</span>
     </div>`;
   }
 }
@@ -1734,7 +1606,6 @@ function renderUTMECheck() {
 function findUTMECompatibleProgrammes(subjects) {
   const filled = subjects.filter(s => s);
   if (filled.length < 2) return {grouped: {}, sortedFaculties: [], total: 0};
-
   const grouped = {};
   let total = 0;
   for (const p of PROGRAMMES) {
@@ -1746,59 +1617,54 @@ function findUTMECompatibleProgrammes(subjects) {
     grouped[p.faculty].push(p);
     total++;
   }
-
-  const sortedFaculties = Object.keys(grouped).sort((a, b) =>
-    grouped[b].length - grouped[a].length
-  );
+  const sortedFaculties = Object.keys(grouped).sort((a, b) => grouped[b].length - grouped[a].length);
   return {grouped, sortedFaculties, total};
 }
 
 // ============================================================
-// STEP 3: O/Level
+// STEP 4: O/Level (7 rows, min 5 filled)
 // ============================================================
 
-function renderStep3() {
+function renderStep4() {
   const html = `
   <div class="step-card">
     <div class="card-header">
-      <div class="card-step-label">Step 3 of 5</div>
+      <div class="card-step-label">Step 4 of 6</div>
       <div class="card-title">O/Level Results</div>
-      <div class="card-subtitle">Enter your WAEC/NECO subjects and grades (5–9 subjects)</div>
+      <div class="card-subtitle">Enter your WAEC/NECO subjects and grades (at least 5 required)</div>
     </div>
     <div class="card-body">
       <div id="olevelRows">${renderOlevelRows()}</div>
-      <button class="add-subject-btn" id="addSubjectBtn" ${state.olevel.length >= 9 ? "disabled" : ""}>
-        + Add another subject
-      </button>
       <div id="olevelResultBox"></div>
     </div>
     <div class="btn-row">
-      <button class="btn btn-secondary" id="step3Back">← Back</button>
-      <button class="btn btn-primary" id="step3Next">Continue →</button>
+      <button class="btn btn-secondary" id="step4Back">← Back</button>
+      <button class="btn btn-primary" id="step4Next">Continue →</button>
     </div>
   </div>`;
   document.getElementById("mainContent").innerHTML = html;
 
-  bindOlevelEvents();
   updateOlevelResult();
-
-  document.getElementById("step3Back").addEventListener("click", () => { state.step = 2; render(); });
-  document.getElementById("step3Next").addEventListener("click", () => {
+  document.getElementById("step4Back").addEventListener("click", () => { state.step = 3; render(); });
+  document.getElementById("step4Next").addEventListener("click", () => {
+    const filled = state.olevel.filter(r => r.subject && r.grade).length;
+    if (filled < 5) { alert("Please fill at least 5 subjects with valid grades."); return; }
     const res = computeOlevelResult();
     if (!res) { alert("Please fill at least 5 subjects with valid grades."); return; }
     if (!res.valid) {
-      // Scroll down to show alternatives
       const box = document.getElementById("olevelResultBox");
       if (box) box.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
     }
     state.olevelResult = res;
-    state.step = 4; render();
+    state.step = 5; render();
   });
 }
 
 function renderOlevelRows() {
-  return state.olevel.map((row, i) => `
+  return state.olevel.map((row, i) => {
+    const showRemove = i >= 5;
+    return `
     <div class="olevel-row" id="orow-${i}">
       <div class="olevel-row-inner">
         <select class="input-field" id="osubj-${i}" onchange="updateOlevelRow(${i},'subject',this.value)">
@@ -1810,47 +1676,28 @@ function renderOlevelRows() {
           ${gradeOpts(row.grade)}
         </select>
       </div>
-      ${state.olevel.length > 5 ? `<button class="btn-icon danger" onclick="removeOlevelRow(${i})" title="Remove">✕</button>` : `<div style="width:36px"></div>`}
-    </div>`).join("");
-}
-
-function bindOlevelEvents() {
-  const addBtn = document.getElementById("addSubjectBtn");
-  if (addBtn) addBtn.addEventListener("click", () => {
-    if (state.olevel.length < 9) {
-      state.olevel.push({subject: "", grade: ""});
-      document.getElementById("olevelRows").innerHTML = renderOlevelRows();
-      addBtn.disabled = state.olevel.length >= 9;
-      updateOlevelResult();
-    }
-  });
+      ${showRemove ? `<button class="btn-icon danger" onclick="removeOlevelRow(${i})" title="Remove">✕</button>` : `<div style="width:36px"></div>`}
+    </div>`;
+  }).join("");
 }
 
 window.updateOlevelRow = function(i, key, val) {
-  if (key === "subject") {
-    state.olevel[i].subject = normalizeSubject(val);
-  } else {
-    state.olevel[i].grade = val;
-  }
+  if (key === "subject") state.olevel[i].subject = normalizeSubject(val);
+  else state.olevel[i].grade = val;
   updateOlevelResult();
 };
 
 window.removeOlevelRow = function(i) {
+  if (i < 5) return; // only allow removing rows 6 and 7 (index 5+)
   state.olevel.splice(i, 1);
   document.getElementById("olevelRows").innerHTML = renderOlevelRows();
-  const addBtn = document.getElementById("addSubjectBtn");
-  if (addBtn) addBtn.disabled = state.olevel.length >= 9;
   updateOlevelResult();
 };
 
 function getStudentResults() {
   return state.olevel
     .filter(r => r.subject && r.grade)
-    .map(r => ({
-      subject: r.subject,
-      grade: r.grade,
-      points: gradeToPoints(r.grade)
-    }));
+    .map(r => ({ subject: r.subject, grade: r.grade, points: gradeToPoints(r.grade) }));
 }
 
 function computeOlevelResult() {
@@ -1871,7 +1718,7 @@ function updateOlevelResult() {
     return;
   }
   if (!res.valid) {
-    const altHtml = studentResults.length >= 5 ? renderAlternatives(studentResults) : "";
+    const altHtml = studentResults.length >= 5 ? renderAlternativesAccordion(studentResults) : "";
     box.innerHTML = `
       <div class="alert-box" style="margin-top:1rem">
         ❌ <strong>Your O/Level combination does not satisfy ${state.programme ? state.programme.name : "this programme"} requirements.</strong><br/>
@@ -1882,10 +1729,7 @@ function updateOlevelResult() {
   }
   const chips = res.selected.map(s => `
     <div class="subject-chip">
-      <div>
-        <div class="subject-chip-name">${s.subject}</div>
-        <div class="subject-chip-grade">${s.grade}</div>
-      </div>
+      <div><div class="subject-chip-name">${s.subject}</div><div class="subject-chip-grade">${s.grade}</div></div>
       <div class="subject-chip-pts">${s.points.toFixed(1)}</div>
     </div>`).join("");
   box.innerHTML = `
@@ -1900,14 +1744,14 @@ function updateOlevelResult() {
 }
 
 // ============================================================
-// STEP 4: Post-UTME + State
+// STEP 5: Post-UTME + State of Origin
 // ============================================================
 
-function renderStep4() {
+function renderStep5() {
   const html = `
   <div class="step-card">
     <div class="card-header">
-      <div class="card-step-label">Step 4 of 5</div>
+      <div class="card-step-label">Step 5 of 6</div>
       <div class="card-title">Post-UTME & State of Origin</div>
       <div class="card-subtitle">Almost there — a few more details</div>
     </div>
@@ -1916,8 +1760,7 @@ function renderStep4() {
         <label class="input-label">Post-UTME Score (out of 30)</label>
         <div class="postutme-input-wrap">
           <input class="input-field" type="number" id="postUtmeInput" min="0" max="30" step="0.01"
-            placeholder="e.g. 24.5" value="${state.postUtme}"
-            ${state.postUtmeUnknown ? "disabled" : ""}>
+            placeholder="e.g. 24.5" value="${state.postUtme}" ${state.postUtmeUnknown ? "disabled" : ""}>
           <span class="postutme-suffix">/ 30</span>
         </div>
       </div>
@@ -1937,8 +1780,8 @@ function renderStep4() {
       </div>
     </div>
     <div class="btn-row">
-      <button class="btn btn-secondary" id="step4Back">← Back</button>
-      <button class="btn btn-primary" id="step4Next">Calculate Results →</button>
+      <button class="btn btn-secondary" id="step5Back">← Back</button>
+      <button class="btn btn-primary" id="step5Next">Calculate Results →</button>
     </div>
   </div>`;
   document.getElementById("mainContent").innerHTML = html;
@@ -1946,38 +1789,181 @@ function renderStep4() {
   document.getElementById("unknownCheck").addEventListener("click", () => {
     state.postUtmeUnknown = !state.postUtmeUnknown;
     if (state.postUtmeUnknown) state.postUtme = "";
-    renderStep4();
+    renderStep5();
   });
-
-  document.getElementById("postUtmeInput").addEventListener("input", function() {
-    state.postUtme = this.value;
-  });
-
-  document.getElementById("stateSelect").addEventListener("change", function() {
-    state.state = this.value;
-  });
-
-  document.getElementById("step4Back").addEventListener("click", () => { state.step = 3; render(); });
-  document.getElementById("step4Next").addEventListener("click", () => {
+  document.getElementById("postUtmeInput").addEventListener("input", function() { state.postUtme = this.value; });
+  document.getElementById("stateSelect").addEventListener("change", function() { state.state = this.value; });
+  document.getElementById("step5Back").addEventListener("click", () => { state.step = 4; render(); });
+  document.getElementById("step5Next").addEventListener("click", () => {
     const score = state.postUtmeUnknown ? 22.5 : parseFloat(state.postUtme);
     if (!state.postUtmeUnknown && (isNaN(score) || score < 0 || score > 30)) {
       alert("Please enter a valid Post-UTME score between 0 and 30, or check \"I haven't taken Post-UTME yet\".");
       return;
     }
     if (!state.state) { alert("Please select your state of origin."); return; }
-    // recompute olevel
     const res = computeOlevelResult();
     if (!res || !res.valid) { alert("O/Level requirements issue. Please go back and check your subjects."); return; }
     state.olevelResult = res;
-    state.step = 5; render();
+    state.step = 6; render();
   });
 }
 
 // ============================================================
-// STEP 5: Results
+// FACULTY ACCORDION (alternative programmes)
 // ============================================================
 
-function renderStep5() {
+function renderAlternativesAccordion(studentResults) {
+  const { grouped, sortedFaculties } = findAlternativeProgrammes(studentResults);
+  const utme = parseFloat(state.utmeScore) || 0;
+
+  if (sortedFaculties.length === 0) {
+    return `<div class="alt-section">
+      <div class="alt-section-title">Alternative Programmes</div>
+      <div class="alert-box warn">No matching programmes found for your current O/Level combination. Try updating your subjects.</div>
+    </div>`;
+  }
+
+  const total = sortedFaculties.reduce((s, f) => s + grouped[f].length, 0);
+  let html = `<div class="alt-section">
+    <div class="alt-section-title">${total} Programmes You May Qualify For</div>
+    <div class="alt-section-sub">Based on your O/Level subjects${utme > 0 ? ` and UTME score of ${utme}` : ""}${state.utmeSubjects.filter(s=>s).length >= 3 ? " and UTME subject combination" : ""}. Chance assumes ~75% Post-UTME. Click a course to see details.</div>`;
+
+  for (const fac of sortedFaculties) {
+    const items = grouped[fac];
+    const highCount = items.filter(r => r.chance === "high").length;
+    const isOpen = expandedFaculty === fac;
+    const facId = "fac-" + fac.replace(/\s+/g, "-").replace(/[^a-zA-Z0-9-]/g, "");
+
+    html += `<div class="faculty-card" onclick="toggleFaculty('${fac.replace(/'/g,"\\'")}')">
+      <div class="faculty-card-header">
+        <div class="faculty-card-left">
+          <div>
+            <div class="faculty-card-name">${fac}</div>
+            <div class="faculty-card-count">${items.length} programme${items.length !== 1 ? "s" : ""}</div>
+          </div>
+        </div>
+        ${highCount > 0 ? `<span class="faculty-high-badge">${highCount} High Chance</span>` : ""}
+        <span class="faculty-chevron ${isOpen ? "open" : ""}">›</span>
+      </div>
+      <div class="faculty-courses ${isOpen ? "open" : ""}" id="${facId}">
+        ${isOpen ? renderCourseCards(items, fac) : ""}
+      </div>
+    </div>`;
+  }
+
+  html += `</div>`;
+  return html;
+}
+
+function renderCourseCards(items, fac) {
+  return items.map(({ prog, olevelPts, estimatedAggregate, chance }) => {
+    const isExpanded = expandedCourse === prog.name;
+    const chanceLabel = chance === "high" ? "High Chance" : chance === "med" ? "Moderate" : "Low Chance";
+    const meritStr = prog.merit > 0 ? prog.merit : "—";
+    const courseId = "course-" + prog.name.replace(/\s+/g, "-").replace(/[^a-zA-Z0-9-]/g, "");
+
+    let detailPanel = "";
+    if (isExpanded) {
+      detailPanel = renderCourseDetail(prog, olevelPts, estimatedAggregate, chance);
+    }
+
+    return `<div>
+      <div class="course-card" onclick="expandCourse('${prog.name.replace(/'/g,"\\'")}', '${fac.replace(/'/g,"\\'")}')">
+        <div class="course-card-left">
+          <div class="course-card-name">${prog.name}</div>
+          <div class="course-card-meta">Est. Aggregate: ${estimatedAggregate.toFixed(1)} &nbsp;·&nbsp; O/Level: ${olevelPts.toFixed(1)}/20</div>
+        </div>
+        <div class="course-card-right">
+          <span class="chance-pill chance-${chance}">${chanceLabel}</span>
+          <span style="font-size:0.72rem;color:var(--text3)">Merit: ${meritStr}</span>
+        </div>
+      </div>
+      ${detailPanel}
+    </div>`;
+  }).join("");
+}
+
+function renderCourseDetail(prog, olevelPts, estimatedAggregate, chance) {
+  const utme = parseFloat(state.utmeScore) || 0;
+  const utmeContrib = Math.min(utme / 8, 50);
+  const scored = utmeContrib + olevelPts;
+  const merit = prog.merit;
+  const catchmentScore = state.state && state.state !== "Other" ? prog.catchment[state.state] : null;
+
+  const utmeCheck = checkUTMESubjects(state.utmeSubjects, prog.utmeReqs);
+  const studentResults = getStudentResults();
+  const olevelCheck = studentResults.length >= 5 ? findBestFive(studentResults, prog.requirements) : null;
+
+  const utmeOk = utmeCheck.valid;
+  const olevelOk = olevelCheck && olevelCheck.valid;
+
+  let targetLine = "";
+  if (merit > 0) {
+    const primaryCut = catchmentScore !== undefined ? Math.min(merit, catchmentScore) : merit;
+    const needed = primaryCut - scored;
+    const label = catchmentScore !== undefined && catchmentScore < merit ? `${state.state || "Catchment"} (${catchmentScore})` : `Merit (${merit})`;
+    if (needed <= 0) {
+      targetLine = `<div class="detail-row"><span class="detail-label">Post-UTME Needed</span><span class="detail-val ok">Already qualifies (no Post-UTME needed)</span></div>`;
+    } else {
+      const cls = needed <= 22 ? "ok" : needed <= 30 ? "" : "fail";
+      targetLine = `<div class="detail-row"><span class="detail-label">Post-UTME Needed for ${label}</span><span class="detail-val ${cls}">${Math.max(0, needed).toFixed(2)} / 30</span></div>`;
+    }
+  }
+
+  return `<div class="course-detail-panel">
+    <div class="course-detail-title">${prog.name}</div>
+    <div class="course-detail-faculty">${prog.faculty}</div>
+    <div class="detail-row"><span class="detail-label">UTME Subjects</span><span class="detail-val ${utmeOk ? "ok" : "fail"}">${utmeOk ? "✓ Compatible" : "✗ Incompatible"}</span></div>
+    <div class="detail-row"><span class="detail-label">O/Level</span><span class="detail-val ${olevelOk ? "ok" : "fail"}">${olevelOk ? "✓ Satisfies requirements" : "✗ Does not satisfy"}</span></div>
+    <div class="detail-row"><span class="detail-label">UTME Contribution</span><span class="detail-val">${utmeContrib.toFixed(2)} / 50</span></div>
+    <div class="detail-row"><span class="detail-label">O/Level Contribution</span><span class="detail-val">${olevelPts.toFixed(2)} / 20</span></div>
+    <div class="detail-row"><span class="detail-label">Est. Total (with ~75% Post-UTME)</span><span class="detail-val">${estimatedAggregate.toFixed(2)} / 100</span></div>
+    <div class="detail-row"><span class="detail-label">Merit Cut-off</span><span class="detail-val">${merit > 0 ? merit : "No data"}</span></div>
+    ${catchmentScore !== undefined ? `<div class="detail-row"><span class="detail-label">${state.state} Catchment</span><span class="detail-val">${catchmentScore}</span></div>` : ""}
+    ${targetLine}
+    <button class="btn-switch" onclick="switchToProgramme('${prog.name.replace(/'/g,"\\'")}')">Switch to this course →</button>
+  </div>`;
+}
+
+window.toggleFaculty = function(fac) {
+  expandedFaculty = expandedFaculty === fac ? null : fac;
+  expandedCourse = null;
+  const studentResults = getStudentResults();
+  // Re-render only the accordion section without full page reload
+  const altEl = document.querySelector(".alt-section");
+  if (altEl) {
+    const tmp = document.createElement("div");
+    tmp.innerHTML = renderAlternativesAccordion(studentResults);
+    altEl.replaceWith(tmp.firstElementChild);
+  }
+};
+
+window.expandCourse = function(courseName, fac) {
+  if (expandedCourse === courseName) {
+    expandedCourse = null;
+  } else {
+    expandedCourse = courseName;
+    expandedFaculty = fac;
+  }
+  const studentResults = getStudentResults();
+  const altEl = document.querySelector(".alt-section");
+  if (altEl) {
+    const tmp = document.createElement("div");
+    tmp.innerHTML = renderAlternativesAccordion(studentResults);
+    altEl.replaceWith(tmp.firstElementChild);
+  }
+};
+
+// Keep renderAlternatives as an alias used by old inline calls (O/Level step)
+function renderAlternatives(studentResults) {
+  return renderAlternativesAccordion(studentResults);
+}
+
+// ============================================================
+// STEP 6: Results
+// ============================================================
+
+function renderStep6() {
   const prog = state.programme;
   const utme = parseFloat(state.utmeScore) || 0;
   const utmeContrib = Math.min(utme / 8, 50);
@@ -1986,133 +1972,113 @@ function renderStep5() {
   const postUtmeContrib = Math.min(postUtmeRaw, 30);
   const total = utmeContrib + olevelContrib + postUtmeContrib;
 
-  // Verdict
-  let verdict, verdictClass, verdictIcon;
   const merit = prog.merit;
   const catchmentScore = state.state && state.state !== "Other" ? prog.catchment[state.state] : null;
   const relevantCutoff = catchmentScore !== undefined ? Math.min(merit, catchmentScore) : merit;
 
-  if (state.postUtmeUnknown) {
-    verdict = "PRE-EXAM PROJECTION";
-    verdictClass = "verdict-borderline";
-    verdictIcon = "🎯";
-  } else if (merit === 0) {
-    verdict = "NO CUTOFF DATA";
-    verdictClass = "verdict-borderline";
-    verdictIcon = "📊";
-  } else if (total >= merit) {
-    verdict = "ELIGIBLE (MERIT)";
-    verdictClass = "verdict-eligible";
-    verdictIcon = "✓";
-  } else if (catchmentScore !== undefined && total >= catchmentScore) {
-    verdict = "ELIGIBLE (CATCHMENT)";
-    verdictClass = "verdict-eligible";
-    verdictIcon = "✓";
-  } else if (total >= (relevantCutoff - 3)) {
-    verdict = "BORDERLINE";
-    verdictClass = "verdict-borderline";
-    verdictIcon = "~";
-  } else {
-    verdict = "NOT ELIGIBLE";
-    verdictClass = "verdict-not";
-    verdictIcon = "✕";
+  // Determine eligibility type
+  const utmeOk = checkUTMESubjects(state.utmeSubjects, prog.utmeReqs).valid;
+  const olevelOk = state.olevelResult && state.olevelResult.valid;
+
+  const subjectIneligible = !utmeOk || !olevelOk;
+
+  let isEligible = false;
+  if (!subjectIneligible) {
+    if (state.postUtmeUnknown || merit === 0) {
+      isEligible = true; // show "projection" mode
+    } else if (total >= merit || (catchmentScore !== undefined && total >= catchmentScore)) {
+      isEligible = true;
+    }
   }
 
-  // Aggregate colour
-  const aggColor = total >= merit ? "var(--green)" : total >= (merit - 5) ? "var(--gold)" : "var(--red)";
+  const aggColor = merit === 0 ? "var(--teal)" : total >= merit ? "var(--green)" : total >= (merit - 5) ? "var(--gold)" : "var(--red)";
 
-  // breakdown bar widths
+  // Verdict text for hero
+  let heroVerdict, heroVerdictCls;
+  if (subjectIneligible) {
+    heroVerdict = "INELIGIBLE ✗";
+    heroVerdictCls = "ineligible";
+  } else if (state.postUtmeUnknown || merit === 0) {
+    heroVerdict = "PROJECTION 🎯";
+    heroVerdictCls = "";
+  } else if (total >= merit) {
+    heroVerdict = "ELIGIBLE ✓";
+    heroVerdictCls = "eligible";
+  } else if (catchmentScore !== undefined && total >= catchmentScore) {
+    heroVerdict = "ELIGIBLE (CATCHMENT) ✓";
+    heroVerdictCls = "eligible";
+  } else if (total >= (relevantCutoff - 3)) {
+    heroVerdict = "BORDERLINE ~";
+    heroVerdictCls = "";
+  } else {
+    heroVerdict = "NOT ELIGIBLE ✗";
+    heroVerdictCls = "ineligible";
+  }
+
+  // Hero
+  const heroHtml = `
+  <div class="results-hero">
+    <div class="results-hero-label">${prog.faculty} · UNILAG 2025/2026</div>
+    <div class="results-hero-name">${state.name ? state.name + "'s Results — " : ""}${prog.name}</div>
+    <div class="results-hero-faculty">2025/2026 Admissions</div>
+    <div class="results-hero-verdict ${heroVerdictCls}">${heroVerdict}</div>
+  </div>`;
+
+  // Score breakdown card
   const utmePct = (utmeContrib / 100) * 100;
   const olevPct = (olevelContrib / 100) * 100;
   const postPct = (postUtmeContrib / 100) * 100;
+  const postUtmeNote = state.postUtmeUnknown ? ` <span style="font-weight:400;color:var(--text3)">(not yet taken)</span>` : "";
 
-  // cutoff items
-  let cutoffHtml = "";
-  if (merit === 0) {
-    cutoffHtml = `<div class="alert-box warn">ℹ No official cut-off data is available for this programme.</div>`;
-  } else {
-    const meritPass = total >= merit;
-    cutoffHtml = `<div class="cutoff-grid">
-      <div class="cutoff-item">
-        <span class="cutoff-item-label">Merit Cut-off</span>
-        <span class="cutoff-item-val ${meritPass ? "cutoff-pass" : "cutoff-fail"}">${merit}</span>
-      </div>
-      <div class="cutoff-item ${Math.abs(total - merit) <= 3 ? "highlight" : ""}">
-        <span class="cutoff-item-label">Your Aggregate</span>
-        <span class="cutoff-item-val" style="color:${aggColor}">${total.toFixed(3)}</span>
-      </div>`;
-    if (catchmentScore !== undefined) {
-      const catchPass = total >= catchmentScore;
-      cutoffHtml += `
-      <div class="cutoff-item">
-        <span class="cutoff-item-label">${state.state} Catchment</span>
-        <span class="cutoff-item-val ${catchPass ? "cutoff-pass" : "cutoff-fail"}">${catchmentScore}</span>
-      </div>
-      <div class="cutoff-item">
-        <span class="cutoff-item-label">Gap to Catchment</span>
-        <span class="cutoff-item-val ${catchPass ? "cutoff-pass" : "cutoff-near"}">${(total - catchmentScore).toFixed(3)}</span>
-      </div>`;
-    } else {
-      cutoffHtml += `
-      <div class="cutoff-item">
-        <span class="cutoff-item-label">${state.state === "Other" ? "Other State" : state.state}</span>
-        <span class="cutoff-item-val" style="color:var(--text3)">No catchment data</span>
-      </div>
-      <div class="cutoff-item">
-        <span class="cutoff-item-label">Gap to Merit</span>
-        <span class="cutoff-item-val ${meritPass ? "cutoff-pass" : "cutoff-near"}">${(total - merit).toFixed(3)}</span>
-      </div>`;
-    }
-    cutoffHtml += `</div>`;
-  }
+  const scoreCardHtml = `
+  <div class="result-card" style="margin-top:1.5rem">
+    <div class="result-card-title">Score Breakdown</div>
+    <div class="aggregate-row">
+      <span class="aggregate-num" style="color:${aggColor}">${total.toFixed(3)}</span>
+      <span class="aggregate-denom">/ 100</span>
+    </div>
+    <div class="aggregate-label">Total Aggregate Score</div>
+    <div class="breakdown-bar-wrap">
+      <div class="breakdown-seg seg-utme" style="width:${utmePct}%">${utmeContrib > 5 ? utmeContrib.toFixed(1) : ""}</div>
+      <div class="breakdown-seg seg-olevel" style="width:${olevPct}%">${olevelContrib > 2 ? olevelContrib.toFixed(1) : ""}</div>
+      <div class="breakdown-seg seg-postutme" style="width:${postPct}%">${postUtmeContrib > 2 ? postUtmeContrib.toFixed(1) : ""}</div>
+    </div>
+    <div class="breakdown-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#3182ce"></div>UTME: ${utmeContrib.toFixed(2)} / 50</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#6b46c1"></div>O/Level: ${olevelContrib.toFixed(2)} / 20</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Post-UTME: ${postUtmeContrib.toFixed(2)} / 30${postUtmeNote}</div>
+    </div>
+  </div>`;
 
-  // Selected subjects
-  const subjectChips = state.olevelResult.selected.map(s => `
-    <div class="subject-chip">
-      <div><div class="subject-chip-name">${s.subject}</div><div class="subject-chip-grade">${s.grade}</div></div>
-      <div class="subject-chip-pts">${s.points.toFixed(1)}</div>
-    </div>`).join("");
-
-  // --- POST-UTME TARGET CALCULATION ---
-  // How much does the student need in Post-UTME to hit the relevant cut-off?
-  const scored = utmeContrib + olevelContrib; // known, fixed
-  let targetHtml = "";
-  if (merit > 0) {
+  // Post-UTME target card
+  const scored = utmeContrib + olevelContrib;
+  let targetCardHtml = "";
+  if (merit > 0 && !subjectIneligible) {
     const targetMerit = merit - scored;
-    const targetCatch = (catchmentScore !== undefined) ? catchmentScore - scored : null;
-
-    // Pick the more achievable target (catchment if lower and available)
+    const targetCatch = catchmentScore !== undefined ? catchmentScore - scored : null;
     const primaryTarget = (targetCatch !== null && targetCatch < targetMerit) ? targetCatch : targetMerit;
     const primaryLabel = (targetCatch !== null && targetCatch < targetMerit)
       ? `${state.state} Catchment (${catchmentScore})` : `Merit (${merit})`;
-
     let tClass, tIcon, tDesc;
     if (primaryTarget <= 0) {
       tClass = "achievable"; tIcon = "🏆";
-      tDesc = `You <strong>already qualify</strong> for ${primaryLabel} based on your UTME + O/Level scores alone — even before Post-UTME!`;
+      tDesc = `You <strong>already qualify</strong> for ${primaryLabel} — even before Post-UTME!`;
     } else if (primaryTarget <= 30) {
       tClass = primaryTarget <= 22 ? "achievable" : "stretch";
       tIcon = primaryTarget <= 22 ? "🎯" : "⚡";
       const pct = Math.round((primaryTarget / 30) * 100);
-      const difficulty = primaryTarget <= 15 ? "Very achievable with solid preparation." : primaryTarget <= 22 ? "Achievable — aim for consistent study." : "Challenging — you need a strong performance.";
+      const difficulty = primaryTarget <= 15 ? "Very achievable." : primaryTarget <= 22 ? "Achievable with consistent study." : "Challenging — strong performance needed.";
       tDesc = state.postUtmeUnknown
-        ? `To secure admission to <strong>${prog.name}</strong>, score at least <strong>${Math.max(0, primaryTarget).toFixed(1)}/30</strong> in the Post-UTME. That's <strong>${pct}%</strong> of the maximum. ${difficulty}`
-        : `This is <strong>${pct}% of the maximum</strong> Post-UTME score. ${primaryTarget <= 22 ? "This is very achievable with solid preparation." : "Aim high — you'll need a strong performance in the Post-UTME."}`;
+        ? `Score at least <strong>${Math.max(0, primaryTarget).toFixed(1)}/30</strong> in Post-UTME to qualify for ${primaryLabel}. That's <strong>${pct}%</strong>. ${difficulty}`
+        : `<strong>${pct}% of max</strong> Post-UTME score. ${difficulty}`;
     } else {
       tClass = "impossible"; tIcon = "⚠️";
-      tDesc = `Even with a perfect Post-UTME score (30/30), your aggregate would only reach <strong>${(scored + 30).toFixed(2)}</strong> — still ${(merit - scored - 30).toFixed(2)} below the merit cut-off. Consider improving your UTME score or exploring alternative programmes.`;
+      tDesc = `Even with a perfect Post-UTME (30/30), your aggregate would reach only <strong>${(scored + 30).toFixed(2)}</strong> — still below the cut-off.`;
     }
-
-    const targetSectionTitle = state.postUtmeUnknown
-      ? "🎯 Your Post-UTME Target — What You Need to Score"
-      : "🎯 Post-UTME Target — What You Need";
-
-    targetHtml = `
-    <div class="breakdown-section" style="padding-top:0">
-      <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);margin-bottom:0.75rem">
-        ${targetSectionTitle}
-      </div>
-      <div class="target-box ${tClass}">
+    targetCardHtml = `
+    <div class="result-card">
+      <div class="result-card-title">${state.postUtmeUnknown ? "Your Post-UTME Target" : "Post-UTME Target"}</div>
+      <div class="target-box ${tClass}" style="margin:0">
         <div class="target-icon">${tIcon}</div>
         <div>
           <div style="display:flex;align-items:baseline;gap:0.5rem">
@@ -2123,102 +2089,129 @@ function renderStep5() {
           <div class="target-desc" style="margin-top:0.4rem">${tDesc}</div>
         </div>
       </div>
-      ${targetCatch !== null && targetCatch !== primaryTarget ? `
-      <div style="font-size:0.8rem;color:var(--text3);margin-top:0.5rem">
-        Also: need <strong style="color:var(--text2)">${Math.max(0, targetMerit).toFixed(2)}/30</strong> for national merit qualification.
-      </div>` : ""}
+      ${targetCatch !== null && targetCatch !== primaryTarget ? `<div style="font-size:0.8rem;color:var(--text3);margin-top:0.75rem">Also need <strong style="color:var(--text2)">${Math.max(0, targetMerit).toFixed(2)}/30</strong> for national merit.</div>` : ""}
     </div>`;
   }
 
-  // Advice
-  let advice = "";
-  if (merit === 0) {
-    advice = "Contact UNILAG admissions for current cut-off information for this programme.";
-  } else if (total >= merit) {
-    advice = "Excellent! Your aggregate meets the merit cut-off. Ensure all documents are ready and monitor the UNILAG admissions portal.";
-  } else if (catchmentScore !== undefined && total >= catchmentScore) {
-    advice = `Your aggregate qualifies under the ${state.state} catchment quota. Monitor the admissions portal and submit all required documents promptly.`;
-  } else if (total >= (relevantCutoff - 3)) {
-    advice = `You're very close to the cut-off. Consider uploading supplementary credentials, check if your state has catchment benefits, and watch for changes in the cut-off.`;
-  } else {
-    const gap = (relevantCutoff - total).toFixed(3);
-    advice = `Your aggregate is ${gap} points below the cut-off. Consider improving your UTME score in a resit, or explore other programmes where your aggregate is competitive.`;
+  // Cut-off analysis card
+  let cutoffCardHtml = "";
+  if (merit > 0 && !subjectIneligible) {
+    const meritPass = total >= merit;
+    let cutoffInner = `<div class="cutoff-grid">
+      <div class="cutoff-item">
+        <span class="cutoff-item-label">Merit Cut-off</span>
+        <span class="cutoff-item-val ${meritPass ? "cutoff-pass" : "cutoff-fail"}">${merit}</span>
+      </div>
+      <div class="cutoff-item ${Math.abs(total - merit) <= 3 ? "highlight" : ""}">
+        <span class="cutoff-item-label">Your Aggregate</span>
+        <span class="cutoff-item-val" style="color:${aggColor}">${total.toFixed(3)}</span>
+      </div>`;
+    if (catchmentScore !== undefined) {
+      const catchPass = total >= catchmentScore;
+      cutoffInner += `
+      <div class="cutoff-item">
+        <span class="cutoff-item-label">${state.state} Catchment</span>
+        <span class="cutoff-item-val ${catchPass ? "cutoff-pass" : "cutoff-fail"}">${catchmentScore}</span>
+      </div>
+      <div class="cutoff-item">
+        <span class="cutoff-item-label">Gap to Catchment</span>
+        <span class="cutoff-item-val ${catchPass ? "cutoff-pass" : "cutoff-near"}">${(total - catchmentScore).toFixed(3)}</span>
+      </div>`;
+    } else {
+      cutoffInner += `
+      <div class="cutoff-item">
+        <span class="cutoff-item-label">${state.state === "Other" ? "Other State" : (state.state || "State")}</span>
+        <span class="cutoff-item-val" style="color:var(--text3)">No catchment data</span>
+      </div>
+      <div class="cutoff-item">
+        <span class="cutoff-item-label">Gap to Merit</span>
+        <span class="cutoff-item-val ${meritPass ? "cutoff-pass" : "cutoff-near"}">${(total - merit).toFixed(3)}</span>
+      </div>`;
+    }
+    cutoffInner += `</div>`;
+    cutoffCardHtml = `<div class="result-card"><div class="result-card-title">Cut-off Analysis</div>${cutoffInner}</div>`;
   }
 
-  // --- ALTERNATIVES (always shown — filtered by UTME + O/Level compatibility) ---
-  let altHtml = "";
+  // Ineligibility content (subject mismatch)
+  let ineligContent = "";
+  if (subjectIneligible) {
+    // Build side-by-side comparison
+    let comparisonHtml = "";
+    const whichProblem = !utmeOk ? "UTME" : "O/Level";
+
+    if (!utmeOk) {
+      // UTME comparison
+      const studentUtme = state.utmeSubjects.filter(s => s);
+      const required = prog.utme;
+      const leftCol = studentUtme.map(s => {
+        const match = required.some(r => r.toLowerCase().includes(s.toLowerCase()) || s.toLowerCase().includes(r.toLowerCase().replace(" or ", "").replace(/[^a-z]/g,"")));
+        return `<div class="comparison-row ${match ? "match" : "miss"}">${match ? "✓" : "✗"} ${s}</div>`;
+      }).join("") || `<div class="comparison-row neutral">No subjects entered</div>`;
+      const rightCol = required.map(r => `<div class="comparison-row neutral">• ${r}</div>`).join("");
+      comparisonHtml = `
+        <div class="comparison-grid">
+          <div><div class="comparison-col-title">Your UTME Subjects</div>${leftCol}</div>
+          <div><div class="comparison-col-title">Required for ${prog.name}</div>${rightCol}</div>
+        </div>`;
+    } else if (!olevelOk && state.olevelResult) {
+      // O/Level comparison
+      const studentSubjs = getStudentResults().map(r => r.subject);
+      const leftCol = studentSubjs.map(s => {
+        const reqd = prog.requirements.some(g => g.subjects.includes(s) || g.subjects.includes("__ANY__"));
+        return `<div class="comparison-row ${reqd ? "match" : "neutral"}">• ${s}</div>`;
+      }).join("") || `<div class="comparison-row neutral">No subjects</div>`;
+      const rightCol = prog.requirements.map(g => `<div class="comparison-row neutral">• ${g.label}</div>`).join("");
+      comparisonHtml = `
+        <div class="comparison-grid">
+          <div><div class="comparison-col-title">Your O/Level Subjects</div>${leftCol}</div>
+          <div><div class="comparison-col-title">Required for ${prog.name}</div>${rightCol}</div>
+        </div>`;
+    }
+
+    ineligContent = `
+    <div class="ineligible-banner">
+      <div class="ineligible-banner-title">You are not eligible to study ${prog.name} due to an incorrect ${!utmeOk ? "UTME" : "O/Level"} subject combination.</div>
+      <div class="ineligible-banner-sub">${!utmeOk ? `${prog.name} requires specific UTME subjects. See comparison below.` : state.olevelResult ? state.olevelResult.error || "Your O/Level subjects do not satisfy the programme requirements." : "Your O/Level subjects do not satisfy the programme requirements."}</div>
+    </div>
+    <div class="result-card">
+      <div class="result-card-title">Subject Combination Comparison</div>
+      ${comparisonHtml}
+    </div>`;
+  }
+
+  // Advice box
+  let adviceText = "";
+  if (!subjectIneligible) {
+    if (merit === 0) adviceText = "Contact UNILAG admissions for current cut-off information for this programme.";
+    else if (total >= merit) adviceText = "Excellent! Your aggregate meets the merit cut-off. Ensure all documents are ready and monitor the UNILAG admissions portal.";
+    else if (catchmentScore !== undefined && total >= catchmentScore) adviceText = `Your aggregate qualifies under the ${state.state} catchment quota. Submit all required documents promptly.`;
+    else if (total >= (relevantCutoff - 3)) adviceText = "You're very close to the cut-off. Check for catchment benefits and watch for changes in the cut-off.";
+    else { const gap = (relevantCutoff - total).toFixed(3); adviceText = `Your aggregate is ${gap} points below the cut-off. Consider improving your UTME score or exploring alternative programmes below.`; }
+  }
+
+  // Alternatives section (always shown)
+  expandedFaculty = expandedFaculty; // preserve
+  expandedCourse = expandedCourse;
   const studentResults = getStudentResults();
-  if (studentResults.length >= 5) {
-    altHtml = `<div class="breakdown-section" style="padding-top:0">${renderAlternatives(studentResults)}</div>`;
-  }
-
-  const postUtmeNote = state.postUtmeUnknown ? ` <span style="color:var(--text3);font-size:0.75rem">(not yet taken)</span>` : "";
+  const altHtml = studentResults.length >= 5 ? renderAlternativesAccordion(studentResults) : "";
 
   const html = `
   <div class="step-card">
-    <div class="results-header">
-      <div class="results-programme">${prog.faculty}</div>
-      <div class="results-name">${prog.name}</div>
-      <div class="results-faculty">2025/2026 Admissions — UNILAG</div>
-      <div class="verdict-badge ${verdictClass}">${verdictIcon} ${verdict}</div>
-    </div>
+    ${heroHtml}
 
-    <div class="aggregate-display">
-      <div style="margin-top:1.5rem">
-        <span class="aggregate-num" style="color:${aggColor}">${total.toFixed(3)}</span>
-        <span class="aggregate-denom"> / 100</span>
-      </div>
-      <div class="aggregate-label">Total Aggregate Score</div>
-    </div>
+    ${ineligContent}
 
-    <div class="breakdown-section">
-      <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);margin-bottom:0.75rem">Score Breakdown</div>
-      <div class="breakdown-bar-wrap">
-        <div class="breakdown-seg seg-utme" style="width:${utmePct}%" title="UTME: ${utmeContrib.toFixed(2)}">
-          ${utmeContrib > 5 ? utmeContrib.toFixed(1) : ""}
-        </div>
-        <div class="breakdown-seg seg-olevel" style="width:${olevPct}%" title="O/Level: ${olevelContrib.toFixed(2)}">
-          ${olevelContrib > 2 ? olevelContrib.toFixed(1) : ""}
-        </div>
-        <div class="breakdown-seg seg-postutme" style="width:${postPct}%" title="Post-UTME: ${postUtmeContrib.toFixed(2)}">
-          ${postUtmeContrib > 2 ? postUtmeContrib.toFixed(1) : ""}
-        </div>
-      </div>
-      <div class="breakdown-legend">
-        <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>UTME: ${utmeContrib.toFixed(2)} / 50</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div>O/Level: ${olevelContrib.toFixed(2)} / 20</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Post-UTME: ${postUtmeContrib.toFixed(2)} / 30${postUtmeNote}</div>
-      </div>
-    </div>
+    ${!subjectIneligible ? scoreCardHtml : ""}
+    ${targetCardHtml}
+    ${cutoffCardHtml}
 
-    ${targetHtml}
+    ${adviceText ? `<div class="result-card"><div class="info-box" style="margin:0">${adviceText}</div></div>` : ""}
 
-    <div class="cutoff-section">
-      <div class="cutoff-title">Cut-off Analysis</div>
-      ${cutoffHtml}
-    </div>
-
-    <div class="subjects-section">
-      <div class="cutoff-title">O/Level Subjects Selected (Best 5)</div>
-      ${subjectChips}
-    </div>
-
-    <div class="subjects-section">
-      <div class="cutoff-title">Required UTME Subjects</div>
-      <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.5rem">
-        ${prog.utme.map(s => `<span class="tag" style="background:rgba(37,99,235,0.15);color:var(--blue2)">${s}</span>`).join("")}
-      </div>
-    </div>
-
-    <div class="subjects-section">
-      <div class="info-box">${advice}</div>
-    </div>
-
-    ${altHtml}
+    <div id="altSectionWrap">${altHtml}</div>
 
     <div class="btn-row">
-      <button class="btn btn-secondary" id="step5Back">← Edit</button>
-      <button class="btn btn-restart" id="step5Restart">↺ Start Over</button>
+      <button class="btn btn-secondary" id="step6Back">← Edit</button>
+      <button class="btn btn-restart" id="step6Restart">↺ Start Over</button>
     </div>
     <div class="disclaimer">
       This tool is for estimation purposes only. Actual cut-off marks may vary. Always verify with the official UNILAG admissions portal at unilag.edu.ng. Cut-off data is based on 2024/2025 figures as reference.
@@ -2226,16 +2219,20 @@ function renderStep5() {
   </div>`;
   document.getElementById("mainContent").innerHTML = html;
 
-  document.getElementById("step5Back").addEventListener("click", () => { state.step = 4; render(); });
-  document.getElementById("step5Restart").addEventListener("click", () => {
+  document.getElementById("step6Back").addEventListener("click", () => { state.step = 5; render(); });
+  document.getElementById("step6Restart").addEventListener("click", () => {
     state.step = 1;
+    state.name = "";
     state.programme = null;
     state.utmeScore = "";
-    state.olevel = [{subject:"",grade:""},{subject:"",grade:""},{subject:"",grade:""},{subject:"",grade:""},{subject:"",grade:""}];
+    state.utmeSubjects = ["", "", "", ""];
+    state.olevel = Array.from({length: 7}, () => ({subject: "", grade: ""}));
     state.postUtme = "";
     state.postUtmeUnknown = false;
     state.state = "";
     state.olevelResult = null;
+    expandedFaculty = null;
+    expandedCourse = null;
     render();
   });
 }
@@ -2253,6 +2250,7 @@ function render() {
     case 3: renderStep3(); break;
     case 4: renderStep4(); break;
     case 5: renderStep5(); break;
+    case 6: renderStep6(); break;
   }
 }
 
