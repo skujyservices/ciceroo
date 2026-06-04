@@ -148,7 +148,7 @@
   .autocomplete-dropdown {
     position: absolute; top: calc(100% + 4px); left: 0; right: 0;
     background: #ffffff; border: 1.5px solid var(--teal); border-radius: 12px;
-    box-shadow: var(--shadow2); z-index: 200; overflow: hidden; max-height: 340px; overflow-y: auto;
+    box-shadow: var(--shadow2); z-index: 200; max-height: 360px; overflow-y: auto;
   }
   .autocomplete-dropdown::-webkit-scrollbar { width: 5px; }
   .autocomplete-dropdown::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
@@ -1441,12 +1441,17 @@ function renderStep2() {
 
   function showDropdown(query) {
     const q = query.trim().toLowerCase();
-    if (q.length < 2) { dropEl.innerHTML = ""; return; }
-    const matches = PROGRAMMES.filter(p =>
-      p.name.toLowerCase().includes(q) || p.faculty.toLowerCase().includes(q)
-    ).slice(0, 8);
-    if (matches.length === 0) { dropEl.innerHTML = `<div class="autocomplete-dropdown"><div style="padding:1rem;text-align:center;color:var(--text3);font-size:0.875rem">No courses found</div></div>`; return; }
-    dropEl.innerHTML = `<div class="autocomplete-dropdown">${matches.map(p => `
+    const matches = q.length === 0
+      ? PROGRAMMES
+      : PROGRAMMES.filter(p =>
+          p.name.toLowerCase().includes(q) || p.faculty.toLowerCase().includes(q)
+        );
+    if (matches.length === 0) {
+      dropEl.innerHTML = `<div class="autocomplete-dropdown"><div style="padding:1rem;text-align:center;color:var(--text3);font-size:0.875rem">No courses found for "${query}"</div></div>`;
+      return;
+    }
+    const limited = matches.slice(0, q.length === 0 ? PROGRAMMES.length : 12);
+    dropEl.innerHTML = `<div class="autocomplete-dropdown">${limited.map(p => `
       <div class="ac-item" data-name="${p.name}">
         ${facBadge(p.faculty)}
         <span class="ac-item-name">${p.name}</span>
@@ -1494,8 +1499,9 @@ function renderStep2() {
     });
   }
 
+  searchEl.addEventListener("focus", function() { if (!state.programme) showDropdown(this.value); });
   searchEl.addEventListener("input", function() { showDropdown(this.value); });
-  searchEl.addEventListener("blur", () => { setTimeout(() => { dropEl.innerHTML = ""; }, 150); });
+  searchEl.addEventListener("blur", () => { setTimeout(() => { dropEl.innerHTML = ""; }, 200); });
   document.getElementById("step2Back").addEventListener("click", () => { state.step = 1; render(); });
   nextBtn.addEventListener("click", () => { if (state.programme) { state.step = 3; render(); } });
   bindChipDeselect();
