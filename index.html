@@ -1462,8 +1462,8 @@ const state = {
   olevelResult: null,
 };
 
-const STEP_LABELS = ["Name","Course","UTME","O/Level","Post-UTME","Results"];
-const TOTAL_STEPS = 6;
+const STEP_LABELS = ["Name","Course","UTME","O/Level","Results"];
+const TOTAL_STEPS = 5;
 
 // Accordion state (module-level, not in state to avoid full re-render)
 let expandedFaculty = null;
@@ -1773,22 +1773,32 @@ function renderStep4() {
   const html = `
   <div class="step-card">
     <div class="card-header">
-      <div class="card-step-label">Step 4 of 6</div>
+      <div class="card-step-label">Step 4 of 5</div>
       <div class="card-title">O/Level Results</div>
       <div class="card-subtitle">Enter your WAEC/NECO subjects and grades (at least 5 required)</div>
     </div>
     <div class="card-body">
       <div id="olevelRows">${renderOlevelRows()}</div>
       <div id="olevelResultBox"></div>
+      <div class="divider"></div>
+      <div class="state-select-wrap">
+        <label class="input-label">State of Origin</label>
+        <select class="input-field" id="stateSelect">
+          <option value="">— Select your state —</option>
+          ${ALL_STATES.map(s => `<option value="${s}" ${state.state === s ? "selected" : ""}>${s}</option>`).join("")}
+        </select>
+        <div style="font-size:0.75rem;color:var(--text3);margin-top:0.4rem">Southwest states have catchment quotas. Select "Other" if outside SW.</div>
+      </div>
     </div>
     <div class="btn-row">
       <button class="btn btn-secondary" id="step4Back">← Back</button>
-      <button class="btn btn-primary" id="step4Next">Continue →</button>
+      <button class="btn btn-primary" id="step4Next">See Results →</button>
     </div>
   </div>`;
   document.getElementById("mainContent").innerHTML = html;
 
   updateOlevelResult();
+  document.getElementById("stateSelect").addEventListener("change", function() { state.state = this.value; });
   document.getElementById("step4Back").addEventListener("click", () => { state.step = 3; render(); });
   document.getElementById("step4Next").addEventListener("click", () => {
     const filled = state.olevel.filter(r => r.subject && r.grade).length;
@@ -1800,6 +1810,7 @@ function renderStep4() {
       if (box) box.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
     }
+    if (!state.state) { alert("Please select your state of origin."); return; }
     state.olevelResult = res;
     state.step = 5; render();
   });
@@ -1888,67 +1899,204 @@ function updateOlevelResult() {
 }
 
 // ============================================================
-// STEP 5: Post-UTME + State of Origin
+// STEP 5: Results
 // ============================================================
 
 function renderStep5() {
+  const prog = state.programme;
+  const utme = parseFloat(state.utmeScore) || 0;
+  const utmeContrib = Math.min(utme / 8, 50);
+  const olevelContrib = state.olevelResult ? state.olevelResult.totalPoints : 0;
+  const scored = utmeContrib + olevelContrib;
+
+  const merit = prog.merit;
+  const catchmentRaw = (state.state && state.state !== "Other" && prog.catchment[state.state] !== undefined)
+    ? prog.catchment[state.state] : null;
+  const catchmentScore = catchmentRaw;
+  const relevantCutoff = catchmentScore !== null ? Math.min(merit, catchmentScore) : merit;
+
+  // Determine eligibility
+  const utmeOk = checkUTMESubjects(state.utmeSubjects, prog.utmeReqs).valid;
+  const olevelOk = state.olevelResult && state.olevelResult.valid;
+  const subjectIneligible = !utmeOk || !olevelOk;
+
+  // Determine if scores are too low (even with perfect Post-UTME of 30, can't reach cutoff)
+  let scoresTooLow = false;
+  let neededPostUtme = 0;
+  if (!subjectIneligible && merit > 0) {
+    const cutoff = catchmentScore !== null ? Math.min(merit, catchmentScore) : merit;
+    neededPostUtme = cutoff - scored;
+    scoresTooLow = neededPostUtme > 29;
+  }
+
+  const CONTACT_PHONE = "09069882502";
+  const contactBtn = `
+    <a href="tel:${CONTACT_PHONE}" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:0.5rem;text-decoration:none;margin-top:1rem">
+      📞 Contact Us — ${CONTACT_PHONE}
+    </a>`;
+
+  // Hero
+  let heroVerdict, heroVerdictCls;
+  if (subjectIneligible) {
+    heroVerdict = "WRONG SUBJECT COMBO ✗";
+    heroVerdictCls = "ineligible";
+  } else if (scoresTooLow) {
+    heroVerdict = "SCORES TOO LOW ✗";
+    heroVerdictCls = "ineligible";
+  } else if (merit === 0) {
+    heroVerdict = "ELIGIBLE — CHECK CUTOFF 🎯";
+    heroVerdictCls = "";
+  } else {
+    heroVerdict = "SUBJECT COMBO CORRECT ✓";
+    heroVerdictCls = "eligible";
+  }
+
+  const heroHtml = `
+  <div class="results-hero">
+    <div class="results-hero-label">${prog.faculty} · UNILAG 2025/2026</div>
+    <div class="results-hero-name">${state.name ? state.name + "'s Results — " : ""}${prog.name}</div>
+    <div class="results-hero-faculty">2025/2026 Admissions</div>
+    <div class="results-hero-verdict ${heroVerdictCls}">${heroVerdict}</div>
+  </div>`;
+
+  let mainContent = "";
+
+  if (subjectIneligible) {
+    // CASE 1: Wrong subject combo
+    let comparisonHtml = "";
+
+    if (!utmeOk) {
+      const studentUtme = state.utmeSubjects.filter(s => s);
+      const required = prog.utme || [];
+      const leftCol = studentUtme.map(s => {
+        const match = required.some(r => r.toLowerCase().includes(s.toLowerCase()) || s.toLowerCase().includes(r.toLowerCase().replace(" or ", "").replace(/[^a-z]/g,"")));
+        return `<div class="comparison-row ${match ? "match" : "miss"}">${match ? "✓" : "✗"} ${s}</div>`;
+      }).join("") || `<div class="comparison-row neutral">No subjects entered</div>`;
+      const rightCol = required.map(r => `<div class="comparison-row neutral">• ${r}</div>`).join("");
+      comparisonHtml = `
+        <div class="comparison-grid">
+          <div><div class="comparison-col-title">Your UTME Subjects</div>${leftCol}</div>
+          <div><div class="comparison-col-title">Required for ${prog.name}</div>${rightCol}</div>
+        </div>`;
+    } else if (!olevelOk && state.olevelResult) {
+      const studentSubjs = getStudentResults().map(r => r.subject);
+      const leftCol = studentSubjs.map(s => {
+        const reqd = prog.requirements.some(g => g.subjects.includes(s) || g.subjects.includes("__ANY__"));
+        return `<div class="comparison-row ${reqd ? "match" : "neutral"}">• ${s}</div>`;
+      }).join("") || `<div class="comparison-row neutral">No subjects</div>`;
+      const rightCol = prog.requirements.map(g => `<div class="comparison-row neutral">• ${g.label}</div>`).join("");
+      comparisonHtml = `
+        <div class="comparison-grid">
+          <div><div class="comparison-col-title">Your O/Level Subjects</div>${leftCol}</div>
+          <div><div class="comparison-col-title">Required for ${prog.name}</div>${rightCol}</div>
+        </div>`;
+    }
+
+    mainContent = `
+    <div class="ineligible-banner" style="margin:0 0 1rem">
+      <div class="ineligible-banner-title">Your ${!utmeOk ? "UTME" : "O/Level"} subject combination is incorrect for ${prog.name}.</div>
+      <div class="ineligible-banner-sub">See the correct subject combination below. Contact us to explore your options and find the right course for you.</div>
+      ${contactBtn}
+    </div>
+    <div class="result-card">
+      <div class="result-card-title">Subject Combination — Side by Side</div>
+      ${comparisonHtml}
+    </div>`;
+  } else if (scoresTooLow) {
+    // CASE 2: Scores too low
+    const cutoff = catchmentScore !== null ? Math.min(merit, catchmentScore) : merit;
+    mainContent = `
+    <div class="ineligible-banner" style="margin:0 0 1rem">
+      <div class="ineligible-banner-title">Your UTME/O'Level score is too low for ${prog.name}.</div>
+      <div class="ineligible-banner-sub">To gain admission, you would need more than 29/30 in your Post-UTME — which is practically impossible. Your current UTME + O/Level score is <strong>${scored.toFixed(2)}</strong> out of 70, but the cut-off requires a Post-UTME score of <strong>${neededPostUtme.toFixed(2)}/30</strong> — above the maximum. Contact us to explore better-fit options or improve your chances.</div>
+      ${contactBtn}
+    </div>
+    <div class="result-card">
+      <div class="result-card-title">Score Breakdown</div>
+      <div class="breakdown-bar-wrap" style="margin-top:0.75rem">
+        <div class="breakdown-seg seg-utme" style="width:${(utmeContrib/100)*100}%">${utmeContrib > 5 ? utmeContrib.toFixed(1) : ""}</div>
+        <div class="breakdown-seg seg-olevel" style="width:${(olevelContrib/100)*100}%">${olevelContrib > 2 ? olevelContrib.toFixed(1) : ""}</div>
+      </div>
+      <div class="breakdown-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#3182ce"></div>UTME: ${utmeContrib.toFixed(2)} / 50</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#6b46c1"></div>O/Level: ${olevelContrib.toFixed(2)} / 20</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--text3)"></div>Combined: ${scored.toFixed(2)} / 70</div>
+      </div>
+      <div style="margin-top:1rem;padding:0.75rem;background:var(--surface2);border-radius:0.5rem">
+        <div class="detail-row"><span class="detail-label">Cut-off (${catchmentScore !== null ? state.state + " Catchment" : "Merit"})</span><span class="detail-val fail">${cutoff}</span></div>
+        <div class="detail-row"><span class="detail-label">Post-UTME Needed</span><span class="detail-val fail">${neededPostUtme.toFixed(2)} / 30</span></div>
+        <div class="detail-row"><span class="detail-label">Max Possible Post-UTME</span><span class="detail-val">30 / 30</span></div>
+      </div>
+    </div>`;
+  } else {
+    // Eligible / No cutoff data
+    const cutoff = catchmentScore !== null ? Math.min(merit, catchmentScore) : merit;
+    let targetLine = "";
+    if (merit > 0) {
+      if (neededPostUtme <= 0) {
+        targetLine = `<div class="target-box achievable" style="margin:1rem 0"><div class="target-icon">🏆</div><div><div style="font-weight:800">You already beat the cut-off!</div><div class="target-desc">Your UTME + O/Level score alone clears the cut-off. Any Post-UTME score puts you over the line.</div></div></div>`;
+      } else {
+        const pct = Math.round((neededPostUtme / 30) * 100);
+        const cls = neededPostUtme <= 22 ? "achievable" : "stretch";
+        const difficulty = neededPostUtme <= 10 ? "Very achievable with good preparation." : neededPostUtme <= 18 ? "Achievable with solid preparation." : neededPostUtme <= 24 ? "Achievable — study consistently." : "High bar — you'll need a strong performance.";
+        targetLine = `
+        <div class="target-box ${cls}" style="margin:1rem 0">
+          <div class="target-icon" style="font-size:2.2rem;flex-shrink:0">${cls === "achievable" ? "🎯" : "⚡"}</div>
+          <div style="flex:1">
+            <div style="font-weight:800;margin-bottom:0.4rem">Score at least ${neededPostUtme.toFixed(1)} out of 30 in Post-UTME</div>
+            <div style="display:flex;align-items:baseline;gap:0.4rem;margin-bottom:0.5rem">
+              <span style="font-size:2.8rem;font-weight:900;line-height:1;color:${cls==='achievable'?'var(--green)':'var(--gold)'}">${neededPostUtme.toFixed(1)}</span>
+              <span style="font-size:1.1rem;color:var(--text3);font-weight:600">/ 30 needed (${pct}%)</span>
+            </div>
+            <div class="target-desc">To reach the ${catchmentScore !== null ? state.state + " Catchment" : "Merit"} cut-off of <strong>${cutoff}</strong>. ${difficulty}</div>
+          </div>
+        </div>`;
+      }
+    }
+    mainContent = `
+    <div class="result-card" style="border-left: 4px solid var(--green)">
+      <div class="result-card-title">✅ Your subject combination is correct!</div>
+      <div style="color:var(--text2);margin-bottom:1rem">Your UTME and O/Level subjects meet the requirements for <strong>${prog.name}</strong>. Here is what you need in your Post-UTME exam:</div>
+      ${targetLine}
+      ${merit === 0 ? `<div class="alert-box warn" style="margin:0.5rem 0">No cut-off data available for this programme. Contact UNILAG admissions for the current cut-off mark.</div>` : ""}
+    </div>`;
+  }
+
+  const studentResults = getStudentResults();
+  const altHtml = studentResults.length >= 5 ? renderAlternativesAccordion(studentResults) : "";
+
   const html = `
   <div class="step-card">
-    <div class="card-header">
-      <div class="card-step-label">Step 5 of 6</div>
-      <div class="card-title">Post-UTME & State of Origin</div>
-      <div class="card-subtitle">Almost there — a few more details</div>
-    </div>
-    <div class="card-body">
-      <div class="input-group">
-        <label class="input-label">Post-UTME Score (out of 30)</label>
-        <div class="postutme-input-wrap" style="display:flex;align-items:center;gap:0.5rem">
-          <input class="input-field" type="number" id="postUtmeInput" min="0" max="30" step="0.01"
-            placeholder="e.g. 24.5" value="${state.postUtme}" ${state.postUtmeUnknown ? "disabled" : ""} style="flex:1">
-          <span class="postutme-suffix">/ 30</span>
-        </div>
-      </div>
-      <div class="checkbox-row" id="unknownCheck">
-        <div class="checkbox-box ${state.postUtmeUnknown ? "checked" : ""}" id="unknownBox"></div>
-        <span class="checkbox-label">I haven't taken Post-UTME yet — calculate what I need</span>
-      </div>
-      ${state.postUtmeUnknown ? `<div class="alert-box ok" style="margin-top:0.75rem">✅ We'll calculate the exact Post-UTME score you need to secure admission — shown on the results page.</div>` : ""}
-      <div class="divider"></div>
-      <div class="state-select-wrap">
-        <label class="input-label">State of Origin</label>
-        <select class="input-field" id="stateSelect">
-          <option value="">— Select your state —</option>
-          ${ALL_STATES.map(s => `<option value="${s}" ${state.state === s ? "selected" : ""}>${s}</option>`).join("")}
-        </select>
-        <div style="font-size:0.75rem;color:var(--text3);margin-top:0.4rem">Southwest states have catchment quotas. Select "Other" if outside SW.</div>
-      </div>
+    ${heroHtml}
+    <div class="card-body" style="padding:1.5rem">
+    ${mainContent}
+    <div id="altSectionWrap">${altHtml}</div>
     </div>
     <div class="btn-row">
-      <button class="btn btn-secondary" id="step5Back">← Back</button>
-      <button class="btn btn-primary" id="step5Next">Calculate Results →</button>
+      <button class="btn btn-secondary" id="step5Back">← Edit</button>
+      <button class="btn btn-restart" id="step5Restart">↺ Start Over</button>
+    </div>
+    <div class="disclaimer">
+      This tool is for estimation purposes only. Actual cut-off marks may vary. Always verify with the official UNILAG admissions portal at unilag.edu.ng. Cut-off data is based on 2024/2025 figures as reference.
     </div>
   </div>`;
   document.getElementById("mainContent").innerHTML = html;
 
-  document.getElementById("unknownCheck").addEventListener("click", () => {
-    state.postUtmeUnknown = !state.postUtmeUnknown;
-    if (state.postUtmeUnknown) state.postUtme = "";
-    renderStep5();
-  });
-  document.getElementById("postUtmeInput").addEventListener("input", function() { state.postUtme = this.value; });
-  document.getElementById("stateSelect").addEventListener("change", function() { state.state = this.value; });
   document.getElementById("step5Back").addEventListener("click", () => { state.step = 4; render(); });
-  document.getElementById("step5Next").addEventListener("click", () => {
-    const score = state.postUtmeUnknown ? 22.5 : parseFloat(state.postUtme);
-    if (!state.postUtmeUnknown && (isNaN(score) || score < 0 || score > 30)) {
-      alert("Please enter a valid Post-UTME score between 0 and 30, or check \"I haven't taken Post-UTME yet\".");
-      return;
-    }
-    if (!state.state) { alert("Please select your state of origin."); return; }
-    const res = computeOlevelResult();
-    if (!res || !res.valid) { alert("O/Level requirements issue. Please go back and check your subjects."); return; }
-    state.olevelResult = res;
-    state.step = 6; render();
+  document.getElementById("step5Restart").addEventListener("click", () => {
+    state.step = 1;
+    state.name = "";
+    state.programme = null;
+    state.utmeScore = "";
+    state.utmeSubjects = ["", "", "", ""];
+    state.olevel = Array.from({length: 7}, () => ({subject: "", grade: ""}));
+    state.postUtme = "";
+    state.postUtmeUnknown = false;
+    state.state = "";
+    state.olevelResult = null;
+    expandedFaculty = null;
+    expandedCourse = null;
+    render();
   });
 }
 
@@ -1970,7 +2118,7 @@ function renderAlternativesAccordion(studentResults) {
   const total = sortedFaculties.reduce((s, f) => s + grouped[f].length, 0);
   let html = `<div class="result-card">
     <div class="result-card-title">${total} Programmes You May Qualify For</div>
-    <div class="alt-panel-sub">Based on your O/Level subjects${utme > 0 ? ` and UTME score of ${utme}` : ""}${state.utmeSubjects.filter(s=>s).length >= 3 ? " and UTME subject combination" : ""}. Chance assumes ~75% Post-UTME. Click a faculty card to see courses.</div>
+    <div class="alt-panel-sub">Based on your O/Level subjects${utme > 0 ? ` and UTME score of ${utme}` : ""}${state.utmeSubjects.filter(s=>s).length >= 3 ? " and UTME subject combination" : ""}. Estimated aggregate assumes 22.5/30 Post-UTME. Click a faculty card to see courses.</div>
     <div class="faculty-grid">`;
 
   for (const fac of sortedFaculties) {
@@ -2029,7 +2177,8 @@ function renderCourseDetail(prog, olevelPts, estimatedAggregate, chance) {
   const utmeContrib = Math.min(utme / 8, 50);
   const scored = utmeContrib + olevelPts;
   const merit = prog.merit;
-  const catchmentScore = state.state && state.state !== "Other" ? prog.catchment[state.state] : null;
+  const catchmentScore = (state.state && state.state !== "Other" && prog.catchment[state.state] !== undefined)
+    ? prog.catchment[state.state] : null;
 
   const utmeCheck = checkUTMESubjects(state.utmeSubjects, prog.utmeReqs);
   const studentResults = getStudentResults();
@@ -2040,9 +2189,9 @@ function renderCourseDetail(prog, olevelPts, estimatedAggregate, chance) {
 
   let targetLine = "";
   if (merit > 0) {
-    const primaryCut = catchmentScore !== undefined ? Math.min(merit, catchmentScore) : merit;
+    const primaryCut = catchmentScore !== null ? Math.min(merit, catchmentScore) : merit;
     const needed = primaryCut - scored;
-    const label = catchmentScore !== undefined && catchmentScore < merit ? `${state.state || "Catchment"} (${catchmentScore})` : `Merit (${merit})`;
+    const label = catchmentScore !== null && catchmentScore < merit ? `${state.state || "Catchment"} (${catchmentScore})` : `Merit (${merit})`;
     if (needed <= 0) {
       targetLine = `<div class="detail-row"><span class="detail-label">Post-UTME Needed</span><span class="detail-val ok">Already qualifies (no Post-UTME needed)</span></div>`;
     } else {
@@ -2060,7 +2209,7 @@ function renderCourseDetail(prog, olevelPts, estimatedAggregate, chance) {
     <div class="detail-row"><span class="detail-label">O/Level Contribution</span><span class="detail-val">${olevelPts.toFixed(2)} / 20</span></div>
     <div class="detail-row"><span class="detail-label">Est. Total (with ~75% Post-UTME)</span><span class="detail-val">${estimatedAggregate.toFixed(2)} / 100</span></div>
     <div class="detail-row"><span class="detail-label">Merit Cut-off</span><span class="detail-val">${merit > 0 ? merit : "No data"}</span></div>
-    ${catchmentScore !== undefined ? `<div class="detail-row"><span class="detail-label">${state.state} Catchment</span><span class="detail-val">${catchmentScore}</span></div>` : ""}
+    ${catchmentScore !== null ? `<div class="detail-row"><span class="detail-label">${state.state} Catchment</span><span class="detail-val">${catchmentScore}</span></div>` : ""}
     ${targetLine}
     <button class="btn-switch" onclick="switchToProgramme('${prog.name.replace(/'/g,"\\'")}')">Switch to this course →</button>
   </div>`;
@@ -2122,305 +2271,6 @@ function renderAlternatives(studentResults) {
 }
 
 // ============================================================
-// STEP 6: Results
-// ============================================================
-
-function renderStep6() {
-  const prog = state.programme;
-  const utme = parseFloat(state.utmeScore) || 0;
-  const utmeContrib = Math.min(utme / 8, 50);
-  const olevelContrib = state.olevelResult ? state.olevelResult.totalPoints : 0;
-  const postUtmeRaw = state.postUtmeUnknown ? 0 : parseFloat(state.postUtme) || 0;
-  const postUtmeContrib = Math.min(postUtmeRaw, 30);
-  const total = utmeContrib + olevelContrib + postUtmeContrib;
-
-  const merit = prog.merit;
-  const catchmentScore = state.state && state.state !== "Other" ? prog.catchment[state.state] : null;
-  const relevantCutoff = catchmentScore !== undefined ? Math.min(merit, catchmentScore) : merit;
-
-  // Determine eligibility type
-  const utmeOk = checkUTMESubjects(state.utmeSubjects, prog.utmeReqs).valid;
-  const olevelOk = state.olevelResult && state.olevelResult.valid;
-
-  const subjectIneligible = !utmeOk || !olevelOk;
-
-  let isEligible = false;
-  if (!subjectIneligible) {
-    if (state.postUtmeUnknown || merit === 0) {
-      isEligible = true; // show "projection" mode
-    } else if (total >= merit || (catchmentScore !== undefined && total >= catchmentScore)) {
-      isEligible = true;
-    }
-  }
-
-  const aggColor = merit === 0 ? "var(--teal)" : total >= merit ? "var(--green)" : total >= (merit - 5) ? "var(--gold)" : "var(--red)";
-
-  // Verdict text for hero
-  let heroVerdict, heroVerdictCls;
-  if (subjectIneligible) {
-    heroVerdict = "INELIGIBLE ✗";
-    heroVerdictCls = "ineligible";
-  } else if (state.postUtmeUnknown || merit === 0) {
-    heroVerdict = "PROJECTION 🎯";
-    heroVerdictCls = "";
-  } else if (total >= merit) {
-    heroVerdict = "ELIGIBLE ✓";
-    heroVerdictCls = "eligible";
-  } else if (catchmentScore !== undefined && total >= catchmentScore) {
-    heroVerdict = "ELIGIBLE (CATCHMENT) ✓";
-    heroVerdictCls = "eligible";
-  } else if (total >= (relevantCutoff - 3)) {
-    heroVerdict = "BORDERLINE ~";
-    heroVerdictCls = "";
-  } else {
-    heroVerdict = "NOT ELIGIBLE ✗";
-    heroVerdictCls = "ineligible";
-  }
-
-  // Hero
-  const heroHtml = `
-  <div class="results-hero">
-    <div class="results-hero-label">${prog.faculty} · UNILAG 2025/2026</div>
-    <div class="results-hero-name">${state.name ? state.name + "'s Results — " : ""}${prog.name}</div>
-    <div class="results-hero-faculty">2025/2026 Admissions</div>
-    <div class="results-hero-verdict ${heroVerdictCls}">${heroVerdict}</div>
-  </div>`;
-
-  // Score breakdown card
-  const utmePct = (utmeContrib / 100) * 100;
-  const olevPct = (olevelContrib / 100) * 100;
-  const postPct = (postUtmeContrib / 100) * 100;
-  const postUtmeNote = state.postUtmeUnknown ? ` <span style="font-weight:400;color:var(--text3)">(not yet taken)</span>` : "";
-
-  const scoreCardHtml = `
-  <div class="result-card">
-    <div class="result-card-title">Score Breakdown</div>
-    <div class="aggregate-row">
-      <span class="aggregate-num" style="color:${aggColor}">${total.toFixed(3)}</span>
-      <span class="aggregate-denom">/ 100</span>
-    </div>
-    <div class="aggregate-label">Total Aggregate Score</div>
-    <div class="breakdown-bar-wrap">
-      <div class="breakdown-seg seg-utme" style="width:${utmePct}%">${utmeContrib > 5 ? utmeContrib.toFixed(1) : ""}</div>
-      <div class="breakdown-seg seg-olevel" style="width:${olevPct}%">${olevelContrib > 2 ? olevelContrib.toFixed(1) : ""}</div>
-      <div class="breakdown-seg seg-postutme" style="width:${postPct}%">${postUtmeContrib > 2 ? postUtmeContrib.toFixed(1) : ""}</div>
-    </div>
-    <div class="breakdown-legend">
-      <div class="legend-item"><div class="legend-dot" style="background:#3182ce"></div>UTME: ${utmeContrib.toFixed(2)} / 50</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#6b46c1"></div>O/Level: ${olevelContrib.toFixed(2)} / 20</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Post-UTME: ${postUtmeContrib.toFixed(2)} / 30${postUtmeNote}</div>
-    </div>
-  </div>`;
-
-  // Post-UTME target card
-  const scored = utmeContrib + olevelContrib;
-  let targetCardHtml = "";
-  if (merit > 0 && !subjectIneligible) {
-    const targetMerit = merit - scored;
-    const targetCatch = catchmentScore !== undefined ? catchmentScore - scored : null;
-    const primaryTarget = (targetCatch !== null && targetCatch < targetMerit) ? targetCatch : targetMerit;
-    const primaryLabel = (targetCatch !== null && targetCatch < targetMerit)
-      ? `${state.state} Catchment (${catchmentScore})` : `Merit (${merit})`;
-    let tClass, tIcon, tDesc, tHeading;
-    if (primaryTarget <= 0) {
-      // Already qualifies on UTME + O/Level alone
-      tClass = "achievable"; tIcon = "🏆";
-      tHeading = `You already beat the cut-off!`;
-      tDesc = `Your UTME and O/Level scores alone already clear the <strong>${primaryLabel}</strong> cut-off of <strong>${catchmentScore !== null && catchmentScore < merit ? catchmentScore : merit}</strong>. Any Post-UTME score puts you over the line. Just show up and do your best!`;
-    } else if (primaryTarget <= 30) {
-      const pct = Math.round((primaryTarget / 30) * 100);
-      if (!state.postUtmeUnknown) {
-        // Student has already taken Post-UTME — tell them if they made it or not
-        if (total >= (catchmentScore !== null && catchmentScore < merit ? catchmentScore : merit)) {
-          tClass = "achievable"; tIcon = "✅";
-          tHeading = `You qualify for ${primaryLabel}!`;
-          tDesc = `Your Post-UTME score of <strong>${postUtmeContrib.toFixed(1)}/30</strong> was enough. Your total aggregate is <strong>${total.toFixed(3)}</strong>, which is above the cut-off of <strong>${catchmentScore !== null && catchmentScore < merit ? catchmentScore : merit}</strong>. You are on track for admission.`;
-        } else {
-          tClass = primaryTarget <= 22 ? "stretch" : "impossible";
-          tIcon = "⚠️";
-          const gap = primaryTarget.toFixed(2);
-          tHeading = `You needed ${gap} more points in Post-UTME`;
-          tDesc = `To reach the <strong>${primaryLabel}</strong> cut-off of <strong>${catchmentScore !== null && catchmentScore < merit ? catchmentScore : merit}</strong>, you needed a Post-UTME score of <strong>${Math.max(0, primaryTarget + postUtmeContrib).toFixed(2)}/30</strong>, but you scored <strong>${postUtmeContrib.toFixed(1)}/30</strong>. You fell short by <strong>${gap} points</strong>. See the alternative programmes below.`;
-        }
-      } else {
-        // Has not taken Post-UTME yet — tell them exactly what they need
-        tClass = primaryTarget <= 22 ? "achievable" : "stretch";
-        tIcon = primaryTarget <= 22 ? "🎯" : "⚡";
-        const difficulty = primaryTarget <= 10 ? "That's a low bar — very achievable." : primaryTarget <= 18 ? "That's very achievable with solid preparation." : primaryTarget <= 24 ? "That's achievable — study consistently." : "That's a high bar — you'll need a strong performance.";
-        tHeading = `Score at least ${Math.max(0, primaryTarget).toFixed(1)} out of 30`;
-        tDesc = `To reach the <strong>${primaryLabel}</strong> cut-off of <strong>${catchmentScore !== null && catchmentScore < merit ? catchmentScore : merit}</strong>, you must score <strong>${Math.max(0, primaryTarget).toFixed(1)}/30</strong> (${pct}% of the maximum) in your Post-UTME exam. ${difficulty}`;
-      }
-    } else {
-      tClass = "impossible"; tIcon = "⚠️";
-      tHeading = "Your current scores cannot reach the cut-off";
-      tDesc = `Even with a perfect Post-UTME score (30/30), your best possible aggregate would be <strong>${(scored + 30).toFixed(2)}</strong> — still <strong>${(merit - scored - 30).toFixed(2)} points</strong> below the merit cut-off of <strong>${merit}</strong>. You would need to resit JAMB for a higher UTME score, or consider a different course (see alternatives below).`;
-    }
-    targetCardHtml = `
-    <div class="result-card">
-      <div class="result-card-title">Post-UTME Verdict</div>
-      <div class="target-box ${tClass}" style="margin:0">
-        <div class="target-icon" style="font-size:2.2rem;flex-shrink:0">${tIcon}</div>
-        <div style="flex:1">
-          <div style="font-size:1.1rem;font-weight:800;color:var(--dark);margin-bottom:0.4rem">${tHeading}</div>
-          ${primaryTarget > 0 && primaryTarget <= 30 ? `
-          <div style="display:flex;align-items:baseline;gap:0.4rem;margin-bottom:0.5rem">
-            <span style="font-size:2.8rem;font-weight:900;line-height:1;color:${tClass==='achievable'?'var(--green)':tClass==='stretch'?'var(--gold)':'var(--red)'}">${Math.max(0, primaryTarget).toFixed(1)}</span>
-            <span style="font-size:1.1rem;color:var(--text3);font-weight:600">/ 30 needed</span>
-          </div>` : ""}
-          <div class="target-desc">${tDesc}</div>
-        </div>
-      </div>
-      ${targetCatch !== null && targetCatch !== primaryTarget ? `<div style="font-size:0.8rem;color:var(--text3);margin-top:0.75rem">Also need <strong style="color:var(--text2)">${Math.max(0, targetMerit).toFixed(2)}/30</strong> for national merit.</div>` : ""}
-    </div>`;
-  }
-
-  // Cut-off analysis card
-  let cutoffCardHtml = "";
-  if (merit > 0 && !subjectIneligible) {
-    const meritPass = total >= merit;
-    let cutoffInner = `<div class="cutoff-grid">
-      <div class="cutoff-item">
-        <span class="cutoff-item-label">Merit Cut-off</span>
-        <span class="cutoff-item-val ${meritPass ? "cutoff-pass" : "cutoff-fail"}">${merit}</span>
-      </div>
-      <div class="cutoff-item ${Math.abs(total - merit) <= 3 ? "highlight" : ""}">
-        <span class="cutoff-item-label">Your Aggregate</span>
-        <span class="cutoff-item-val" style="color:${aggColor}">${total.toFixed(3)}</span>
-      </div>`;
-    if (catchmentScore !== undefined) {
-      const catchPass = total >= catchmentScore;
-      cutoffInner += `
-      <div class="cutoff-item">
-        <span class="cutoff-item-label">${state.state} Catchment</span>
-        <span class="cutoff-item-val ${catchPass ? "cutoff-pass" : "cutoff-fail"}">${catchmentScore}</span>
-      </div>
-      <div class="cutoff-item">
-        <span class="cutoff-item-label">Gap to Catchment</span>
-        <span class="cutoff-item-val ${catchPass ? "cutoff-pass" : "cutoff-near"}">${(total - catchmentScore).toFixed(3)}</span>
-      </div>`;
-    } else {
-      cutoffInner += `
-      <div class="cutoff-item">
-        <span class="cutoff-item-label">${state.state === "Other" ? "Other State" : (state.state || "State")}</span>
-        <span class="cutoff-item-val" style="color:var(--text3)">No catchment data</span>
-      </div>
-      <div class="cutoff-item">
-        <span class="cutoff-item-label">Gap to Merit</span>
-        <span class="cutoff-item-val ${meritPass ? "cutoff-pass" : "cutoff-near"}">${(total - merit).toFixed(3)}</span>
-      </div>`;
-    }
-    cutoffInner += `</div>`;
-    cutoffCardHtml = `<div class="result-card"><div class="result-card-title">Cut-off Analysis</div>${cutoffInner}</div>`;
-  }
-
-  // Ineligibility content (subject mismatch)
-  let ineligContent = "";
-  if (subjectIneligible) {
-    // Build side-by-side comparison
-    let comparisonHtml = "";
-    const whichProblem = !utmeOk ? "UTME" : "O/Level";
-
-    if (!utmeOk) {
-      // UTME comparison
-      const studentUtme = state.utmeSubjects.filter(s => s);
-      const required = prog.utme;
-      const leftCol = studentUtme.map(s => {
-        const match = required.some(r => r.toLowerCase().includes(s.toLowerCase()) || s.toLowerCase().includes(r.toLowerCase().replace(" or ", "").replace(/[^a-z]/g,"")));
-        return `<div class="comparison-row ${match ? "match" : "miss"}">${match ? "✓" : "✗"} ${s}</div>`;
-      }).join("") || `<div class="comparison-row neutral">No subjects entered</div>`;
-      const rightCol = required.map(r => `<div class="comparison-row neutral">• ${r}</div>`).join("");
-      comparisonHtml = `
-        <div class="comparison-grid">
-          <div><div class="comparison-col-title">Your UTME Subjects</div>${leftCol}</div>
-          <div><div class="comparison-col-title">Required for ${prog.name}</div>${rightCol}</div>
-        </div>`;
-    } else if (!olevelOk && state.olevelResult) {
-      // O/Level comparison
-      const studentSubjs = getStudentResults().map(r => r.subject);
-      const leftCol = studentSubjs.map(s => {
-        const reqd = prog.requirements.some(g => g.subjects.includes(s) || g.subjects.includes("__ANY__"));
-        return `<div class="comparison-row ${reqd ? "match" : "neutral"}">• ${s}</div>`;
-      }).join("") || `<div class="comparison-row neutral">No subjects</div>`;
-      const rightCol = prog.requirements.map(g => `<div class="comparison-row neutral">• ${g.label}</div>`).join("");
-      comparisonHtml = `
-        <div class="comparison-grid">
-          <div><div class="comparison-col-title">Your O/Level Subjects</div>${leftCol}</div>
-          <div><div class="comparison-col-title">Required for ${prog.name}</div>${rightCol}</div>
-        </div>`;
-    }
-
-    ineligContent = `
-    <div class="ineligible-banner" style="margin:0 0 1rem">
-      <div class="ineligible-banner-title">You are not eligible to study ${prog.name} due to an incorrect ${!utmeOk ? "UTME" : "O/Level"} subject combination.</div>
-      <div class="ineligible-banner-sub">${!utmeOk ? `${prog.name} requires specific UTME subjects. See comparison below.` : state.olevelResult ? state.olevelResult.error || "Your O/Level subjects do not satisfy the programme requirements." : "Your O/Level subjects do not satisfy the programme requirements."}</div>
-    </div>
-    <div class="result-card">
-      <div class="result-card-title">Subject Combination Comparison</div>
-      ${comparisonHtml}
-    </div>`;
-  }
-
-  // Advice box
-  let adviceText = "";
-  if (!subjectIneligible) {
-    if (merit === 0) adviceText = "Contact UNILAG admissions for current cut-off information for this programme.";
-    else if (total >= merit) adviceText = "Excellent! Your aggregate meets the merit cut-off. Ensure all documents are ready and monitor the UNILAG admissions portal.";
-    else if (catchmentScore !== undefined && total >= catchmentScore) adviceText = `Your aggregate qualifies under the ${state.state} catchment quota. Submit all required documents promptly.`;
-    else if (total >= (relevantCutoff - 3)) adviceText = "You're very close to the cut-off. Check for catchment benefits and watch for changes in the cut-off.";
-    else { const gap = (relevantCutoff - total).toFixed(3); adviceText = `Your aggregate is ${gap} points below the cut-off. Consider improving your UTME score or exploring alternative programmes below.`; }
-  }
-
-  // Alternatives section (always shown)
-  expandedFaculty = expandedFaculty; // preserve
-  expandedCourse = expandedCourse;
-  const studentResults = getStudentResults();
-  const altHtml = studentResults.length >= 5 ? renderAlternativesAccordion(studentResults) : "";
-
-  const html = `
-  <div class="step-card">
-    ${heroHtml}
-    <div class="card-body" style="padding:1.5rem">
-
-    ${ineligContent}
-
-    ${!subjectIneligible ? scoreCardHtml : ""}
-    ${targetCardHtml}
-    ${cutoffCardHtml}
-
-    ${adviceText ? `<div class="result-card"><div class="info-box" style="margin:0">${adviceText}</div></div>` : ""}
-
-    <div id="altSectionWrap">${altHtml}</div>
-
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-secondary" id="step6Back">← Edit</button>
-      <button class="btn btn-restart" id="step6Restart">↺ Start Over</button>
-    </div>
-    <div class="disclaimer">
-      This tool is for estimation purposes only. Actual cut-off marks may vary. Always verify with the official UNILAG admissions portal at unilag.edu.ng. Cut-off data is based on 2024/2025 figures as reference.
-    </div>
-  </div>`;
-  document.getElementById("mainContent").innerHTML = html;
-
-  document.getElementById("step6Back").addEventListener("click", () => { state.step = 5; render(); });
-  document.getElementById("step6Restart").addEventListener("click", () => {
-    state.step = 1;
-    state.name = "";
-    state.programme = null;
-    state.utmeScore = "";
-    state.utmeSubjects = ["", "", "", ""];
-    state.olevel = Array.from({length: 7}, () => ({subject: "", grade: ""}));
-    state.postUtme = "";
-    state.postUtmeUnknown = false;
-    state.state = "";
-    state.olevelResult = null;
-    expandedFaculty = null;
-    expandedCourse = null;
-    render();
-  });
-}
-
-// ============================================================
 // MAIN RENDER
 // ============================================================
 
@@ -2433,7 +2283,6 @@ function render() {
     case 3: renderStep3(); break;
     case 4: renderStep4(); break;
     case 5: renderStep5(); break;
-    case 6: renderStep6(); break;
   }
 }
 
