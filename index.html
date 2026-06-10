@@ -541,7 +541,98 @@
     .name-hero-title { font-size: 2rem; }
     #utmeSubjRows { grid-template-columns: 1fr; }
   }
+/* OCR Upload */
+.ocr-upload-zone {
+  border: 2px dashed var(--border2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--bg3);
+  position: relative;
+  margin: 1rem 0 0.5rem;
+}
+.ocr-upload-zone:hover { border-color: var(--teal); background: var(--teal-light); }
+.ocr-upload-zone.dragover { border-color: var(--teal); background: var(--teal-light); }
+.ocr-upload-icon { font-size: 2rem; margin-bottom: 0.4rem; }
+.ocr-upload-label { font-size: 0.9rem; font-weight: 600; color: var(--text2); }
+.ocr-upload-sub { font-size: 0.75rem; color: var(--text3); margin-top: 0.2rem; }
+.ocr-upload-input { display: none; }
+.ocr-progress { margin-top: 0.75rem; }
+.ocr-progress-bar-track { background: var(--border); border-radius: 999px; height: 6px; overflow: hidden; margin: 0.4rem 0; }
+.ocr-progress-bar-fill { background: var(--teal); height: 100%; border-radius: 999px; transition: width 0.3s; }
+.ocr-status { font-size: 0.8rem; color: var(--text3); }
+.ocr-preview { margin-top: 0.5rem; }
+.ocr-preview img { max-width: 100%; border-radius: 8px; max-height: 180px; object-fit: contain; border: 1px solid var(--border); }
+.ocr-extracted { background: var(--teal-mid); border: 1px solid rgba(13,148,136,0.2); border-radius: 10px; padding: 0.75rem 1rem; margin-top: 0.75rem; font-size: 0.82rem; color: var(--text2); }
+.ocr-extracted-title { font-weight: 700; color: var(--teal2); margin-bottom: 0.4rem; font-size: 0.85rem; }
+.ocr-toggle { font-size: 0.8rem; color: var(--teal); cursor: pointer; text-decoration: underline; margin-top: 0.5rem; display: inline-block; }
+
+/* Results Cards redesign */
+.verdict-cards { display: flex; flex-direction: column; gap: 1rem; }
+.verdict-card {
+  background: white;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.verdict-card-header {
+  padding: 0.75rem 1.25rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: white;
+}
+.verdict-card-body { padding: 1.25rem; }
+.verdict-card-big {
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.verdict-card-label { font-size: 0.8rem; color: var(--text3); margin-top: 0.2rem; font-weight: 500; }
+.verdict-card-sub { font-size: 0.85rem; color: var(--text2); margin-top: 0.5rem; }
+.verdict-card-row { display: flex; justify-content: space-between; align-items: center; padding: 0.4rem 0; border-bottom: 1px solid var(--border); }
+.verdict-card-row:last-child { border-bottom: none; }
+.verdict-card-row-label { font-size: 0.8rem; color: var(--text3); }
+.verdict-card-row-val { font-size: 0.85rem; font-weight: 700; color: var(--dark); }
+.verdict-final {
+  border-radius: 14px;
+  padding: 1.5rem;
+  text-align: center;
+}
+.verdict-final-icon { font-size: 3rem; margin-bottom: 0.5rem; }
+.verdict-final-title { font-size: 1.3rem; font-weight: 900; margin-bottom: 0.5rem; }
+.verdict-final-desc { font-size: 0.9rem; line-height: 1.6; }
+.contact-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, var(--teal), #06b6d4);
+  border-radius: 14px;
+  padding: 1.5rem;
+  text-align: center;
+  color: white;
+  margin-top: 0.5rem;
+}
+.contact-cta-title { font-size: 1rem; font-weight: 800; }
+.contact-cta-sub { font-size: 0.82rem; opacity: 0.9; }
+.contact-cta-btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: white; color: var(--teal2);
+  font-weight: 800; font-size: 1rem;
+  padding: 0.75rem 1.75rem; border-radius: 999px;
+  text-decoration: none; border: none; cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.contact-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 <body>
 
@@ -1701,6 +1792,10 @@ function renderStep3() {
         </div>
       </div>
       <div id="utmeCheckBox" style="margin-top:0.75rem">${renderUTMECheck()}</div>
+      <div class="divider"></div>
+      <div style="font-size:0.82rem;font-weight:700;color:var(--text2);margin-bottom:0.25rem">📎 Optional: Upload your JAMB Result Slip</div>
+      <div style="font-size:0.75rem;color:var(--text3);margin-bottom:0.5rem">OCR will auto-fill your score and subjects — you can edit them after.</div>
+      ${createOCRUploadUI('utme', 'JAMB Result Slip')}
     </div>
     <div class="btn-row">
       <button class="btn btn-secondary" id="step3Back">← Back</button>
@@ -1723,6 +1818,36 @@ function renderStep3() {
   document.getElementById("step3Next").addEventListener("click", () => {
     const v = parseInt(document.getElementById("utmeInput").value) || 0;
     if (v > 0) { state.utmeScore = v; state.step = 4; render(); }
+  });
+  bindOCRUpload('utme', (text, resultEl) => {
+    const { score, subjects } = parseUTMEResult(text);
+    let html = '<div class="ocr-extracted"><div class="ocr-extracted-title">✅ Extracted from your result slip — edit if needed</div>';
+    if (score) {
+      state.utmeScore = score;
+      document.getElementById('utmeInput').value = score;
+      document.getElementById('utmeBig').textContent = score;
+      const c = Math.min(score / 8, 50).toFixed(2);
+      document.getElementById('utmeContrib').textContent = `${c} / 50 points`;
+      document.getElementById('utmeBar').style.width = Math.min((score / 400) * 100, 100) + '%';
+      document.getElementById('step3Next').disabled = false;
+      html += `<div>Score detected: <strong>${score}</strong></div>`;
+    }
+    subjects.forEach((s, i) => {
+      if (i < 4) {
+        state.utmeSubjects[i] = s.subject;
+        const sel = document.getElementById(`utmeSubj-${i}`);
+        if (sel) sel.value = s.subject;
+      }
+    });
+    if (subjects.length > 0) {
+      html += `<div>Subjects: ${subjects.map(s => `<strong>${s.subject}</strong>`).join(', ')}</div>`;
+      document.getElementById('utmeCheckBox').innerHTML = renderUTMECheck();
+    }
+    if (!score && subjects.length === 0) {
+      html = '<div class="ocr-extracted"><div class="ocr-extracted-title">⚠️ Could not extract data — please fill in manually above</div>';
+    }
+    html += '</div>';
+    resultEl.innerHTML = html;
   });
 }
 
@@ -1766,6 +1891,140 @@ function findUTMECompatibleProgrammes(subjects) {
 }
 
 // ============================================================
+// OCR HELPERS (Tesseract.js — no AI, client-side only)
+// ============================================================
+
+async function runOCR(file, progressEl, statusEl) {
+  const worker = await Tesseract.createWorker('eng', 1, {
+    logger: m => {
+      if (m.status === 'recognizing text' && progressEl) {
+        const pct = Math.round(m.progress * 100);
+        progressEl.style.width = pct + '%';
+        if (statusEl) statusEl.textContent = `Reading text… ${pct}%`;
+      }
+    }
+  });
+  const { data: { text } } = await worker.recognize(file);
+  await worker.terminate();
+  return text;
+}
+
+function parseUTMEResult(text) {
+  // Extract total score
+  const scorePatterns = [
+    /total[:\s]+(\d{2,3})/i,
+    /aggregate[:\s]+(\d{2,3})/i,
+    /score[:\s]+(\d{2,3})/i,
+    /(\d{3})\s*\/\s*400/,
+    /\b([2-3]\d{2}|[1-9]\d)\b/  // fallback: 2-3 digit number likely to be UTME score
+  ];
+  let score = null;
+  for (const p of scorePatterns) {
+    const m = text.match(p);
+    if (m) { score = parseInt(m[1]); if (score >= 100 && score <= 400) break; else score = null; }
+  }
+
+  // Extract subjects and scores — pattern: Subject Name   XX
+  const subjectScorePattern = /([A-Za-z][A-Za-z\s\/\-&]{3,30}?)\s+(\d{1,2})\b/g;
+  const knownSubjects = SUBJECTS.map(s => s.toLowerCase());
+  const found = [];
+  let m2;
+  while ((m2 = subjectScorePattern.exec(text)) !== null) {
+    const name = m2[1].trim();
+    const nameLower = name.toLowerCase();
+    const match = knownSubjects.find(s => s.includes(nameLower.substring(0, 5)) || nameLower.includes(s.substring(0, 5)));
+    if (match && parseInt(m2[2]) <= 100) {
+      const canonical = SUBJECTS.find(s => s.toLowerCase() === match);
+      if (canonical && !found.find(f => f.subject === canonical)) {
+        found.push({ subject: canonical, score: parseInt(m2[2]) });
+      }
+    }
+  }
+  return { score, subjects: found.slice(0, 4) };
+}
+
+function parseOLevelResult(text) {
+  const gradeMap = { 'A1': 'A1','A2': 'A1','B2': 'B2','B3': 'B3','C4': 'C4','C5': 'C5','C6': 'C6','D7': 'D7','E8': 'E8','F9': 'F9','A': 'A1','B': 'B2','C': 'C4' };
+  const knownSubjects = SUBJECTS.map(s => s.toLowerCase());
+  const lines = text.split('\n');
+  const results = [];
+
+  for (const line of lines) {
+    // Try to match "Subject Name   Grade" e.g. "MATHEMATICS   A1" or "English Language B2"
+    const m = line.match(/([A-Za-z][A-Za-z\s\/\-&]{3,35}?)\s+(A1|A2|B2|B3|C4|C5|C6|D7|E8|F9)\b/i);
+    if (m) {
+      const name = m[1].trim();
+      const grade = m[2].toUpperCase();
+      const nameLower = name.toLowerCase();
+      const match = knownSubjects.find(s =>
+        s.includes(nameLower.substring(0, 6)) || nameLower.includes(s.substring(0, 6))
+      );
+      const canonical = match ? SUBJECTS.find(s => s.toLowerCase() === match) : name;
+      const mappedGrade = gradeMap[grade] || grade;
+      if (canonical && mappedGrade && !results.find(r => r.subject === canonical)) {
+        results.push({ subject: canonical, grade: mappedGrade });
+      }
+    }
+  }
+  return results;
+}
+
+function createOCRUploadUI(id, label) {
+  return `
+  <div class="ocr-upload-zone" id="ocrZone-${id}" onclick="document.getElementById('ocrFile-${id}').click()">
+    <input type="file" class="ocr-upload-input" id="ocrFile-${id}" accept="image/*,.pdf">
+    <div class="ocr-upload-icon">📄</div>
+    <div class="ocr-upload-label">Upload ${label}</div>
+    <div class="ocr-upload-sub">Click or drag & drop — JPG, PNG, PDF supported</div>
+  </div>
+  <div id="ocrPreview-${id}" class="ocr-preview" style="display:none"></div>
+  <div id="ocrProgress-${id}" class="ocr-progress" style="display:none">
+    <div class="ocr-progress-bar-track"><div class="ocr-progress-bar-fill" id="ocrBar-${id}" style="width:0%"></div></div>
+    <div class="ocr-status" id="ocrStatus-${id}">Preparing…</div>
+  </div>
+  <div id="ocrResult-${id}"></div>`;
+}
+
+function bindOCRUpload(id, onExtracted) {
+  const zone = document.getElementById(`ocrZone-${id}`);
+  const fileInput = document.getElementById(`ocrFile-${id}`);
+  if (!zone || !fileInput) return;
+
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+  zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('dragover'); if (e.dataTransfer.files[0]) processOCRFile(id, e.dataTransfer.files[0], onExtracted); });
+  fileInput.addEventListener('change', function() { if (this.files[0]) processOCRFile(id, this.files[0], onExtracted); });
+}
+
+async function processOCRFile(id, file, onExtracted) {
+  const previewEl = document.getElementById(`ocrPreview-${id}`);
+  const progressEl = document.getElementById(`ocrProgress-${id}`);
+  const barEl = document.getElementById(`ocrBar-${id}`);
+  const statusEl = document.getElementById(`ocrStatus-${id}`);
+  const resultEl = document.getElementById(`ocrResult-${id}`);
+
+  // Show preview
+  if (file.type.startsWith('image/')) {
+    const url = URL.createObjectURL(file);
+    previewEl.innerHTML = `<img src="${url}" alt="Uploaded result">`;
+    previewEl.style.display = 'block';
+  }
+  progressEl.style.display = 'block';
+  resultEl.innerHTML = '';
+  barEl.style.width = '0%';
+  statusEl.textContent = 'Loading OCR engine…';
+
+  try {
+    const text = await runOCR(file, barEl, statusEl);
+    statusEl.textContent = 'Text extracted ✓';
+    onExtracted(text, resultEl);
+  } catch(e) {
+    statusEl.textContent = 'OCR failed — please enter details manually.';
+    resultEl.innerHTML = `<div class="alert-box warn" style="margin-top:0.5rem">Could not read the document. Please fill in your details manually above.</div>`;
+  }
+}
+
+// ============================================================
 // STEP 4: O/Level (7 rows, min 5 filled)
 // ============================================================
 
@@ -1778,6 +2037,10 @@ function renderStep4() {
       <div class="card-subtitle">Enter your WAEC/NECO subjects and grades (at least 5 required)</div>
     </div>
     <div class="card-body">
+      <div style="font-size:0.82rem;font-weight:700;color:var(--text2);margin-bottom:0.25rem">📎 Optional: Upload your WAEC/NECO Result</div>
+      <div style="font-size:0.75rem;color:var(--text3);margin-bottom:0.5rem">OCR will auto-fill your subjects and grades — you can edit them after.</div>
+      ${createOCRUploadUI('olevel', 'WAEC/NECO Result')}
+      <div class="divider"></div>
       <div id="olevelRows">${renderOlevelRows()}</div>
       <div id="olevelResultBox"></div>
       <div class="divider"></div>
@@ -1798,6 +2061,23 @@ function renderStep4() {
   document.getElementById("mainContent").innerHTML = html;
 
   updateOlevelResult();
+  bindOCRUpload('olevel', (text, resultEl) => {
+    const parsed = parseOLevelResult(text);
+    if (parsed.length === 0) {
+      resultEl.innerHTML = '<div class="ocr-extracted"><div class="ocr-extracted-title">⚠️ Could not extract subjects — please fill in manually below</div></div>';
+      return;
+    }
+    // Fill in the olevel rows
+    parsed.forEach((r, i) => {
+      if (i < state.olevel.length) {
+        state.olevel[i].subject = r.subject;
+        state.olevel[i].grade = r.grade;
+      }
+    });
+    document.getElementById('olevelRows').innerHTML = renderOlevelRows();
+    updateOlevelResult();
+    resultEl.innerHTML = `<div class="ocr-extracted"><div class="ocr-extracted-title">✅ ${parsed.length} subjects extracted — edit rows below if needed</div>${parsed.map(r => `<div><strong>${r.subject}</strong>: ${r.grade}</div>`).join('')}</div>`;
+  });
   document.getElementById("stateSelect").addEventListener("change", function() { state.state = this.value; });
   document.getElementById("step4Back").addEventListener("click", () => { state.step = 3; render(); });
   document.getElementById("step4Next").addEventListener("click", () => {
@@ -1908,74 +2188,186 @@ function renderStep5() {
   const scored = utmeContrib + olevelContrib;
 
   const merit = prog.merit;
-  const catchmentRaw = (state.state && state.state !== "Other" && prog.catchment[state.state] !== undefined)
+  const catchmentScore = (state.state && state.state !== "Other" && prog.catchment[state.state] !== undefined)
     ? prog.catchment[state.state] : null;
-  const catchmentScore = catchmentRaw;
-  const relevantCutoff = catchmentScore !== null ? Math.min(merit, catchmentScore) : merit;
+  const cutoff = catchmentScore !== null ? Math.min(merit, catchmentScore) : merit;
+  const cutoffLabel = catchmentScore !== null ? `${state.state} Catchment (${catchmentScore})` : `Merit Cut-off (${merit})`;
 
-  // Determine eligibility
   const utmeOk = checkUTMESubjects(state.utmeSubjects, prog.utmeReqs).valid;
   const olevelOk = state.olevelResult && state.olevelResult.valid;
   const subjectIneligible = !utmeOk || !olevelOk;
 
-  // Determine if scores are too low (even with perfect Post-UTME of 30, can't reach cutoff)
-  let scoresTooLow = false;
   let neededPostUtme = 0;
+  let scoresTooLow = false;
   if (!subjectIneligible && merit > 0) {
-    const cutoff = catchmentScore !== null ? Math.min(merit, catchmentScore) : merit;
     neededPostUtme = cutoff - scored;
     scoresTooLow = neededPostUtme > 29;
   }
 
-  const CONTACT_PHONE = "09069882502";
-  const contactBtn = `
-    <a href="tel:${CONTACT_PHONE}" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:0.5rem;text-decoration:none;margin-top:1rem">
-      📞 Contact Us — ${CONTACT_PHONE}
-    </a>`;
+  const PHONE = "09069882502";
 
-  // Hero
-  let heroVerdict, heroVerdictCls;
-  if (subjectIneligible) {
-    heroVerdict = "WRONG SUBJECT COMBO ✗";
-    heroVerdictCls = "ineligible";
-  } else if (scoresTooLow) {
-    heroVerdict = "SCORES TOO LOW ✗";
-    heroVerdictCls = "ineligible";
-  } else if (merit === 0) {
-    heroVerdict = "ELIGIBLE — CHECK CUTOFF 🎯";
-    heroVerdictCls = "";
-  } else {
-    heroVerdict = "SUBJECT COMBO CORRECT ✓";
-    heroVerdictCls = "eligible";
-  }
-
-  const heroHtml = `
-  <div class="results-hero">
-    <div class="results-hero-label">${prog.faculty} · UNILAG 2025/2026</div>
-    <div class="results-hero-name">${state.name ? state.name + "'s Results — " : ""}${prog.name}</div>
-    <div class="results-hero-faculty">2025/2026 Admissions</div>
-    <div class="results-hero-verdict ${heroVerdictCls}">${heroVerdict}</div>
+  // ── Card 1: Aggregate Score ──
+  const aggCard = `
+  <div class="verdict-card">
+    <div class="verdict-card-header" style="background:linear-gradient(135deg,#1d4ed8,#3b82f6)">Your Aggregate Score</div>
+    <div class="verdict-card-body">
+      <div class="verdict-card-big" style="color:#1d4ed8">${scored.toFixed(2)}</div>
+      <div class="verdict-card-label">out of 70 (UTME + O/Level)</div>
+      <div style="margin-top:1rem">
+        <div class="verdict-card-row">
+          <span class="verdict-card-row-label">UTME Score (${utme}/400 ÷ 8)</span>
+          <span class="verdict-card-row-val">${utmeContrib.toFixed(2)} / 50</span>
+        </div>
+        <div class="verdict-card-row">
+          <span class="verdict-card-row-label">O/Level Best 5</span>
+          <span class="verdict-card-row-val">${olevelContrib.toFixed(2)} / 20</span>
+        </div>
+        <div class="verdict-card-row" style="background:var(--bg3);margin:0 -1.25rem;padding:0.4rem 1.25rem">
+          <span class="verdict-card-row-label" style="font-weight:700;color:var(--dark)">Combined</span>
+          <span class="verdict-card-row-val" style="color:#1d4ed8">${scored.toFixed(2)} / 70</span>
+        </div>
+      </div>
+    </div>
   </div>`;
 
-  let mainContent = "";
+  // ── Card 2: Required Aggregate (cutoff) ──
+  const reqAggCard = merit > 0 ? `
+  <div class="verdict-card">
+    <div class="verdict-card-header" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)">Required Aggregate (2024/25 Cut-off)</div>
+    <div class="verdict-card-body">
+      <div class="verdict-card-big" style="color:#7c3aed">${cutoff}</div>
+      <div class="verdict-card-label">${cutoffLabel}</div>
+      <div style="margin-top:1rem">
+        <div class="verdict-card-row">
+          <span class="verdict-card-row-label">National Merit Cut-off</span>
+          <span class="verdict-card-row-val">${merit}</span>
+        </div>
+        ${catchmentScore !== null ? `<div class="verdict-card-row">
+          <span class="verdict-card-row-label">${state.state} Catchment</span>
+          <span class="verdict-card-row-val" style="color:var(--green)">${catchmentScore}</span>
+        </div>` : ""}
+        <div class="verdict-card-row">
+          <span class="verdict-card-row-label">Your Gap</span>
+          <span class="verdict-card-row-val" style="color:${scored >= cutoff ? 'var(--green)' : 'var(--red)'}">${(scored - cutoff).toFixed(2)}</span>
+        </div>
+      </div>
+    </div>
+  </div>` : `
+  <div class="verdict-card">
+    <div class="verdict-card-header" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)">Required Aggregate</div>
+    <div class="verdict-card-body">
+      <div class="verdict-card-big" style="color:var(--text3)">—</div>
+      <div class="verdict-card-label">No cut-off data available for this programme</div>
+    </div>
+  </div>`;
 
+  // ── Card 3: Required Post-UTME Score ──
+  let postUtmeCardColor, postUtmeCardBig, postUtmeCardSub;
   if (subjectIneligible) {
-    // CASE 1: Wrong subject combo
-    let comparisonHtml = "";
+    postUtmeCardColor = "linear-gradient(135deg,#dc2626,#f87171)";
+    postUtmeCardBig = "N/A";
+    postUtmeCardSub = "Fix your subject combination first";
+  } else if (merit === 0) {
+    postUtmeCardColor = "linear-gradient(135deg,#d97706,#fbbf24)";
+    postUtmeCardBig = "?";
+    postUtmeCardSub = "Contact us for current cut-off";
+  } else if (neededPostUtme <= 0) {
+    postUtmeCardColor = "linear-gradient(135deg,#059669,#34d399)";
+    postUtmeCardBig = "0";
+    postUtmeCardSub = "You already clear the cut-off! Any Post-UTME score puts you over.";
+  } else if (scoresTooLow) {
+    postUtmeCardColor = "linear-gradient(135deg,#dc2626,#f87171)";
+    postUtmeCardBig = `${neededPostUtme.toFixed(1)}`;
+    postUtmeCardSub = "Exceeds the maximum of 30 — scores too low";
+  } else {
+    const cls = neededPostUtme <= 22 ? "#059669" : neededPostUtme <= 27 ? "#d97706" : "#dc2626";
+    postUtmeCardColor = neededPostUtme <= 22 ? "linear-gradient(135deg,#059669,#34d399)" : neededPostUtme <= 27 ? "linear-gradient(135deg,#d97706,#fbbf24)" : "linear-gradient(135deg,#dc2626,#f87171)";
+    postUtmeCardBig = `${neededPostUtme.toFixed(1)}`;
+    postUtmeCardSub = `out of 30 needed to reach ${cutoffLabel}`;
+  }
 
+  const postUtmeCard = `
+  <div class="verdict-card">
+    <div class="verdict-card-header" style="background:${postUtmeCardColor}">Required Post-UTME Score</div>
+    <div class="verdict-card-body">
+      <div class="verdict-card-big" style="color:${postUtmeCardColor.includes('059669') ? 'var(--green)' : postUtmeCardColor.includes('d97706') ? 'var(--gold)' : postUtmeCardColor.includes('dc2626') ? 'var(--red)' : 'var(--text3)'}">${postUtmeCardBig}</div>
+      <div class="verdict-card-label">${postUtmeCardSub}</div>
+      ${(!subjectIneligible && merit > 0 && !scoresTooLow && neededPostUtme > 0) ? `
+      <div style="margin-top:1rem">
+        <div class="verdict-card-row">
+          <span class="verdict-card-row-label">Maximum Post-UTME</span>
+          <span class="verdict-card-row-val">30 / 30</span>
+        </div>
+        <div class="verdict-card-row">
+          <span class="verdict-card-row-label">% of Maximum</span>
+          <span class="verdict-card-row-val">${Math.round((neededPostUtme / 30) * 100)}%</span>
+        </div>
+        <div class="verdict-card-row">
+          <span class="verdict-card-row-label">Best Possible Total</span>
+          <span class="verdict-card-row-val">${(scored + 30).toFixed(2)} / 100</span>
+        </div>
+      </div>` : ""}
+    </div>
+  </div>`;
+
+  // ── Card 4: Verdict ──
+  let verdictBg, verdictIcon, verdictTitle, verdictDesc, showContact;
+  if (subjectIneligible) {
+    verdictBg = "background:var(--red-light);border:2px solid var(--red)";
+    verdictIcon = "❌";
+    verdictTitle = `<span style="color:var(--red)">Wrong Subject Combination</span>`;
+    verdictDesc = `Your ${!utmeOk ? "UTME" : "O/Level"} subject combination is <strong>not correct</strong> for <strong>${prog.name}</strong>. See the comparison below and contact us — we'll guide you to the right course.`;
+    showContact = true;
+  } else if (scoresTooLow) {
+    verdictBg = "background:var(--red-light);border:2px solid var(--red)";
+    verdictIcon = "⚠️";
+    verdictTitle = `<span style="color:var(--red)">Scores Too Low</span>`;
+    verdictDesc = `Even with a perfect Post-UTME score (30/30), your best possible aggregate would be <strong>${(scored + 30).toFixed(2)}</strong> — still below the cut-off of <strong>${cutoff}</strong>. Contact us to explore your best options.`;
+    showContact = true;
+  } else if (merit === 0) {
+    verdictBg = "background:var(--gold-light);border:2px solid var(--gold)";
+    verdictIcon = "🎯";
+    verdictTitle = `<span style="color:var(--gold)">Subject Combo Correct — Check Cut-off</span>`;
+    verdictDesc = `Your subject combination is correct for <strong>${prog.name}</strong>, but we don't have current cut-off data. Contact us and we'll tell you exactly what you need.`;
+    showContact = true;
+  } else if (neededPostUtme <= 0) {
+    verdictBg = "background:var(--green-light);border:2px solid var(--green)";
+    verdictIcon = "🏆";
+    verdictTitle = `<span style="color:var(--green)">Excellent — You Already Beat the Cut-off!</span>`;
+    verdictDesc = `Your UTME + O/Level score alone clears the cut-off for <strong>${prog.name}</strong>. Any Post-UTME score puts you over the line. Focus on performing well and watch the UNILAG admissions portal.`;
+    showContact = false;
+  } else {
+    const difficulty = neededPostUtme <= 15 ? "achievable" : neededPostUtme <= 22 ? "very achievable" : "a stretch but possible";
+    verdictBg = neededPostUtme <= 22 ? "background:var(--green-light);border:2px solid var(--green)" : "background:var(--gold-light);border:2px solid var(--gold)";
+    verdictIcon = neededPostUtme <= 22 ? "✅" : "⚡";
+    verdictTitle = neededPostUtme <= 22
+      ? `<span style="color:var(--green)">Subject Combo Correct — On Track!</span>`
+      : `<span style="color:var(--gold)">Subject Combo Correct — High Bar Ahead</span>`;
+    verdictDesc = `Your subject combination is correct. You need <strong>${neededPostUtme.toFixed(1)}/30</strong> in Post-UTME — that's ${difficulty}. Study hard and give it your best shot. Contact us for personalized coaching.`;
+    showContact = true;
+  }
+
+  // Subject comparison (for wrong combo only)
+  let comparisonHtml = "";
+  if (subjectIneligible) {
     if (!utmeOk) {
       const studentUtme = state.utmeSubjects.filter(s => s);
       const required = prog.utme || [];
       const leftCol = studentUtme.map(s => {
-        const match = required.some(r => r.toLowerCase().includes(s.toLowerCase()) || s.toLowerCase().includes(r.toLowerCase().replace(" or ", "").replace(/[^a-z]/g,"")));
+        const match = required.some(r => r.toLowerCase().includes(s.toLowerCase()) || s.toLowerCase().includes(r.toLowerCase().replace(" or ","").replace(/[^a-z]/g,"")));
         return `<div class="comparison-row ${match ? "match" : "miss"}">${match ? "✓" : "✗"} ${s}</div>`;
       }).join("") || `<div class="comparison-row neutral">No subjects entered</div>`;
       const rightCol = required.map(r => `<div class="comparison-row neutral">• ${r}</div>`).join("");
       comparisonHtml = `
-        <div class="comparison-grid">
-          <div><div class="comparison-col-title">Your UTME Subjects</div>${leftCol}</div>
-          <div><div class="comparison-col-title">Required for ${prog.name}</div>${rightCol}</div>
-        </div>`;
+      <div class="verdict-card">
+        <div class="verdict-card-header" style="background:linear-gradient(135deg,#dc2626,#f87171)">UTME Subject Comparison</div>
+        <div class="verdict-card-body">
+          <div class="comparison-grid">
+            <div><div class="comparison-col-title">Your UTME Subjects</div>${leftCol}</div>
+            <div><div class="comparison-col-title">Required for ${prog.name}</div>${rightCol}</div>
+          </div>
+        </div>
+      </div>`;
     } else if (!olevelOk && state.olevelResult) {
       const studentSubjs = getStudentResults().map(r => r.subject);
       const leftCol = studentSubjs.map(s => {
@@ -1984,87 +2376,46 @@ function renderStep5() {
       }).join("") || `<div class="comparison-row neutral">No subjects</div>`;
       const rightCol = prog.requirements.map(g => `<div class="comparison-row neutral">• ${g.label}</div>`).join("");
       comparisonHtml = `
-        <div class="comparison-grid">
-          <div><div class="comparison-col-title">Your O/Level Subjects</div>${leftCol}</div>
-          <div><div class="comparison-col-title">Required for ${prog.name}</div>${rightCol}</div>
-        </div>`;
-    }
-
-    mainContent = `
-    <div class="ineligible-banner" style="margin:0 0 1rem">
-      <div class="ineligible-banner-title">Your ${!utmeOk ? "UTME" : "O/Level"} subject combination is incorrect for ${prog.name}.</div>
-      <div class="ineligible-banner-sub">See the correct subject combination below. Contact us to explore your options and find the right course for you.</div>
-      ${contactBtn}
-    </div>
-    <div class="result-card">
-      <div class="result-card-title">Subject Combination — Side by Side</div>
-      ${comparisonHtml}
-    </div>`;
-  } else if (scoresTooLow) {
-    // CASE 2: Scores too low
-    const cutoff = catchmentScore !== null ? Math.min(merit, catchmentScore) : merit;
-    mainContent = `
-    <div class="ineligible-banner" style="margin:0 0 1rem">
-      <div class="ineligible-banner-title">Your UTME/O'Level score is too low for ${prog.name}.</div>
-      <div class="ineligible-banner-sub">To gain admission, you would need more than 29/30 in your Post-UTME — which is practically impossible. Your current UTME + O/Level score is <strong>${scored.toFixed(2)}</strong> out of 70, but the cut-off requires a Post-UTME score of <strong>${neededPostUtme.toFixed(2)}/30</strong> — above the maximum. Contact us to explore better-fit options or improve your chances.</div>
-      ${contactBtn}
-    </div>
-    <div class="result-card">
-      <div class="result-card-title">Score Breakdown</div>
-      <div class="breakdown-bar-wrap" style="margin-top:0.75rem">
-        <div class="breakdown-seg seg-utme" style="width:${(utmeContrib/100)*100}%">${utmeContrib > 5 ? utmeContrib.toFixed(1) : ""}</div>
-        <div class="breakdown-seg seg-olevel" style="width:${(olevelContrib/100)*100}%">${olevelContrib > 2 ? olevelContrib.toFixed(1) : ""}</div>
-      </div>
-      <div class="breakdown-legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#3182ce"></div>UTME: ${utmeContrib.toFixed(2)} / 50</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#6b46c1"></div>O/Level: ${olevelContrib.toFixed(2)} / 20</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--text3)"></div>Combined: ${scored.toFixed(2)} / 70</div>
-      </div>
-      <div style="margin-top:1rem;padding:0.75rem;background:var(--surface2);border-radius:0.5rem">
-        <div class="detail-row"><span class="detail-label">Cut-off (${catchmentScore !== null ? state.state + " Catchment" : "Merit"})</span><span class="detail-val fail">${cutoff}</span></div>
-        <div class="detail-row"><span class="detail-label">Post-UTME Needed</span><span class="detail-val fail">${neededPostUtme.toFixed(2)} / 30</span></div>
-        <div class="detail-row"><span class="detail-label">Max Possible Post-UTME</span><span class="detail-val">30 / 30</span></div>
-      </div>
-    </div>`;
-  } else {
-    // Eligible / No cutoff data
-    const cutoff = catchmentScore !== null ? Math.min(merit, catchmentScore) : merit;
-    let targetLine = "";
-    if (merit > 0) {
-      if (neededPostUtme <= 0) {
-        targetLine = `<div class="target-box achievable" style="margin:1rem 0"><div class="target-icon">🏆</div><div><div style="font-weight:800">You already beat the cut-off!</div><div class="target-desc">Your UTME + O/Level score alone clears the cut-off. Any Post-UTME score puts you over the line.</div></div></div>`;
-      } else {
-        const pct = Math.round((neededPostUtme / 30) * 100);
-        const cls = neededPostUtme <= 22 ? "achievable" : "stretch";
-        const difficulty = neededPostUtme <= 10 ? "Very achievable with good preparation." : neededPostUtme <= 18 ? "Achievable with solid preparation." : neededPostUtme <= 24 ? "Achievable — study consistently." : "High bar — you'll need a strong performance.";
-        targetLine = `
-        <div class="target-box ${cls}" style="margin:1rem 0">
-          <div class="target-icon" style="font-size:2.2rem;flex-shrink:0">${cls === "achievable" ? "🎯" : "⚡"}</div>
-          <div style="flex:1">
-            <div style="font-weight:800;margin-bottom:0.4rem">Score at least ${neededPostUtme.toFixed(1)} out of 30 in Post-UTME</div>
-            <div style="display:flex;align-items:baseline;gap:0.4rem;margin-bottom:0.5rem">
-              <span style="font-size:2.8rem;font-weight:900;line-height:1;color:${cls==='achievable'?'var(--green)':'var(--gold)'}">${neededPostUtme.toFixed(1)}</span>
-              <span style="font-size:1.1rem;color:var(--text3);font-weight:600">/ 30 needed (${pct}%)</span>
-            </div>
-            <div class="target-desc">To reach the ${catchmentScore !== null ? state.state + " Catchment" : "Merit"} cut-off of <strong>${cutoff}</strong>. ${difficulty}</div>
+      <div class="verdict-card">
+        <div class="verdict-card-header" style="background:linear-gradient(135deg,#dc2626,#f87171)">O/Level Subject Comparison</div>
+        <div class="verdict-card-body">
+          <div class="comparison-grid">
+            <div><div class="comparison-col-title">Your O/Level Subjects</div>${leftCol}</div>
+            <div><div class="comparison-col-title">Required for ${prog.name}</div>${rightCol}</div>
           </div>
-        </div>`;
-      }
+        </div>
+      </div>`;
     }
-    mainContent = `
-    <div class="result-card" style="border-left: 4px solid var(--green)">
-      <div class="result-card-title">✅ Your subject combination is correct!</div>
-      <div style="color:var(--text2);margin-bottom:1rem">Your UTME and O/Level subjects meet the requirements for <strong>${prog.name}</strong>. Here is what you need in your Post-UTME exam:</div>
-      ${targetLine}
-      ${merit === 0 ? `<div class="alert-box warn" style="margin:0.5rem 0">No cut-off data available for this programme. Contact UNILAG admissions for the current cut-off mark.</div>` : ""}
-    </div>`;
   }
 
   const html = `
   <div class="step-card">
-    ${heroHtml}
+    <div class="results-hero">
+      <div class="results-hero-label">${prog.faculty} · UNILAG 2025/2026</div>
+      <div class="results-hero-name">${state.name ? state.name + "'s Results — " : ""}${prog.name}</div>
+      <div class="results-hero-faculty">2025/2026 Admissions</div>
+    </div>
     <div class="card-body" style="padding:1.5rem">
-    ${mainContent}
+      <div class="verdict-cards">
+        ${aggCard}
+        ${reqAggCard}
+        ${postUtmeCard}
+        ${comparisonHtml}
+        <div class="verdict-card">
+          <div class="verdict-card-header" style="background:linear-gradient(135deg,#0f172a,#334155)">Verdict</div>
+          <div class="verdict-final" style="${verdictBg};margin:0">
+            <div class="verdict-final-icon">${verdictIcon}</div>
+            <div class="verdict-final-title">${verdictTitle}</div>
+            <div class="verdict-final-desc">${verdictDesc}</div>
+          </div>
+        </div>
+        <div class="contact-cta">
+          <div class="verdict-final-icon" style="font-size:2rem">📞</div>
+          <div class="contact-cta-title">Talk to an Admission Expert</div>
+          <div class="contact-cta-sub">Get personalized guidance on your next step — course selection, UTME prep, or Post-UTME coaching.</div>
+          <a href="tel:09069882502" class="contact-cta-btn">Call 09069882502</a>
+        </div>
+      </div>
     </div>
     <div class="btn-row">
       <button class="btn btn-secondary" id="step5Back">← Edit</button>
