@@ -1873,13 +1873,11 @@ function updateOlevelResult() {
     return;
   }
   if (!res.valid) {
-    const altHtml = studentResults.length >= 5 ? renderAlternativesAccordion(studentResults) : "";
     box.innerHTML = `
       <div class="alert-box" style="margin-top:1rem">
         ❌ <strong>Your O/Level combination does not satisfy ${state.programme ? state.programme.name : "this programme"} requirements.</strong><br/>
         <span style="font-size:0.85rem;color:var(--text2);margin-top:0.35rem;display:block">${res.error}</span>
-      </div>
-      ${altHtml}`;
+      </div>`;
     return;
   }
   const chips = res.selected.map(s => `
@@ -2062,15 +2060,11 @@ function renderStep5() {
     </div>`;
   }
 
-  const studentResults = getStudentResults();
-  const altHtml = studentResults.length >= 5 ? renderAlternativesAccordion(studentResults) : "";
-
   const html = `
   <div class="step-card">
     ${heroHtml}
     <div class="card-body" style="padding:1.5rem">
     ${mainContent}
-    <div id="altSectionWrap">${altHtml}</div>
     </div>
     <div class="btn-row">
       <button class="btn btn-secondary" id="step5Back">← Edit</button>
