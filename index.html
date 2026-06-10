@@ -2067,12 +2067,11 @@ function renderStep4() {
       resultEl.innerHTML = '<div class="ocr-extracted"><div class="ocr-extracted-title">⚠️ Could not extract subjects — please fill in manually below</div></div>';
       return;
     }
-    // Fill in the olevel rows
+    // Expand state.olevel to hold all extracted subjects
+    while (state.olevel.length < parsed.length) state.olevel.push({subject: "", grade: ""});
     parsed.forEach((r, i) => {
-      if (i < state.olevel.length) {
-        state.olevel[i].subject = r.subject;
-        state.olevel[i].grade = r.grade;
-      }
+      state.olevel[i].subject = r.subject;
+      state.olevel[i].grade = r.grade;
     });
     document.getElementById('olevelRows').innerHTML = renderOlevelRows();
     updateOlevelResult();
