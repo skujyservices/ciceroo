@@ -81,6 +81,13 @@
   .brand-text { display: flex; flex-direction: column; }
   .brand-name { font-size: 1.2rem; font-weight: 800; color: var(--dark); letter-spacing: -0.02em; }
   .brand-sub { font-size: 0.65rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; }
+  .skujy-pill {
+    background: linear-gradient(135deg, var(--teal), #06b6d4);
+    color: white;
+    padding: 0.3rem 0.85rem; border-radius: 999px;
+    font-size: 0.72rem; font-weight: 800; letter-spacing: 0.04em;
+    box-shadow: 0 2px 8px rgba(13,148,136,0.25);
+  }
   .unilag-badge {
     background: var(--teal-light); color: var(--teal2);
     border: 1px solid rgba(13,148,136,0.2);
@@ -139,6 +146,18 @@
     content: ''; position: absolute; bottom: 0; left: 2rem; right: 2rem;
     height: 2px; background: linear-gradient(90deg, var(--teal), transparent);
     border-radius: 1px;
+  }
+  .card-header::before {
+    content: "Skujy Tutorials";
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: var(--teal);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.7;
   }
   .card-step-label {
     font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
@@ -508,6 +527,22 @@
   /* MISC */
   .divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
   .tag { display: inline-flex; align-items: center; padding: 0.3rem 0.7rem; border-radius: 8px; font-size: 0.78rem; font-weight: 600; margin: 0.2rem; }
+  .app-footer {
+    background: white;
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    margin-top: 2rem;
+  }
+  .app-footer-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .app-footer-brand { display: flex; align-items: center; gap: 0.6rem; }
   .disclaimer { font-size: 0.72rem; color: var(--text3); text-align: center; padding: 1.25rem 1.5rem; line-height: 1.6; }
 
   .programme-list { max-height: 380px; overflow-y: auto; border: 1px solid var(--border); border-radius: 12px; background: white; }
@@ -633,6 +668,8 @@
 .contact-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -641,10 +678,13 @@
     <div class="brand-logo">C</div>
     <div class="brand-text">
       <span class="brand-name">Ciceroo</span>
-      <span class="brand-sub">Admission Intelligence</span>
+      <span class="brand-sub">by Skujy Tutorials</span>
     </div>
   </div>
-  <div class="unilag-badge">UNILAG 2025/2026</div>
+  <div style="display:flex;align-items:center;gap:0.6rem">
+    <div class="skujy-pill">Skujy Tutorials</div>
+    <div class="unilag-badge">UNILAG 2025/2026</div>
+  </div>
 </header>
 
 <div class="progress-wrap">
@@ -1553,6 +1593,14 @@ const state = {
   olevelResult: null,
 };
 
+function icon(name, size) {
+  const s = size || 18;
+  return `<i data-lucide="${name}" style="width:${s}px;height:${s}px;display:inline-block;vertical-align:middle;stroke-width:2"></i>`;
+}
+function reIcons() {
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
 const STEP_LABELS = ["Name","Course","UTME","O/Level","Results"];
 const TOTAL_STEPS = 5;
 
@@ -1569,7 +1617,7 @@ function renderProgress() {
   let html = "";
   for (let i = 1; i <= TOTAL_STEPS; i++) {
     const cls = i < state.step ? "done" : i === state.step ? "active" : "";
-    const icon = i < state.step ? "✓" : i;
+    const icon = i < state.step ? `<i data-lucide="check" style="width:14px;height:14px;stroke:white;stroke-width:3"></i>` : i;
     html += `<div class="step-node ${cls}">
       <div class="step-circle">${icon}</div>
       <div class="step-label">${STEP_LABELS[i-1]}</div>
@@ -1610,6 +1658,7 @@ function renderStep1() {
     </div>
   </div>`;
   document.getElementById("mainContent").innerHTML = html;
+  reIcons();
 
   const inp = document.getElementById("nameInput");
   const btn = document.getElementById("step1Next");
@@ -1663,6 +1712,7 @@ function renderStep2() {
     </div>
   </div>`;
   document.getElementById("mainContent").innerHTML = html;
+  reIcons();
 
   const searchEl = document.getElementById("courseSearch");
   const dropEl = document.getElementById("acDropdown");
@@ -1793,7 +1843,7 @@ function renderStep3() {
       </div>
       <div id="utmeCheckBox" style="margin-top:0.75rem">${renderUTMECheck()}</div>
       <div class="divider"></div>
-      <div style="font-size:0.82rem;font-weight:700;color:var(--text2);margin-bottom:0.25rem">📎 Optional: Upload your JAMB Result Slip</div>
+      <div style="font-size:0.82rem;font-weight:700;color:var(--text2);margin-bottom:0.25rem">Optional: Upload your JAMB Result Slip</div>
       <div style="font-size:0.75rem;color:var(--text3);margin-bottom:0.5rem">OCR will auto-fill your score and subjects — you can edit them after.</div>
       ${createOCRUploadUI('utme', 'JAMB Result Slip')}
     </div>
@@ -1803,6 +1853,7 @@ function renderStep3() {
     </div>
   </div>`;
   document.getElementById("mainContent").innerHTML = html;
+  reIcons();
 
   document.getElementById("utmeInput").addEventListener("input", function() {
     let v = Math.max(0, Math.min(400, parseInt(this.value) || 0));
@@ -1973,7 +2024,7 @@ function createOCRUploadUI(id, label) {
   return `
   <div class="ocr-upload-zone" id="ocrZone-${id}" onclick="document.getElementById('ocrFile-${id}').click()">
     <input type="file" class="ocr-upload-input" id="ocrFile-${id}" accept="image/*,.pdf">
-    <div class="ocr-upload-icon">📄</div>
+    <div class="ocr-upload-icon"><i data-lucide="upload-cloud" style="width:36px;height:36px;stroke:var(--teal);stroke-width:1.5"></i></div>
     <div class="ocr-upload-label">Upload ${label}</div>
     <div class="ocr-upload-sub">Click or drag & drop — JPG, PNG, PDF supported</div>
   </div>
@@ -2037,7 +2088,7 @@ function renderStep4() {
       <div class="card-subtitle">Enter your WAEC/NECO subjects and grades (at least 5 required)</div>
     </div>
     <div class="card-body">
-      <div style="font-size:0.82rem;font-weight:700;color:var(--text2);margin-bottom:0.25rem">📎 Optional: Upload your WAEC/NECO Result</div>
+      <div style="font-size:0.82rem;font-weight:700;color:var(--text2);margin-bottom:0.25rem">Optional: Upload your WAEC/NECO Result</div>
       <div style="font-size:0.75rem;color:var(--text3);margin-bottom:0.5rem">OCR will auto-fill your subjects and grades — you can edit them after.</div>
       ${createOCRUploadUI('olevel', 'WAEC/NECO Result')}
       <div class="divider"></div>
@@ -2059,6 +2110,7 @@ function renderStep4() {
     </div>
   </div>`;
   document.getElementById("mainContent").innerHTML = html;
+  reIcons();
 
   updateOlevelResult();
   bindOCRUpload('olevel', (text, resultEl) => {
@@ -2313,32 +2365,32 @@ function renderStep5() {
   let verdictBg, verdictIcon, verdictTitle, verdictDesc, showContact;
   if (subjectIneligible) {
     verdictBg = "background:var(--red-light);border:2px solid var(--red)";
-    verdictIcon = "❌";
+    verdictIcon = '<i data-lucide="x-circle" style="width:48px;height:48px;stroke:var(--red);stroke-width:1.5"></i>';
     verdictTitle = `<span style="color:var(--red)">Wrong Subject Combination</span>`;
     verdictDesc = `Your ${!utmeOk ? "UTME" : "O/Level"} subject combination is <strong>not correct</strong> for <strong>${prog.name}</strong>. See the comparison below and contact us — we'll guide you to the right course.`;
     showContact = true;
   } else if (scoresTooLow) {
     verdictBg = "background:var(--red-light);border:2px solid var(--red)";
-    verdictIcon = "⚠️";
+    verdictIcon = '<i data-lucide="alert-triangle" style="width:48px;height:48px;stroke:var(--red);stroke-width:1.5"></i>';
     verdictTitle = `<span style="color:var(--red)">Scores Too Low</span>`;
     verdictDesc = `Even with a perfect Post-UTME score (30/30), your best possible aggregate would be <strong>${(scored + 30).toFixed(2)}</strong> — still below the cut-off of <strong>${cutoff}</strong>. Contact us to explore your best options.`;
     showContact = true;
   } else if (merit === 0) {
     verdictBg = "background:var(--gold-light);border:2px solid var(--gold)";
-    verdictIcon = "🎯";
+    verdictIcon = '<i data-lucide="target" style="width:48px;height:48px;stroke:var(--gold);stroke-width:1.5"></i>';
     verdictTitle = `<span style="color:var(--gold)">Subject Combo Correct — Check Cut-off</span>`;
     verdictDesc = `Your subject combination is correct for <strong>${prog.name}</strong>, but we don't have current cut-off data. Contact us and we'll tell you exactly what you need.`;
     showContact = true;
   } else if (neededPostUtme <= 0) {
     verdictBg = "background:var(--green-light);border:2px solid var(--green)";
-    verdictIcon = "🏆";
+    verdictIcon = '<i data-lucide="trophy" style="width:48px;height:48px;stroke:var(--green);stroke-width:1.5"></i>';
     verdictTitle = `<span style="color:var(--green)">Excellent — You Already Beat the Cut-off!</span>`;
     verdictDesc = `Your UTME + O/Level score alone clears the cut-off for <strong>${prog.name}</strong>. Any Post-UTME score puts you over the line. Focus on performing well and watch the UNILAG admissions portal.`;
     showContact = false;
   } else {
     const difficulty = neededPostUtme <= 15 ? "achievable" : neededPostUtme <= 22 ? "very achievable" : "a stretch but possible";
     verdictBg = neededPostUtme <= 22 ? "background:var(--green-light);border:2px solid var(--green)" : "background:var(--gold-light);border:2px solid var(--gold)";
-    verdictIcon = neededPostUtme <= 22 ? "✅" : "⚡";
+    verdictIcon = neededPostUtme <= 22 ? '<i data-lucide="check-circle-2" style="width:48px;height:48px;stroke:var(--green);stroke-width:1.5"></i>' : '<i data-lucide="zap" style="width:48px;height:48px;stroke:var(--gold);stroke-width:1.5"></i>';
     verdictTitle = neededPostUtme <= 22
       ? `<span style="color:var(--green)">Subject Combo Correct — On Track!</span>`
       : `<span style="color:var(--gold)">Subject Combo Correct — High Bar Ahead</span>`;
@@ -2392,7 +2444,7 @@ function renderStep5() {
     <div class="results-hero">
       <div class="results-hero-label">${prog.faculty} · UNILAG 2025/2026</div>
       <div class="results-hero-name">${state.name ? state.name + "'s Results — " : ""}${prog.name}</div>
-      <div class="results-hero-faculty">2025/2026 Admissions</div>
+      <div class="results-hero-faculty">2025/2026 Admissions · <strong style="color:var(--teal)">Skujy Tutorials</strong></div>
     </div>
     <div class="card-body" style="padding:1.5rem">
       <div class="verdict-cards">
@@ -2409,15 +2461,18 @@ function renderStep5() {
           </div>
         </div>
         <div class="contact-cta">
-          <div class="verdict-final-icon" style="font-size:2rem">📞</div>
+          <div class="verdict-final-icon"><i data-lucide="phone-call" style="width:40px;height:40px;stroke:white;stroke-width:1.5"></i></div>
           <div class="contact-cta-title">Talk to an Admission Expert</div>
           <div class="contact-cta-sub">Get personalized guidance on your next step — course selection, UTME prep, or Post-UTME coaching.</div>
           <a href="tel:09069882502" class="contact-cta-btn">Call 09069882502</a>
         </div>
       </div>
     </div>
-    <div class="btn-row">
+    <div class="btn-row" style="flex-wrap:wrap;gap:0.5rem">
       <button class="btn btn-secondary" id="step5Back">← Edit</button>
+      <button class="btn btn-primary" id="step5Download" style="background:linear-gradient(135deg,#1d4ed8,#3b82f6);display:flex;align-items:center;gap:0.4rem">
+        <i data-lucide="download" style="width:16px;height:16px;stroke:white"></i> Download PDF
+      </button>
       <button class="btn btn-restart" id="step5Restart">↺ Start Over</button>
     </div>
     <div class="disclaimer">
@@ -2425,8 +2480,10 @@ function renderStep5() {
     </div>
   </div>`;
   document.getElementById("mainContent").innerHTML = html;
+  reIcons();
 
   document.getElementById("step5Back").addEventListener("click", () => { state.step = 4; render(); });
+  document.getElementById("step5Download").addEventListener("click", generatePDF);
   document.getElementById("step5Restart").addEventListener("click", () => {
     state.step = 1;
     state.name = "";
@@ -2615,6 +2672,214 @@ function renderAlternatives(studentResults) {
 }
 
 // ============================================================
+// PDF REPORT GENERATOR
+// ============================================================
+
+function generatePDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const prog = state.programme;
+  const utme = parseFloat(state.utmeScore) || 0;
+  const utmeContrib = Math.min(utme / 8, 50);
+  const olevelContrib = state.olevelResult ? state.olevelResult.totalPoints : 0;
+  const scored = utmeContrib + olevelContrib;
+  const merit = prog.merit;
+  const catchmentScore = (state.state && state.state !== "Other" && prog.catchment[state.state] !== undefined)
+    ? prog.catchment[state.state] : null;
+  const cutoff = catchmentScore !== null ? Math.min(merit, catchmentScore) : merit;
+  const neededPostUtme = merit > 0 ? Math.max(0, cutoff - scored) : 0;
+  const utmeOk = checkUTMESubjects(state.utmeSubjects, prog.utmeReqs).valid;
+  const olevelOk = state.olevelResult && state.olevelResult.valid;
+  const subjectIneligible = !utmeOk || !olevelOk;
+  const scoresTooLow = !subjectIneligible && merit > 0 && (cutoff - scored) > 29;
+
+  const W = 210; // A4 width mm
+  let y = 0;
+
+  // ── Header banner ──
+  doc.setFillColor(13, 148, 136); // teal
+  doc.rect(0, 0, W, 28, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(18);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Ciceroo', 14, 11);
+  doc.setFontSize(8);
+  doc.setFont('helvetica', 'normal');
+  doc.text('UNILAG 2025/2026 Admission Intelligence by Skujy Tutorials', 14, 17);
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'bold');
+  doc.text('ADMISSION ASSESSMENT REPORT', 14, 24);
+  doc.setFontSize(7);
+  doc.setFont('helvetica', 'normal');
+  const today = new Date().toLocaleDateString('en-NG', { day: '2-digit', month: 'long', year: 'numeric' });
+  doc.text(`Generated: ${today}`, W - 14, 24, { align: 'right' });
+  y = 36;
+
+  // ── Student Info ──
+  doc.setTextColor(15, 23, 42);
+  doc.setFontSize(13);
+  doc.setFont('helvetica', 'bold');
+  doc.text(state.name || 'Student', 14, y);
+  y += 6;
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(71, 85, 105);
+  doc.text(`Course: ${prog.name}  |  Faculty: ${prog.faculty}`, 14, y);
+  y += 4;
+  doc.text(`State of Origin: ${state.state || 'Not specified'}`, 14, y);
+  y += 8;
+
+  // divider
+  doc.setDrawColor(226, 232, 240);
+  doc.line(14, y, W - 14, y);
+  y += 7;
+
+  // ── Score Breakdown ──
+  doc.setTextColor(13, 148, 136);
+  doc.setFontSize(8);
+  doc.setFont('helvetica', 'bold');
+  doc.text('SCORE BREAKDOWN', 14, y);
+  y += 5;
+
+  const rows = [
+    ['UTME Score', `${utme} / 400`, `Contribution: ${utmeContrib.toFixed(2)} / 50`],
+    ['O/Level Best 5', `${olevelContrib.toFixed(2)} / 20`, `Based on ${state.olevelResult ? state.olevelResult.selected.length : 0} subjects`],
+    ['UTME + O/Level Combined', `${scored.toFixed(2)} / 70`, ''],
+  ];
+  doc.setFontSize(8.5);
+  for (const [label, val, note] of rows) {
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(30, 41, 59);
+    doc.text(label, 14, y);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(13, 148, 136);
+    doc.text(val, 120, y, { align: 'right' });
+    if (note) {
+      doc.setTextColor(148, 163, 184);
+      doc.setFontSize(7);
+      doc.text(note, 125, y);
+      doc.setFontSize(8.5);
+    }
+    y += 6;
+  }
+  y += 2;
+
+  // ── Cut-off Analysis ──
+  doc.setDrawColor(226, 232, 240);
+  doc.line(14, y, W - 14, y);
+  y += 6;
+  doc.setTextColor(13, 148, 136);
+  doc.setFontSize(8);
+  doc.setFont('helvetica', 'bold');
+  doc.text('CUT-OFF ANALYSIS', 14, y);
+  y += 5;
+  doc.setFontSize(8.5);
+  const cutoffRows = [
+    ['Merit Cut-off (2024/25)', merit > 0 ? `${merit}` : 'No data'],
+    catchmentScore !== null ? [`${state.state} Catchment Cut-off`, `${catchmentScore}`] : null,
+    ['Effective Cut-off Applied', cutoff > 0 ? `${cutoff}` : 'No data'],
+    ['Required Post-UTME Score', merit > 0 && !subjectIneligible ? `${neededPostUtme.toFixed(2)} / 30` : 'N/A'],
+  ].filter(Boolean);
+  for (const [label, val] of cutoffRows) {
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(30, 41, 59);
+    doc.text(label, 14, y);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(71, 85, 105);
+    doc.text(val, 120, y, { align: 'right' });
+    y += 6;
+  }
+  y += 2;
+
+  // ── UTME Subjects ──
+  doc.setDrawColor(226, 232, 240);
+  doc.line(14, y, W - 14, y);
+  y += 6;
+  doc.setTextColor(13, 148, 136);
+  doc.setFontSize(8);
+  doc.setFont('helvetica', 'bold');
+  doc.text('UTME SUBJECTS', 14, y);
+  y += 5;
+  doc.setFontSize(8.5);
+  state.utmeSubjects.filter(s => s).forEach((s, i) => {
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(30, 41, 59);
+    doc.text(`${i + 1}. ${s}`, 14, y);
+    y += 5;
+  });
+  y += 2;
+
+  // ── O/Level Results ──
+  doc.setDrawColor(226, 232, 240);
+  doc.line(14, y, W - 14, y);
+  y += 6;
+  doc.setTextColor(13, 148, 136);
+  doc.setFontSize(8);
+  doc.setFont('helvetica', 'bold');
+  doc.text('O/LEVEL RESULTS', 14, y);
+  y += 5;
+  doc.setFontSize(8.5);
+  const filled = state.olevel.filter(r => r.subject && r.grade);
+  for (let i = 0; i < filled.length; i += 2) {
+    const a = filled[i];
+    const b = filled[i + 1];
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(30, 41, 59);
+    doc.text(`${a.subject}: ${a.grade}`, 14, y);
+    if (b) doc.text(`${b.subject}: ${b.grade}`, 110, y);
+    y += 5;
+  }
+  y += 2;
+
+  // ── Verdict ──
+  doc.setDrawColor(226, 232, 240);
+  doc.line(14, y, W - 14, y);
+  y += 6;
+
+  let verdictText, verdictColor;
+  if (subjectIneligible) {
+    verdictText = 'WRONG SUBJECT COMBINATION';
+    verdictColor = [220, 38, 38];
+  } else if (scoresTooLow) {
+    verdictText = 'SCORES TOO LOW';
+    verdictColor = [220, 38, 38];
+  } else if (neededPostUtme <= 0) {
+    verdictText = 'ALREADY BEATS CUT-OFF';
+    verdictColor = [5, 150, 105];
+  } else {
+    verdictText = `NEEDS ${neededPostUtme.toFixed(1)}/30 IN POST-UTME`;
+    verdictColor = neededPostUtme <= 22 ? [5, 150, 105] : [217, 119, 6];
+  }
+
+  doc.setFillColor(...verdictColor);
+  doc.roundedRect(14, y, W - 28, 12, 3, 3, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'bold');
+  doc.text(verdictText, W / 2, y + 7.5, { align: 'center' });
+  y += 18;
+
+  // ── Contact footer ──
+  doc.setFillColor(241, 245, 249);
+  doc.rect(0, 260, W, 37, 'F');
+  doc.setTextColor(13, 148, 136);
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Need guidance? Contact Skujy Tutorials', W / 2, 268, { align: 'center' });
+  doc.setTextColor(71, 85, 105);
+  doc.setFontSize(8);
+  doc.setFont('helvetica', 'normal');
+  doc.text('Phone: 09069882502', W / 2, 274, { align: 'center' });
+  doc.setFontSize(7);
+  doc.setTextColor(148, 163, 184);
+  doc.text('This report is generated by Ciceroo — UNILAG Admission Intelligence by Skujy Tutorials.', W / 2, 280, { align: 'center' });
+  doc.text('Cut-off data is based on 2024/2025 figures. Always verify at unilag.edu.ng.', W / 2, 285, { align: 'center' });
+
+  const filename = `Ciceroo_${(state.name || 'Student').replace(/\s+/g,'_')}_${prog.name.replace(/\s+/g,'_')}.pdf`;
+  doc.save(filename);
+}
+
+// ============================================================
 // MAIN RENDER
 // ============================================================
 
@@ -2631,6 +2896,7 @@ function render() {
 }
 
 render();
+if (typeof lucide !== 'undefined') lucide.createIcons();
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -2644,5 +2910,23 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
+<footer class="app-footer">
+  <div class="app-footer-inner">
+    <div class="app-footer-brand">
+      <div class="brand-logo" style="width:32px;height:32px;font-size:1rem">C</div>
+      <div>
+        <div style="font-weight:800;color:var(--dark);font-size:0.9rem">Ciceroo</div>
+        <div style="font-size:0.7rem;color:var(--text3)">by Skujy Tutorials</div>
+      </div>
+    </div>
+    <div style="font-size:0.75rem;color:var(--text3);text-align:center;line-height:1.6">
+      UNILAG 2025/2026 Admission Intelligence<br>
+      <strong style="color:var(--teal)">Skujy Tutorials</strong> — Guiding students to the right course
+    </div>
+    <a href="tel:09069882502" style="display:flex;align-items:center;gap:0.4rem;font-size:0.8rem;font-weight:700;color:var(--teal);text-decoration:none">
+      <i data-lucide="phone" style="width:14px;height:14px"></i> 09069882502
+    </a>
+  </div>
+</footer>
 </body>
 </html>
